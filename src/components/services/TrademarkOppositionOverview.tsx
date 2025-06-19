@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TRADEMARK_OPPOSITION_ELIGIBILITY } from "@/lib/services-constants";
-import { Users, Scale, AlertTriangle, FileText } from "lucide-react";
+import { Scale, FileText } from "lucide-react";
 
 const TrademarkOppositionOverview = () => {
   return (

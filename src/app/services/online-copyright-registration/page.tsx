@@ -5,14 +5,12 @@ import CopyrightOverview from "@/components/services/CopyrightOverview";
 import CopyrightCategories from "@/components/services/CopyrightCategories";
 import CopyrightRequirements from "@/components/services/CopyrightRequirements";
 import CopyrightComparison from "@/components/services/CopyrightComparison";
-import CTA from "@/components/common/CTA";
 import { 
   COPYRIGHT_REGISTRATION_HERO,
   COPYRIGHT_PRICING,
   COPYRIGHT_FAQ,
   HEAR_ABOUT_OPTIONS
 } from "@/lib/services-constants";
-import { FOOTER_CTA } from "@/lib/constants";
 
 export default function CopyrightRegistrationPage() {
   return (

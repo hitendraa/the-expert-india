@@ -8,16 +8,13 @@ import {
   ArrowRight,
   CheckCircle,
   Star,
-  Users,
   Shield,
-  Clock,
   Award,
   Building2,
   Scale,
   Phone,
   MessageCircle,
   TrendingUp,
-  PlayCircle,
   Zap,
 } from "lucide-react";
 import { CONTACT_INFO, HERO_SECTION } from "@/lib/constants";

@@ -4,17 +4,13 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {
-  ChevronDown,
   Menu,
-  X,
   Shield,
   Building2,
   FileText,
   CreditCard,
   Scale,
   Users,
-  Star,
-  Award,
   Phone,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"

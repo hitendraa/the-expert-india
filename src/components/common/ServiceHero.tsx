@@ -11,19 +11,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   CheckCircle,
   Phone,
-  Star,
-  ArrowRight,
-  Users,
-  Shield,
-  Clock,
+  Star,  ArrowRight,
   Award,
-  Building2,
   IndianRupee,
-  FileText,
   PhoneCall,
 } from "lucide-react";
 import { INDIAN_STATES } from "@/lib/services-constants";
-import { CONTACT_INFO } from "@/lib/constants";
 import "@/app/animations.css";
 
 interface ServiceHeroProps {
@@ -306,9 +299,8 @@ const ServiceHero = ({ heroData, selectOptions, selectFieldType }: ServiceHeroPr
                           : selectFieldType === 'hearAbout'
                           ? heroData.form.fields.hearAbout
                           : heroData.form.fields.package}
-                      </Label>
-                      <Select 
-                        value={(formData as any)[selectFieldType] || ""} 
+                      </Label>                      <Select 
+                        value={(formData as Record<string, unknown>)[selectFieldType] as string || ""} 
                         onValueChange={(value) => handleInputChange(selectFieldType, value)}
                       >
                         <SelectTrigger className="h-9 text-sm">

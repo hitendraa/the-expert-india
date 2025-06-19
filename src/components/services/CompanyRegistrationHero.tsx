@@ -10,20 +10,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   CheckCircle,
-  Phone,
   Star,
   ArrowRight,
   Users,
   Shield,
   Clock,
-  Award,
   Building2,
   IndianRupee,
-  FileText,
   PhoneCall,
 } from "lucide-react";
 import { COMPANY_REGISTRATION_HERO, INDIAN_STATES, COMPANY_TYPES } from "@/lib/services-constants";
-import { CONTACT_INFO } from "@/lib/constants";
 import "@/app/animations.css";
 
 const CompanyRegistrationHero = () => {  const [formData, setFormData] = useState({

@@ -114,7 +114,7 @@ const TrademarkClasses = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
               <div className="font-semibold text-gray-900 mb-1">Free Class Search</div>
-              <div className="text-sm text-gray-600">We'll help you find the right class</div>
+              <div className="text-sm text-gray-600">We&apos;ll help you find the right class</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
               <div className="font-semibold text-gray-900 mb-1">Expert Guidance</div>

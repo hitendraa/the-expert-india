@@ -3,7 +3,6 @@ import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import TrademarkObjectionOverview from "@/components/services/TrademarkObjectionOverview";
 import TrademarkObjectionDocuments from "@/components/services/TrademarkObjectionDocuments";
-import CTA from "@/components/common/CTA";
 import { 
   TRADEMARK_OBJECTION_HERO, 
   TRADEMARK_OBJECTION_PRICING, 

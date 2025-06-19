@@ -2,10 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HelpCircle, MessageCircle, Phone } from "lucide-react";
-import { CONTACT_INFO } from "@/lib/constants";
+import { HelpCircle } from "lucide-react";
 import CTA from "@/components/common/CTA";
 import "@/app/animations.css";
 
@@ -56,10 +54,9 @@ const ServiceFAQ = ({
               {[0, 1].map((colIndex) => (
                 <Card key={colIndex} className="shadow-lg border-0">
                   <CardContent className="p-6">
-                    <Accordion type="single" collapsible className="w-full">
-                      {faqs
+                    <Accordion type="single" collapsible className="w-full">                      {faqs
                         .filter((_, index) => index % 2 === colIndex)
-                        .map((faq, index) => {
+                        .map((faq) => {
                           const originalIndex = faqs.findIndex(f => f === faq);
                           return (
                             <AccordionItem 

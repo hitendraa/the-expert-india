@@ -97,7 +97,7 @@ const CopyrightOverview = () => {  return (
                   100% Online Process
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Protect your creative work today before it's too late. Our expert team ensures a smooth and secure copyright registration process.
+                  Protect your creative work today before it&apos;s too late. Our expert team ensures a smooth and secure copyright registration process.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8">
                   <div className="bg-white p-4 rounded-lg shadow-sm">

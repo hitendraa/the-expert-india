@@ -37,7 +37,7 @@ const TrademarkBenefits = () => {
             Advantages of Registering Your Trademark
           </h2>
           <p className="text-base text-gray-600 max-w-2xl mx-auto">
-            Discover the powerful benefits that come with trademark registration and why it's essential for your business
+            Discover the powerful benefits that come with trademark registration and why it&apos;s essential for your business
           </p>
         </div>
 

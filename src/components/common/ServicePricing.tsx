@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Phone, MessageCircle } from "lucide-react";
+import { CheckCircle, Phone } from "lucide-react";
 import { CONTACT_INFO } from "@/lib/constants";
 import CTA from "@/components/common/CTA";
 import "@/app/animations.css";
@@ -48,8 +48,7 @@ const ServicePricing = ({ title, subtitle, plans, note }: ServicePricingProps) =
             : plans.length === 3
             ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto'
             : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
-        }`}>
-          {plans.map((plan, index) => (
+        }`}>          {plans.map((plan) => (
             <div key={plan.id} className="relative">
               <Card className={`animated-hover shadow-lg border-0 h-full ${
                 plan.recommended 

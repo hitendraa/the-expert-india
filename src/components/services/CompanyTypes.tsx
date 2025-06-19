@@ -46,8 +46,7 @@ const CompanyTypes = () => {
         </div>
 
         {/* Company Types Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
-          {COMPANY_TYPES_DETAILED.map((companyType, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">          {COMPANY_TYPES_DETAILED.map((companyType) => {
             const IconComponent = iconMap[companyType.icon as keyof typeof iconMap];
             
             return (

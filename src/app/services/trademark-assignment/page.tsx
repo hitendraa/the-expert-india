@@ -3,7 +3,6 @@ import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import TrademarkAssignmentOverview from "@/components/services/TrademarkAssignmentOverview";
 import TrademarkAssignmentBenefits from "@/components/services/TrademarkAssignmentBenefits";
-import CTA from "@/components/common/CTA";
 import { 
   TRADEMARK_ASSIGNMENT_HERO,
   TRADEMARK_ASSIGNMENT_PRICING

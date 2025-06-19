@@ -1,9 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { COPYRIGHT_COMPARISON_TABLE } from "@/lib/services-constants";
-import { Scale, CheckCircle, XCircle, Phone } from "lucide-react";
+import { Scale, CheckCircle } from "lucide-react";
 
 const CopyrightComparison = () => {
   return (

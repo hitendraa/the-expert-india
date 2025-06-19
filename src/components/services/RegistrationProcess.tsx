@@ -12,7 +12,6 @@ import {
   FileCheck
 } from "lucide-react";
 import { REGISTRATION_PROCESS } from "@/lib/services-constants";
-import { CONTACT_INFO } from "@/lib/constants";
 import CTA from "@/components/common/CTA";
 import "@/app/animations.css";
 

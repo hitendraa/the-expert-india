@@ -12,7 +12,6 @@ import {
   Award
 } from "lucide-react";
 import { TRADEMARK_PROCESS } from "@/lib/services-constants";
-import { CONTACT_INFO } from "@/lib/constants";
 import CTA from "@/components/common/CTA";
 import "@/app/animations.css";
 

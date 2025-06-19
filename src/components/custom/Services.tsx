@@ -14,7 +14,6 @@ import {
   CheckCircle,
   Star,
   Zap,
-  Users,
 } from "lucide-react";
 import { MAIN_NAVIGATION, FOOTER_SERVICES, SERVICES_CONTENT } from "@/lib/constants";
 import Link from "next/link";

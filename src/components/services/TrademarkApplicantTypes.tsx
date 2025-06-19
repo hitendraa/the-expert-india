@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { 
   User, 
   Users, 
@@ -10,12 +9,10 @@ import {
   Briefcase, 
   Heart, 
   Globe,
-  ArrowRight,
   CheckCircle
 } from "lucide-react";
 import { TRADEMARK_APPLICANT_TYPES } from "@/lib/services-constants";
 import CTA from "@/components/common/CTA";
-import Link from "next/link";
 import "@/app/animations.css";
 
 const iconMap = {

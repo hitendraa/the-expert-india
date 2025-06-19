@@ -8,14 +8,12 @@ import {
   Mail,
   MapPin,
   Clock,
-  MessageCircle,
   Facebook,
   Twitter,
   Linkedin,
   Instagram,
   Youtube,
   ArrowRight,
-  ExternalLink
 } from "lucide-react";
 import { 
   CONTACT_INFO, 
@@ -55,7 +53,7 @@ const Footer = () => {
             </div>
             
             <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-md">
-              India's most trusted legal services platform. We provide comprehensive legal solutions 
+              India&apos;s most trusted legal services platform. We provide comprehensive legal solutions 
               for businesses and individuals with over 15 years of expertise and 1 lakh+ satisfied clients.
             </p>
 

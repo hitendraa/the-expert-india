@@ -1,28 +1,20 @@
 "use client";
 
 import "@/app/animations.css";
-
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Users,
   Shield,
-  Clock,
   Award,
   CheckCircle,
   Target,
   TrendingUp,
   Heart,
-  Scale,
   Building2,
-  ArrowRight,
   Star,
-  Briefcase,
   Globe,
-  Phone,
 } from "lucide-react";
-import { CONTACT_INFO, ABOUT_STATS, ABOUT_VALUES, ABOUT_CONTENT } from "@/lib/constants";
-import Link from "next/link";
+import { ABOUT_STATS, ABOUT_VALUES, ABOUT_CONTENT } from "@/lib/constants";
 import Image from "next/image";
 import CTA from "@/components/common/CTA";
 
@@ -46,9 +38,8 @@ const About = () => {
           <Badge className="bg-brand-primary/10 text-brand-primary hover:bg-brand-primary/20 mb-4">
             <Building2 className="h-4 w-4 mr-2" />
             {ABOUT_CONTENT.badge}
-          </Badge>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            India's Most{" "}
+          </Badge>          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            India&apos;s Most{" "}
             <span className="text-brand-gradient bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
               Trusted Legal
             </span>{" "}

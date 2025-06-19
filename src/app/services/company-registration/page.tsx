@@ -5,7 +5,6 @@ import RequiredDocuments from "@/components/services/RequiredDocuments";
 import CompanyTypes from "@/components/services/CompanyTypes";
 import CompanyComparison from "@/components/services/CompanyComparison";
 import RegistrationProcess from "@/components/services/RegistrationProcess";
-import CompanyRegistrationFAQ from "@/components/services/CompanyRegistrationFAQ";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { COMPANY_REGISTRATION_FAQ } from "@/lib/services-constants";
 
