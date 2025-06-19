@@ -27,9 +27,9 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Badge } from "@/components/ui/badge"
 import { MAIN_NAVIGATION, QUICK_LINKS } from "@/lib/constants"
 import Topbar from "./Topbar"
+import "@/app/animations.css"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -161,7 +161,7 @@ const Navbar = () => {
                 <span className="text-xs text-gray-500">Need Help?</span>
                 <span className="text-xs font-semibold text-brand-primary">1 Lakh+ Happy Clients</span>
               </div>
-              <Button className="bg-brand-gradient hover:opacity-90 text-white font-medium px-3 xl:px-6 py-2 text-xs xl:text-sm shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button className="bg-brand-gradient hover:opacity-90 text-white font-medium px-3 xl:px-6 py-2 text-xs xl:text-sm shadow-lg hover:shadow-xl transition-all duration-300 animated-hover animated-hover-primary">
                 <Phone className="h-3 w-3 xl:h-4 xl:w-4 mr-1 xl:mr-2" />
                 <span className="hidden xl:inline">Get Free Consultation</span>
                 <span className="xl:hidden">Call Now</span>
@@ -206,7 +206,7 @@ const Navbar = () => {
             <div className="flex xl:hidden items-center space-x-2">
               <Button 
                 size="sm"
-                className="bg-brand-gradient hover:opacity-90 text-white font-medium px-3 py-2 text-xs shadow-lg transition-all duration-300"
+                className="bg-brand-gradient hover:opacity-90 text-white font-medium px-3 py-2 text-xs shadow-lg transition-all duration-300 animated-hover animated-hover-primary"
               >
                 <Phone className="h-3 w-3 mr-1.5" />
                 Call Now
@@ -276,11 +276,11 @@ const Navbar = () => {
                                       <div className="text-sm font-medium text-gray-900 group-hover/item:text-white transition-colors">
                                         {service.name}
                                       </div>
-                                      <div className="text-xs text-gray-500 group-hover/item:text-white/80 transition-colors">
+                                      <div className="text-xs text-gray-500 group-hover:item:text-white/80 transition-colors">
                                         Professional {service.name.toLowerCase()} services
                                       </div>
                                     </div>
-                                    <div className="opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                    <div className="opacity-0 group-hover:item:opacity-100 transition-opacity">
                                       <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                       </svg>
@@ -341,7 +341,7 @@ const Navbar = () => {
 
                   {/* Footer CTA */}
                   <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 shadow-lg">
-                    <Button className="w-full bg-brand-gradient hover:opacity-90 text-white font-semibold py-3 text-sm md:text-base shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
+                    <Button className="w-full bg-brand-gradient hover:opacity-90 text-white font-semibold py-3 text-sm md:text-base shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animated-hover animated-hover-primary">
                       <Phone className="h-4 w-4 mr-2" />
                       Get Free Consultation Now
                       <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -353,8 +353,7 @@ const Navbar = () => {
                     </p>
                   </div>
                 </SheetContent>
-              </Sheet>
-            </div>
+              </Sheet>            </div>
           </div>
         </div>
       </header>

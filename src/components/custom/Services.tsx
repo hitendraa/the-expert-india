@@ -1,5 +1,7 @@
 "use client";
 
+import "@/app/animations.css";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +18,7 @@ import {
 } from "lucide-react";
 import { MAIN_NAVIGATION, FOOTER_SERVICES, SERVICES_CONTENT } from "@/lib/constants";
 import Link from "next/link";
+import CTA from "@/components/common/CTA";
 import Image from "next/image";
 
 const Services = () => {  // Service category mapping with icons and descriptions
@@ -96,7 +99,7 @@ const Services = () => {  // Service category mapping with icons and description
                   ))}
                 </div>                <Button 
                   size="lg" 
-                  className="bg-white text-brand-primary hover:bg-white/95 hover:scale-105 font-semibold transition-all duration-300 shadow-brand"
+                  className="bg-white text-brand-primary hover:bg-white/95 font-semibold transition-all duration-300 shadow-brand animated-hover animated-hover-primary"
                 >
                   {SERVICES_CONTENT.featured.button}
                   <ArrowRight className="h-5 w-5 ml-2" />
@@ -163,7 +166,7 @@ const Services = () => {  // Service category mapping with icons and description
                 </div>                <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="w-full text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-all duration-300 hover:bg-brand-primary/10 border border-transparent group-hover:border-brand-primary/20"
+                  className="w-full text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-all duration-300 hover:bg-brand-primary/10 border border-transparent group-hover:border-brand-primary/20 animated-hover animated-press"
                 >
                   Explore Services
                   <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -197,28 +200,15 @@ const Services = () => {  // Service category mapping with icons and description
           </div>
         </div>        {/* Bottom CTA */}
         <div className="text-center mt-16">
-          <div className="bg-brand-gradient rounded-2xl p-8 md:p-12 shadow-brand-lg text-white relative overflow-hidden">
-            <div className="flex items-center justify-center mb-4">
-              <div className="bg-white/20 p-3 rounded-full mr-4">
-                <Users className="h-6 w-6 text-white" />
-              </div>              <Badge className="bg-white/20 text-white border-white/30">
-                {SERVICES_CONTENT.cta.badge}
-              </Badge>
-            </div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
-              {SERVICES_CONTENT.cta.title}
-            </h3>            <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
-              {SERVICES_CONTENT.cta.description}
-            </p>            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-brand-primary hover:bg-white/95 hover:scale-105 transition-all duration-300 shadow-brand">
-                {SERVICES_CONTENT.cta.primaryButton}
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-brand-primary hover:bg-white hover:text-brand-primary hover:scale-105 transition-all duration-300 shadow-brand">
-                {SERVICES_CONTENT.cta.secondaryButton}
-              </Button>
-            </div>
-          </div>
+          <CTA
+            variant="gradient"
+            title={SERVICES_CONTENT.cta.title}
+            description={SERVICES_CONTENT.cta.description}
+            primaryButton={SERVICES_CONTENT.cta.primaryButton}
+            secondaryButton={SERVICES_CONTENT.cta.secondaryButton}
+            secondaryButtonHref="/services"
+            badge={SERVICES_CONTENT.cta.badge}
+          />
         </div>
       </div>
     </section>

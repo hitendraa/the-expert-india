@@ -1,5 +1,6 @@
 "use client";
 
+import "@/app/animations.css";
 import { Button } from "@/components/ui/button";
 import { 
   Scale,
@@ -20,9 +21,11 @@ import {
   CONTACT_INFO, 
   FOOTER_SERVICES, 
   QUICK_LINKS, 
-  SOCIAL_LINKS 
+  SOCIAL_LINKS,
+  FOOTER_CTA
 } from "@/lib/constants";
 import Link from "next/link";
+import CTA from "@/components/common/CTA";
 
 const Footer = () => {
   const getSocialIcon = (iconName: string) => {
@@ -151,42 +154,18 @@ const Footer = () => {
             </div>
           </div>
         </div>        {/* Quick Contact CTA */}
-        <div className="bg-brand-gradient rounded-xl md:rounded-2xl p-6 md:p-8 mt-8 md:mt-12 text-center">
-          <h4 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4">
-            Need Immediate Legal Assistance?
-          </h4>
-          <p className="text-sm md:text-lg text-white/90 mb-4 md:mb-6">
-            Our expert legal team is available 24/7 to help you with urgent legal matters.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-            <Button 
-              size="lg"
-              className="bg-white text-brand-primary hover:bg-white/95 hover:scale-105 font-semibold shadow-xl transition-all duration-300 text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3"
-              asChild
-            >
-              <a href={`tel:${CONTACT_INFO.phone}`}>
-                <Phone className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-                <span className="hidden sm:inline">Call Now: </span>{CONTACT_INFO.phone}
-              </a>
-            </Button>
-            <Button 
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-brand-primary font-semibold transition-all duration-300 backdrop-blur-sm text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3"
-              asChild
-            >
-              <a 
-                href={`https://wa.me/${CONTACT_INFO.whatsapp.replace(/\D/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MessageCircle className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-                WhatsApp Chat
-              </a>
-            </Button>
-          </div>
-        </div>
-      </div>      {/* Bottom Bar */}
+        <CTA
+          variant="gradient"
+          size="compact"
+          rounded="large"
+          title={FOOTER_CTA.title}
+          description={FOOTER_CTA.description}
+          primaryButton={FOOTER_CTA.primaryButton}
+          secondaryButton={FOOTER_CTA.secondaryButton}
+          secondaryButtonHref={`https://wa.me/${CONTACT_INFO.whatsapp.replace(/\D/g, '')}`}
+          className="mt-8 md:mt-12"
+        />
+      </div>{/* Bottom Bar */}
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-4 md:py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">

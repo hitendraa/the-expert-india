@@ -1,5 +1,7 @@
 "use client";
 
+import "@/app/animations.css";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,6 +24,7 @@ import {
 import { CONTACT_INFO, ABOUT_STATS, ABOUT_VALUES, ABOUT_CONTENT } from "@/lib/constants";
 import Link from "next/link";
 import Image from "next/image";
+import CTA from "@/components/common/CTA";
 
 // Icon mapping helper
 const iconMap = {
@@ -175,35 +178,14 @@ const About = () => {
             })}
           </div>
         </div>        {/* CTA Section */}
-        <div className="bg-brand-gradient rounded-2xl p-8 md:p-12 text-center text-white">
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            {ABOUT_CONTENT.cta.title}
-          </h3>
-          <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-            {ABOUT_CONTENT.cta.description}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-white text-brand-primary hover:bg-white/95 hover:scale-105 font-semibold px-8 py-4 shadow-lg"
-            >
-              <Phone className="h-5 w-5 mr-2" />
-              {ABOUT_CONTENT.cta.primaryButton}
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-brand-primary font-semibold px-8 py-4 backdrop-blur-sm"
-              asChild
-            >
-              <Link href="/contact">
-                <Briefcase className="h-5 w-5 mr-2" />
-                {ABOUT_CONTENT.cta.secondaryButton}
-              </Link>
-            </Button>
-          </div>
-        </div>
+        <CTA
+          variant="gradient"
+          title={ABOUT_CONTENT.cta.title}
+          description={ABOUT_CONTENT.cta.description}
+          primaryButton={ABOUT_CONTENT.cta.primaryButton}
+          secondaryButton={ABOUT_CONTENT.cta.secondaryButton}
+          secondaryButtonHref="/contact"
+        />
       </div>
     </section>
   );

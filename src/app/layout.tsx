@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Tinos } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/custom/Navbar";
+import Footer from "@/components/custom/Footer";
 
 const tinos = Tinos({
   subsets: ["latin"],
@@ -22,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${tinos.className} antialiased`}
-      >
+        className={`${tinos.className} antialiased`}      >
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

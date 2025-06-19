@@ -1,6 +1,7 @@
 import { Phone, Mail, MessageCircle, Clock, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CONTACT_INFO } from "@/lib/constants"
+import "@/app/animations.css"
 
 const Topbar = () => {
   return (
