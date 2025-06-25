@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileQuestion, Home, Search, Phone, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { SITE_FULL_NAME } from "@/lib/constants";
 
 export default function NotFound() {
   const popularServices = [
@@ -104,10 +105,9 @@ export default function NotFound() {
           </CardContent>
         </Card>
 
-        {/* Brand Footer */}
-        <div className="text-center mt-6">
+        {/* Brand Footer */}        <div className="text-center mt-6">
           <p className="text-sm text-gray-500">
-            <span className="font-semibold text-brand-primary">Expert Legal India</span> - 
+            <span className="font-semibold text-brand-primary">{SITE_FULL_NAME}</span> - 
             Complete Legal Solutions & Business Services
           </p>
           <p className="text-xs text-gray-400 mt-1">

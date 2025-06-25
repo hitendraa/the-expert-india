@@ -8,12 +8,13 @@ import {
   Building2,
   Shield,
   FileText,
-  Calculator,
-  BookOpen,
   ArrowRight,
   CheckCircle,
   Star,
   Zap,
+  Scale,
+  CreditCard,
+  Briefcase,
 } from "lucide-react";
 import { MAIN_NAVIGATION, FOOTER_SERVICES, SERVICES_CONTENT } from "@/lib/constants";
 import Link from "next/link";
@@ -30,17 +31,19 @@ const Services = () => {  // Service category mapping with icons and description
       color: "from-brand-primary to-brand-secondary",
       items: MAIN_NAVIGATION[0].items,
       featured: true,
-    },
-    ...SERVICES_CONTENT.categories.map((category, index) => ({
+    },    ...SERVICES_CONTENT.categories.map((category, index) => ({
       title: category.title,
-      icon: [Shield, FileText, Calculator, BookOpen][index],
+      icon: [Shield, Scale, CreditCard, FileText, Building2, Briefcase, Shield][index],
       description: category.description,
       image: category.image,
       color: [
         "from-brand-primary/80 to-brand-secondary/80",
         "from-brand-secondary to-brand-primary", 
         "from-brand-primary/90 to-brand-secondary/70",
-        "from-brand-secondary/90 to-brand-primary/80"
+        "from-brand-secondary/90 to-brand-primary/80",
+        "from-brand-primary/70 to-brand-secondary/90",
+        "from-brand-secondary/80 to-brand-primary/90",
+        "from-brand-primary/60 to-brand-secondary/80"
       ][index],
       items: MAIN_NAVIGATION[index + 1].items,
       featured: false,

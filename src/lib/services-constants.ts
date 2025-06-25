@@ -1,4 +1,5 @@
 // Service-specific constants for company registration and other services
+import { SITE_FULL_NAME } from './constants';
 
 export const INDIAN_STATES = [
   "Andhra Pradesh",
@@ -145,9 +146,8 @@ export const COMPANY_REGISTRATION_OVERVIEW = {
         "Tax advantages",
         "Enhanced credibility"
       ]
-    },
-    whyChooseUs: {
-      title: "Why Choose Expert Legal India?",
+    },    whyChooseUs: {
+      title: `Why Choose ${SITE_FULL_NAME}?`,
       reasons: [
         "Government of India recognized company",
         "ISO certified services",
@@ -477,9 +477,8 @@ export const TRADEMARK_OVERVIEW = {
         "Unique and distinctive mark",
         "Valid for 10 years (renewable)"
       ]
-    },
-    whyChooseUs: {
-      title: "Why Choose Expert Legal India for Trademark Registration?",
+    },    whyChooseUs: {
+      title: `Why Choose ${SITE_FULL_NAME} for Trademark Registration?`,
       reasons: [
         "Government of India recognized company",
         "ISO certified services", 
@@ -885,9 +884,8 @@ export const TRADEMARK_RENEWAL_OVERVIEW = {
     {
       title: "Renewal without Change", 
       description: "You can apply renewal without a change."
-    }
-  ],
-  note: "We can help you file Trademark Renewal and various other services from Expert Legal India and make this entire process seamless."
+    }  ],
+  note: `We can help you file Trademark Renewal and various other services from ${SITE_FULL_NAME} and make this entire process seamless.`
 };
 
 export const TRADEMARK_RENEWAL_ELIGIBILITY = {
@@ -1223,8 +1221,7 @@ export const TRADEMARK_OBJECTION_FAQ = [
 
 // Trademark Opposition Constants
 export const TRADEMARK_OPPOSITION_HERO = {
-  badge: "Trademark Opposition",
-  title: "File trademark opposition with Expert Legal India",
+  badge: "Trademark Opposition",  title: `File trademark opposition with ${SITE_FULL_NAME}`,
   subtitle: "Trusted by over 100,000+ customers across India",
   description: "Your branding is getting affected we can help you out by filing Trademark Opposition.",
   rating: {
@@ -1508,10 +1505,9 @@ export const TRADEMARK_ASSIGNMENT_OVERVIEW = {
 };
 
 export const TRADEMARK_ASSIGNMENT_BENEFITS = [
-  {
-    title: "Safeguard",
+  {    title: "Safeguard",
     subtitle: "Safeguard Your Brand's Identity",
-    description: "At Expert Legal India, we understand the significance of your brand's identity. Our experts ensure a smooth and efficient trademark assignment process, protecting your brand from potential infringements and unauthorised use. You can confidently build a strong foundation for your business's future success with us.",
+    description: `At ${SITE_FULL_NAME}, we understand the significance of your brand's identity. Our experts ensure a smooth and efficient trademark assignment process, protecting your brand from potential infringements and unauthorised use. You can confidently build a strong foundation for your business's future success with us.`,
     icon: "Shield"
   },
   {
@@ -1572,8 +1568,9 @@ export const TRADEMARK_ASSIGNMENT_PRICING = {
 // Copyright Registration Constants
 export const COPYRIGHT_REGISTRATION_HERO = {
   badge: "Copyright Registration",
-  title: "e-Filing of Copyright Registration in India",  subtitle: "Expert Legal India™",
-  description: "With the help of copyright expert from Expert Legal India™ protect your creative work today before its too late. 100% online process. Start processing now!",
+  title: "e-Filing of Copyright Registration in India",  
+  subtitle: `${SITE_FULL_NAME}™`,
+  description: `With the help of copyright expert from ${SITE_FULL_NAME}™ protect your creative work today before its too late. 100% online process. Start processing now!`,
   rating: {
     score: "4.9/5",
     reviews: "1,00,000+ reviews"
@@ -1924,11 +1921,10 @@ export const COPYRIGHT_FAQ = [
     answer: "Copyright, as provided by the Indian Copyright Act, is valid only within India To secure the Indian works in foreign countries, India has become a member of the following international conventions on copyright and neighbouring (related) rights: Berne Convention for the Protection of Literary and Artistic Works, where India is among 176 member nations. Universal Copyright Convention. Convention for the Protection of Producers of Phonograms against Unauthorized Duplication of their Phonograms. Multilateral Convention for the Avoidance of Double Taxation of Copyright Royalties. Trade-Related Aspects of Intellectual Property Rights (TRIPS) Agreement."
   },
   {
-    question: "Do you provide copyright services in my town?",
-    answer: "Yes Expert Legal India is an online platform serving all over India no matters wherever you are doing business all you need is internet connection on your mobile or desktop and we are ready to get your job done"
+    question: "Do you provide copyright services in my town?",    answer: `Yes ${SITE_FULL_NAME} is an online platform serving all over India no matters wherever you are doing business all you need is internet connection on your mobile or desktop and we are ready to get your job done`
   },
   {
     question: "Do I need to physically present for the process?",
-    answer: "No, You don't need to be physically present for the process, Expert Legal India is an online catering platform all you need is internet connection in your phone/computer and the required documents with you and we can get the job done no matters even if you are present at remotest location of the India."
+    answer: `No, You don't need to be physically present for the process, ${SITE_FULL_NAME} is an online catering platform all you need is internet connection in your phone/computer and the required documents with you and we can get the job done no matters even if you are present at remotest location of the India.`
   }
 ];

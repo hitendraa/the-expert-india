@@ -20,7 +20,9 @@ import {
   FOOTER_SERVICES, 
   QUICK_LINKS, 
   SOCIAL_LINKS,
-  FOOTER_CTA
+  FOOTER_CTA,
+  SITE_FULL_NAME,
+  SITE_SINCE
 } from "@/lib/constants";
 import Link from "next/link";
 import CTA from "@/components/common/CTA";
@@ -165,13 +167,12 @@ const Footer = () => {
         />
       </div>{/* Bottom Bar */}
       <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 py-4 md:py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">
+        <div className="container mx-auto px-4 py-4 md:py-6">          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">
             <div className="text-xs md:text-sm text-gray-400">
-              © 2024 Expert Legal India. All rights reserved. 
+              © 2024 {SITE_FULL_NAME}. All rights reserved. 
               <span className="mx-2 hidden sm:inline">|</span>
               <br className="sm:hidden" />
-              Empowering businesses with legal excellence since 2009.
+              Empowering businesses with legal excellence since {SITE_SINCE}.
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-end space-x-4 md:space-x-6 text-xs md:text-sm">
               {QUICK_LINKS.map((link, index) => (

@@ -4,7 +4,7 @@ export const SITE_TAGLINE = "India";
 export const SITE_FULL_NAME = `${SITE_NAME} ${SITE_TAGLINE}`;
 export const SITE_SINCE = 2009;
 export const SITE_RATING = "4.9/5";
-export const SITE_REVIEWS = "50,000+ reviews";
+export const SITE_REVIEWS = "Trusted Reviews";
 export const SITE_MISSION = "To democratize legal services by making them simple, affordable, and accessible to every business and individual across India, while maintaining the highest standards of quality and compliance.";
 export const SITE_COMMITMENT = "Committed to Excellence";
 export const SITE_ADDRESS = "123 Business District, Delhi, India";
@@ -24,69 +24,131 @@ export const CONTACT_INFO = {
 }
 
 
-export const BUSINESS_REGISTRATION = [
-  { name: "Company Registration", href: "/services/company-registration" },
-  { name: "Private Limited Company", href: "/services/private-limited-company" },
-  { name: "Limited Liability Partnership", href: "/services/llp-registration" },
-  { name: "One Person Company", href: "/services/one-person-company" },
+// Company Registration Services
+export const COMPANY_REGISTRATION = [
+  { name: "Private Limited Company", href: "/services/private-company-registration" },
+  { name: "Limited Liability Partnership", href: "/services/llp-partnership" },
+  { name: "One Person Company", href: "/services/one-person-company-registration" },
   { name: "Public Limited Company", href: "/services/public-limited-company" },
-  { name: "Section 8 Company", href: "/services/section-8-company" }
+  { name: "Section 8 Company", href: "/services/section-8-company-registration" }
 ]
 
+// Trademark Services
 export const TRADEMARK_SERVICES = [
   { name: "Trademark Registration", href: "/services/trademark-registration" },
   { name: "Trademark Renewal", href: "/services/trademark-renewal" },
   { name: "Trademark Objection Reply", href: "/services/trademark-objection-reply" },
   { name: "Trademark Opposition", href: "/services/trademark-opposition" },
   { name: "Trademark Assignment", href: "/services/trademark-assignment" },
-  { name: "Logo Design", href: "/services/logo-design" },
   { name: "Copyright Registration", href: "/services/online-copyright-registration" }
 ]
 
-export const LICENSES = [
-  { name: "FSSAI Registration", href: "/services/fssai-registration" },
-  { name: "FSSAI Renewal", href: "/services/fssai-renewal" },
-  { name: "Import Export Code", href: "/services/iec-registration" },
-  { name: "IEC Modification", href: "/services/iec-modification" },
-  { name: "ISO Certification", href: "/services/iso-certification" }
+// Income Tax & Compliance Services
+export const INCOME_TAX_COMPLIANCE = [
+  { name: "Income Tax Return Filing", href: "/services/income-tax-return-filing" },
+  { name: "PAN Card Application", href: "/services/pan-application" },
+  { name: "Annual Return Filing", href: "/services/annual-return-filing" },
+  { name: "Tax Planning & Consultation", href: "/services/tax-planning-consulting" },
+  { name: "Statutory Audit", href: "/services/statutory-audit" },
+  { name: "Internal Audit", href: "/services/internal-audit" },
+  { name: "80G & 12A Registration", href: "/services/80g-12a-registration" },
+  { name: "CSR Compliance", href: "/services/csr-compliance" },
+  { name: "Financial Compliance", href: "/services/financial-compliance" }
 ]
 
+// GST Services
 export const GST_SERVICES = [
   { name: "GST Registration", href: "/services/gst-registration" },
-  { name: "GST Filing", href: "/services/gst-filing" },
-  { name: "GST Modification", href: "/services/gst-modification" },
+  { name: "GST Return Filing", href: "/services/gst-return-filing" },
+  { name: "GST Annual Return", href: "/services/gst-annual-return" },
   { name: "GST Cancellation", href: "/services/gst-cancellation" },
-  { name: "GSTR-9 Annual Filing", href: "/services/gstr-9-filing" }
+  { name: "GST Amendment", href: "/services/gst-amendment" },
+  { name: "E-Way Bill Services", href: "/services/e-way-bill" },
+  { name: "GST Compliance", href: "/services/gst-compliance" },
+  { name: "Input Tax Credit", href: "/services/input-tax-credit" }
 ]
 
-export const TAX_COMPLIANCE = [
-  { name: "PF-ESIC Registration", href: "/services/pf-esic-registration" },
-  { name: "PF-ESIC Return Filing", href: "/services/pf-esic-filing" },
-  { name: "Income Tax Return", href: "/services/itr-filing" },
-  { name: "Annual Compliance", href: "/services/annual-compliance" },
-  { name: "Online Bookkeeping", href: "/services/bookkeeping" }
+// Food License Services
+export const FOOD_LICENSE = [
+  { name: "FSSAI Basic Registration", href: "/services/fssai-basic-registration" },
+  { name: "FSSAI State License", href: "/services/fssai-state-license" },
+  { name: "FSSAI Central License", href: "/services/fssai-central-license" },
+  { name: "FSSAI License Renewal", href: "/services/fssai-renewal" },
+  { name: "FSSAI Amendment", href: "/services/fssai-amendment" },
+  { name: "Food Safety Compliance", href: "/services/food-safety-compliance" },
+  { name: "FSSAI Annual Return", href: "/services/fssai-annual-return" }
+]
+
+// Business Registration Services
+export const BUSINESS_REGISTRATION = [
+  { name: "Sole Proprietorship", href: "/services/sole-proprietorship" },
+  { name: "Partnership Firm", href: "/services/partnership-firm" },
+  { name: "MSME Udyam Registration", href: "/services/msme-udyam-registration" },
+  { name: "Import Export Code (IEC)", href: "/services/import-export-code" },
+  { name: "Trade License", href: "/services/trade-license" },
+  { name: "Shop & Establishment License", href: "/services/shop-establishment-license" },
+  { name: "PF & ESI Registration", href: "/services/pf-esi-registration" },
+  { name: "Labour License", href: "/services/labour-license" },
+  { name: "Professional Tax Registration", href: "/services/professional-tax" },
+  { name: "Digital Signature Certificate", href: "/services/digital-signature" },
+  { name: "ISO Certification", href: "/services/iso-certification" },
+  { name: "BIS Registration", href: "/services/bis-registration" }
+]
+
+// Loan Services
+export const LOAN_SERVICES = [
+  { name: "Personal Loan", href: "/services/personal-loan" },
+  { name: "Home Loan", href: "/services/home-loan" },
+  { name: "Business Loan", href: "/services/business-loan" },
+  { name: "MSME Business Loan", href: "/services/msme-loan" },
+  { name: "Working Capital Loan", href: "/services/working-capital-loan" },
+  { name: "Equipment Finance", href: "/services/equipment-finance" },
+  { name: "Project Financing", href: "/services/project-financing" },
+  { name: "CMA Data Preparation", href: "/services/cma-report" }
+]
+
+// Insurance Services
+export const INSURANCE_SERVICES = [
+  { name: "Life Insurance", href: "/services/life-insurance" },
+  { name: "Health Insurance", href: "/services/health-insurance" },
+  { name: "Motor Insurance", href: "/services/motor-insurance" },
+  { name: "Business Insurance", href: "/services/business-insurance" },
+  { name: "Property Insurance", href: "/services/property-insurance" },
+  { name: "Professional Indemnity", href: "/services/professional-indemnity" }
 ]
 
 export const MAIN_NAVIGATION = [
   {
     title: "Company Registration",
-    items: BUSINESS_REGISTRATION
+    items: COMPANY_REGISTRATION
   },
   {
     title: "Trademark",
     items: TRADEMARK_SERVICES
   },
   {
-    title: "Licenses",
-    items: LICENSES
+    title: "Income Tax & Compliance",
+    items: INCOME_TAX_COMPLIANCE
   },
   {
-    title: "GST Services",
+    title: "GST",
     items: GST_SERVICES
   },
   {
-    title: "Tax & Compliance",
-    items: TAX_COMPLIANCE
+    title: "Food License",
+    items: FOOD_LICENSE
+  },
+  {
+    title: "Business Registration",
+    items: BUSINESS_REGISTRATION
+  },
+  {
+    title: "Loan",
+    items: LOAN_SERVICES
+  },
+  {
+    title: "Insurance",
+    items: INSURANCE_SERVICES
   }
 ]
 
@@ -112,20 +174,28 @@ export const FOOTER_SERVICES = {
     "Trademark Registration", 
     "GST Registration",
     "FSSAI License",
-    "IEC Registration"
+    "Import Export Code (IEC)"
   ],
-  "Business Setup": [
+  "Business Services": [
     "LLP Registration",
     "One Person Company",
-    "Partnership Registration",
-    "Sole Proprietorship",
-    "Section 8 Company"
-  ],  "Compliance": [
-    "Annual Filing",
-    "Income Tax Return",
-    "PF Registration",
-    "Professional Tax",
-    "TDS Return Filing"
+    "MSME Udyam Registration",
+    "Partnership Firm",
+    "ISO Certification"
+  ],
+  "Tax & Compliance": [
+    "Income Tax Return Filing",
+    "Annual Return Filing",
+    "PAN Card Application",
+    "GST Return Filing",
+    "Statutory Audit"
+  ],
+  "Financial Services": [
+    "Business Loan",
+    "Working Capital Loan",
+    "Health Insurance",
+    "Professional Indemnity",
+    "CMA Data Preparation"
   ]
 }
 
@@ -141,7 +211,7 @@ export const ABOUT_STATS = [
   {
     icon: "Users",
     label: "Happy Clients",
-    value: "1,00,000+",
+    value: "50,000+",
     description: "Satisfied customers across India",
   },
   {
@@ -190,13 +260,12 @@ export const ABOUT_VALUES = [
 export const ABOUT_CONTENT = {
   badge: `About ${SITE_FULL_NAME}`,
   headline: "India's Most Trusted Legal Services Platform",
-  description: `For over 15 years, we've been empowering businesses and individuals with expert legal solutions, making complex legal processes simple, transparent, and accessible to everyone.`,
-  story: {
+  description: `For over 15 years, we've been empowering businesses and individuals with expert legal solutions, making complex legal processes simple, transparent, and accessible to everyone.`,  story: {
     title: "Our Story",
     paragraphs: [
       `Founded in ${SITE_SINCE} with a simple yet powerful vision: to make legal services accessible, transparent, and efficient for everyone. What started as a small team of legal experts has grown into India's leading legal services platform.`,
       "We recognized that traditional legal processes were often complex, time-consuming, and intimidating. Our mission was to bridge this gap by combining legal expertise with technology to create seamless experiences for our clients.",
-      `Today, we've successfully served over 1 lakh clients across 28+ cities, maintaining a 99.8% success rate while continuously innovating to serve you better.`
+      `Today, we've successfully served thousands of clients across 28+ cities, maintaining a 99.8% success rate while continuously innovating to serve you better.`
     ],
     rating: {
       score: SITE_RATING,
@@ -211,10 +280,9 @@ export const ABOUT_CONTENT = {
   values: {
     title: "Our Core Values",
     subtitle: "The principles that guide everything we do and shape our commitment to your success"
-  },
-  cta: {
+  },  cta: {
     title: "Ready to Experience the Difference?",
-    description: "Join over 1 lakh satisfied clients who trust us with their legal needs. Get started with a free consultation today.",
+    description: "Join thousands of satisfied clients who trust us with their legal needs. Get started with a free consultation today.",
     primaryButton: "Get Free Consultation",
     secondaryButton: "Explore Services"
   }
@@ -232,27 +300,41 @@ export const SERVICES_CONTENT = {
     description: "Start your entrepreneurial journey with our comprehensive business registration services. We handle all the paperwork so you can focus on building your dream company.",
     badge: "Most Popular",
     button: "Start Registration"
-  },
-  categories: [
+  },  categories: [
     {
       title: "Trademark",
       description: "Protect your brand identity and intellectual property",
       image: "/images/services/trademark.png"
     },
     {
-      title: "Licenses", 
-      description: "Get all required licenses for seamless business operations",
-      image: "/images/services/licenses.png"
+      title: "Income Tax & Compliance", 
+      description: "Complete tax planning and compliance solutions",
+      image: "/images/services/tax-compliance.png"
     },
     {
-      title: "GST Services",
+      title: "GST",
       description: "Complete GST registration and compliance solutions", 
       image: "/images/services/gst-services.png"
     },
     {
-      title: "Tax & Compliance",
-      description: "Stay compliant with all tax and regulatory requirements",
-      image: "/images/services/tax-compliance.png"
+      title: "Food License",
+      description: "FSSAI registration and food safety licenses",
+      image: "/images/services/licenses.png"
+    },
+    {
+      title: "Business Registration",
+      description: "MSME, import-export, and business setup services",
+      image: "/images/services/company-registration.png"
+    },
+    {
+      title: "Loan",
+      description: "Personal, business, and specialized loan services",
+      image: "/images/services/gst-services.png"
+    },
+    {
+      title: "Insurance",
+      description: "Life, health, vehicle, and business insurance",
+      image: "/images/services/licenses.png"
     }
   ],
   popularServices: {
@@ -288,12 +370,11 @@ export const HERO_SECTION = {
     "Quick Processing",
     "Government Approved",
     "24/7 Support"
-  ],
-  stats: [
+  ],  stats: [
     {
       icon: "Users",
       label: "Happy Clients",
-      value: "1,00,000+",
+      value: "50,000+",
       color: "text-blue-600"
     },
     {
@@ -330,7 +411,7 @@ export const HERO_SECTION = {
     }
   },
   trust: {
-    title: "Why Choose Expert Legal India?",
+    title: `Why Choose ${SITE_FULL_NAME}?`,
     points: [
       {
         icon: "Shield",
@@ -412,10 +493,10 @@ export const HOMEPAGE_SERVICES = {
 
 // Homepage About Section Constants
 export const HOMEPAGE_ABOUT = {
-  badge: "About Expert Legal India",
+  badge: `About ${SITE_FULL_NAME}`,
   title: "Leading Legal Service Provider Since 2009",
   subtitle: "Your trusted partner for all legal and compliance needs",
-  description: "With over 15 years of experience, we have helped more than 1,00,000 businesses and individuals with their legal requirements. Our team of expert lawyers and chartered accountants ensure that your legal matters are handled with utmost care and professionalism.",
+  description: "With over 15 years of experience, we have helped thousands of businesses and individuals with their legal requirements. Our team of expert lawyers and chartered accountants ensure that your legal matters are handled with utmost care and professionalism.",
   features: [
     {
       icon: "Users",
@@ -437,10 +518,9 @@ export const HOMEPAGE_ABOUT = {
       title: "Quality Assured",
       description: "99.8% success rate with guaranteed quality and compliance"
     }
-  ],
-  achievements: [
+  ],  achievements: [
     {
-      number: "1,00,000+",
+      number: "50,000+",
       label: "Happy Clients"
     },
     {
@@ -456,8 +536,7 @@ export const HOMEPAGE_ABOUT = {
       label: "Success Rate"
     }
   ],
-  mission: SITE_MISSION,
-  cta: {
+  mission: SITE_MISSION,  cta: {
     title: "Ready to Get Started?",
     description: "Join thousands of satisfied customers who trust us with their legal needs",
     button: "Start Your Journey"

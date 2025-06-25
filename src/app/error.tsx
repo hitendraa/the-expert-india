@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertTriangle, RefreshCw, Home, Phone } from "lucide-react";
 import Link from "next/link";
+import { SITE_FULL_NAME } from "@/lib/constants";
 
 export default function Error({
   error,
@@ -88,10 +89,9 @@ export default function Error({
           </CardContent>
         </Card>
 
-        {/* Brand Footer */}
-        <div className="text-center mt-6">
+        {/* Brand Footer */}        <div className="text-center mt-6">
           <p className="text-sm text-gray-500">
-            <span className="font-semibold text-brand-primary">Expert Legal India</span> - 
+            <span className="font-semibold text-brand-primary">{SITE_FULL_NAME}</span> - 
             Your Trusted Legal Partner
           </p>
         </div>
