@@ -3,18 +3,6 @@ import Razorpay from "razorpay"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 
-const key_id = process.env.RAZORPAY_KEY_ID as string
-const key_secret = process.env.RAZORPAY_KEY_SECRET as string
-
-if (!key_id || !key_secret) {
-  throw new Error("Razorpay keys are missing")
-}
-
-const razorpay = new Razorpay({
-  key_id,
-  key_secret,
-})
-
 export interface OrderBody {
   amount: number
   currency: string
@@ -24,6 +12,19 @@ export interface OrderBody {
 
 export async function POST(request: NextRequest) {
   try {
+    // Initialize Razorpay inside the function to avoid build-time errors
+    const key_id = process.env.RAZORPAY_KEY_ID as string
+    const key_secret = process.env.RAZORPAY_KEY_SECRET as string
+
+    if (!key_id || !key_secret) {
+      throw new Error("Razorpay keys are missing")
+    }
+
+    const razorpay = new Razorpay({
+      key_id,
+      key_secret,
+    })
+
     // Check authentication
     const session = await getServerSession(authOptions)
     if (!session || !session.user) {
