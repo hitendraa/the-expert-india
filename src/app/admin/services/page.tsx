@@ -26,11 +26,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
+
+interface DocumentCategory {
+  _id: string;
+  name: string;
+  description?: string;
+}
+
+export default function ServicesPage() {
+  const [docCategories, setDocCategories] = useState<DocumentCategory[]>([]);
 
 interface Service {
   _id: string
@@ -44,7 +55,6 @@ interface Service {
   updatedAt: string
 }
 
-export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -72,8 +82,12 @@ export default function ServicesPage() {
   const [editNewDoc, setEditNewDoc] = useState("")
 
   useEffect(() => {
-    fetchServices()
-  }, [])
+    fetchServices();
+    fetch('/api/document-categories')
+      .then(res => res.json())
+      .then(data => setDocCategories(data))
+      .catch(() => setDocCategories([]));
+  }, []);
 
   const fetchServices = async () => {
     try {
@@ -84,8 +98,7 @@ export default function ServicesPage() {
       } else {
         toast.error('Failed to fetch services')
       }
-    } catch (error) {
-      console.error('Error fetching services:', error)
+    } catch {
       toast.error('Error fetching services')
     } finally {
       setLoading(false)
@@ -131,8 +144,7 @@ export default function ServicesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to update service')
       }
-    } catch (error) {
-      console.error('Error updating service:', error)
+    } catch {
       toast.error('Error updating service')
     }
   }
@@ -163,8 +175,7 @@ export default function ServicesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to add service')
       }
-    } catch (error) {
-      console.error('Error adding service:', error)
+    } catch {
       toast.error('Error adding service')
     }
   }
@@ -184,8 +195,7 @@ export default function ServicesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to delete service')
       }
-    } catch (error) {
-      console.error('Error deleting service:', error)
+    } catch {
       toast.error('Error deleting service')
     }
   }
@@ -213,8 +223,7 @@ export default function ServicesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to toggle service')
       }
-    } catch (error) {
-      console.error('Error toggling service:', error)
+    } catch {
       toast.error('Error toggling service')
     }
   }
@@ -598,16 +607,24 @@ export default function ServicesPage() {
                   </div>
                 ))}
                 <div className="flex items-center gap-2">
-                  <Input
-                    placeholder="Add document requirement"
+                  <Select
                     value={newDoc}
-                    onChange={(e) => setNewDoc(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addDocument(false)}
-                  />
+                    onValueChange={setNewDoc}
+                  >
+                    <SelectTrigger className="flex-1" >
+                      <SelectValue placeholder="Select document category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {docCategories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat.name}>{cat.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => addDocument(false)}
+                    onClick={() => { if (newDoc) { addDocument(false); setNewDoc(""); } }}
+                    disabled={!newDoc}
                   >
                     Add
                   </Button>

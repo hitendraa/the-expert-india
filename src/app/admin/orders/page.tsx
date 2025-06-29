@@ -89,7 +89,7 @@ export default function OrdersPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isDocumentsDialogOpen, setIsDocumentsDialogOpen] = useState(false)
-  const [downloadTimer, setDownloadTimer] = useState<number | null>(null)
+  const [downloadTimers, setDownloadTimers] = useState<{ [docId: string]: number | null }>({})
   const [editForm, setEditForm] = useState({
     status: "pending" as Order['status'],
     paymentStatus: "pending" as Order['paymentStatus'],
@@ -108,8 +108,7 @@ export default function OrdersPage() {
       } else {
         toast.error('Failed to fetch orders')
       }
-    } catch (error) {
-      console.error('Error fetching orders:', error)
+    } catch {
       toast.error('Error fetching orders')
     } finally {
       setLoading(false)
@@ -151,8 +150,7 @@ export default function OrdersPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to update order')
       }
-    } catch (error) {
-      console.error('Error updating order:', error)
+    } catch {
       toast.error('Error updating order')
     }
   }
@@ -170,65 +168,50 @@ export default function OrdersPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to delete order')
       }
-    } catch (error) {
-      console.error('Error deleting order:', error)
+    } catch {
       toast.error('Error deleting order')
     }
   }
 
   const handleViewOrderDocuments = async (order: Order) => {
     setSelectedOrder(order)
-    console.log('Order data:', order) // Debug log
-    console.log('Order documentIds:', order.documentIds) // Debug log
-    console.log('Order documentIds type:', typeof order.documentIds) // Debug log
-    console.log('Order documentIds length:', order.documentIds?.length) // Debug log
-    console.log('Order documentIds structure:', JSON.stringify(order.documentIds, null, 2)) // Debug log
-    console.log('Order documents:', order.documents) // Debug log
+    // ...removed debug logs...
     setIsDocumentsDialogOpen(true)
   }
 
   const handleDownloadDocument = async (documentId: string, filename: string) => {
-    // Start countdown timer
-    let timeLeft = 3
-    setDownloadTimer(timeLeft)
-    
-    const timerInterval = setInterval(() => {
-      timeLeft -= 1
-      setDownloadTimer(timeLeft)
-      
-      if (timeLeft === 0) {
-        clearInterval(timerInterval)
-        setDownloadTimer(null)
-        
-        // Start download
-        try {
-          const response = fetch(`/api/admin/documents/${documentId}/download`)
-          response.then(res => {
-            if (res.ok) {
-              return res.blob()
-            }
-            throw new Error('Download failed')
-          }).then(blob => {
-            const url = window.URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = filename
-            document.body.appendChild(a)
-            a.click()
-            window.URL.revokeObjectURL(url)
-            document.body.removeChild(a)
-            toast.success('Document downloaded successfully')
-          }).catch(error => {
-            console.error('Download error:', error)
-            toast.error('Failed to download document')
-          })
-        } catch (error) {
-          console.error('Download error:', error)
-          toast.error('Failed to download document')
-        }
+    // Start download immediately
+    try {
+      const response = await fetch(`/api/admin/documents/${documentId}/download`);
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        toast.success('Document downloaded successfully');
+      } else {
+        throw new Error('Download failed');
       }
-    }, 1000)
-  }
+    } catch {
+      toast.error('Failed to download document');
+    }
+    // Start timer for visual feedback
+    let timeLeft = 3;
+    setDownloadTimers(prev => ({ ...prev, [documentId]: timeLeft }));
+    const timerInterval = setInterval(() => {
+      timeLeft -= 1;
+      setDownloadTimers(prev => ({ ...prev, [documentId]: timeLeft }));
+      if (timeLeft === 0) {
+        clearInterval(timerInterval);
+        setDownloadTimers(prev => ({ ...prev, [documentId]: null }));
+      }
+    }, 1000);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -590,61 +573,103 @@ export default function OrdersPage() {
             <DialogDescription>
               View and download documents related to this order.
             </DialogDescription>
-          </DialogHeader>          <div className="py-4">
+          </DialogHeader>
+          <div className="py-4">
             <div>
-              {(!selectedOrder?.documentIds || selectedOrder.documentIds.length === 0) && (!selectedOrder?.documents || selectedOrder.documents.length === 0) ? (
-                <div className="text-center py-10">
-                  <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">No documents found</h3>
-                  <p className="text-muted-foreground">
-                    This order has no documents uploaded.
-                  </p>
-                </div>
-              ) : (                <div className="space-y-4">
-                  {/* Show downloadable documents */}
-                  {selectedOrder?.documentIds && selectedOrder.documentIds.length > 0 && (
-                    <div>
-                      <h4 className="font-medium mb-3">Uploaded Documents ({selectedOrder.documentIds.length})</h4>
-                      {selectedOrder.documentIds.map((doc: OrderDocument, index: number) => (
-                        <div key={doc._id || index} className="flex justify-between items-center p-4 border rounded-lg bg-green-50">
-                          <div>
-                            <div className="font-medium">{doc.originalName || doc.filename || 'Unknown File'}</div>
-                            <div className="text-xs text-muted-foreground">
-                              {doc.mimetype || 'unknown'} • {doc.size ? Math.ceil(doc.size / 1024) : 0} KB
-                            </div>
-                            <div className="text-xs text-green-600 mt-1">📄 Downloadable File</div>
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDownloadDocument(doc._id, doc.originalName || doc.filename || 'document')}
-                          >
-                            {downloadTimer !== null ? `${downloadTimer} s` : 'Download'}
-                          </Button>
-                        </div>
-                      ))}
+              {/* Unified document list: for each document description, try to find a matching file in documentIds by originalName */}
+              {(() => {
+                const docObjs: OrderDocument[] = Array.isArray(selectedOrder?.documentIds) ? selectedOrder.documentIds : [];
+                const docNames: string[] = Array.isArray(selectedOrder?.documents) ? selectedOrder.documents : [];
+
+                // Helper: extract filename from description string (e.g., "Aadhar Card (Upload: sample-5.pdf)")
+                function extractFilename(desc: string): string | null {
+                  const match = desc.match(/Upload: ([^)]+)\)/i);
+                  return match ? match[1] : null;
+                }
+
+                // If no documentIds and no docNames, show empty
+                if (docObjs.length === 0 && docNames.length === 0) {
+                  return (
+                    <div className="text-center py-10">
+                      <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                      <h3 className="font-semibold text-lg mb-2">No documents found</h3>
+                      <p className="text-muted-foreground">
+                        This order has no downloadable documents attached.
+                      </p>
                     </div>
-                  )}
-                  
-                  {/* Show text-based document descriptions */}
-                  {selectedOrder?.documents && selectedOrder.documents.length > 0 && (
-                    <>
-                      {selectedOrder?.documentIds && selectedOrder.documentIds.length > 0 && (
-                        <div className="border-t pt-4">
-                          <h4 className="font-medium mb-2">Document Descriptions</h4>
-                        </div>
-                      )}
-                      {selectedOrder.documents.map((doc, index) => (
-                        <div key={index} className="p-4 border rounded-lg bg-blue-50">
-                          <div className="font-medium text-blue-900">{doc}</div>
-                          <div className="text-xs text-blue-600 mt-1">📝 Document Description</div>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </div>
-              )}
-            </div>          </div>
+                  );
+                }
+
+                // For each document description, try to find a matching file in documentIds
+                return (
+                  <div className="space-y-4">
+                    {docNames.length > 0 && (
+                      <div>
+                        <h4 className="font-medium mb-3">Order Documents ({docNames.length})</h4>
+                        {docNames.map((desc, index) => {
+                          const filename = extractFilename(desc);
+                          // Try to find a file in docObjs with matching originalName or filename
+                          const file = filename
+                            ? docObjs.find(d => d.originalName === filename || d.filename === filename)
+                            : null;
+                          return (
+                            <div key={index} className={`flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 border rounded-lg ${file ? 'bg-green-50' : 'bg-blue-50'}`}>
+                              <div>
+                                <div className={`font-medium ${file ? '' : 'text-blue-900'}`}>{desc}</div>
+                                {file ? (
+                                  <div className="text-xs text-muted-foreground">
+                                    {file.mimetype || 'unknown'} • {file.size ? Math.ceil(file.size / 1024) : 0} KB
+                                  </div>
+                                ) : null}
+                                <div className={`text-xs mt-1 ${file ? 'text-green-600' : 'text-blue-600'}`}>{file ? '📄 Downloadable File' : '📝 Document Description'}</div>
+                              </div>
+                              {file ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="mt-2 sm:mt-0"
+                                  onClick={() => handleDownloadDocument(file._id, file.originalName || file.filename || 'document')}
+                                >
+                                  {downloadTimers[file._id] !== undefined && downloadTimers[file._id] !== null ? `${downloadTimers[file._id]} s` : 'Download'}
+                                </Button>
+                              ) : null}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {/* Show any extra files in documentIds that are not matched by description (edge case) */}
+                    {docObjs.length > 0 && docNames.length > 0 && (
+                      <div className="border-t pt-4">
+                        <h4 className="font-medium mb-2">Other Uploaded Files</h4>
+                        {docObjs.filter(doc => !docNames.some(desc => {
+                          const filename = extractFilename(desc);
+                          return filename && (doc.originalName === filename || doc.filename === filename);
+                        })).map((doc, index) => (
+                          <div key={doc._id || index} className="flex justify-between items-center p-4 border rounded-lg bg-green-50">
+                            <div>
+                              <div className="font-medium">{doc.originalName || doc.filename || 'Unknown File'}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {doc.mimetype || 'unknown'} • {doc.size ? Math.ceil(doc.size / 1024) : 0} KB
+                              </div>
+                              <div className="text-xs text-green-600 mt-1">� Downloadable File</div>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDownloadDocument(doc._id, doc.originalName || doc.filename || 'document')}
+                            >
+                              {downloadTimers[doc._id] !== undefined && downloadTimers[doc._id] !== null ? `${downloadTimers[doc._id]} s` : 'Download'}
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsDocumentsDialogOpen(false)}>
               Close

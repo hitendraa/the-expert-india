@@ -37,6 +37,28 @@ interface Service {
   sellPrice?: number
   isActive: boolean
 }
+// Razorpay types for type safety
+type RazorpayOptions = {
+  key: string | undefined;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (paymentResponse: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => void;
+  prefill: {
+    name: string;
+    email: string;
+  };
+  theme: {
+    color: string;
+  };
+  modal: {
+    ondismiss: () => void;
+  };
+};
+
+// (no-op to fix lint error: Expected an assignment or function call and instead saw an expression)
 
 interface DocumentUpload {
   name: string
@@ -73,6 +95,13 @@ export default function BuyServicePage() {
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState<number | null>(null)
   const [uploadingIndexes, setUploadingIndexes] = useState<Set<number>>(new Set())
 
+  // Ensure Razorpay loaded state is correct even on client-side navigation
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as typeof globalThis & { Razorpay?: unknown }).Razorpay && !razorpayLoaded) {
+      setRazorpayLoaded(true)
+    }
+  }, [razorpayLoaded])
+
   const steps = [
     { number: 1, title: 'Service Details', description: 'Review service information' },
     { number: 2, title: 'Upload Documents', description: 'Upload required documents' },
@@ -95,8 +124,7 @@ export default function BuyServicePage() {
         toast.error('Service not found')
         router.push('/dashboard')
       }
-    } catch (error) {
-      console.error('Error fetching service:', error)
+    } catch {
       toast.error('Error fetching service')
       router.push('/dashboard')
     } finally {
@@ -111,8 +139,8 @@ export default function BuyServicePage() {
         const docs = await response.json()
         setUserDocuments(docs)
       }
-    } catch (error) {
-      console.error('Error fetching user documents:', error)
+    } catch {
+      // Silent fail
     }
   }, [])
 
@@ -140,36 +168,39 @@ export default function BuyServicePage() {
     }
     
     setUploadingIndexes(prev => new Set(prev).add(index))
-    
     try {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('category', documents[index].name)
-      
       const response = await fetch('/api/documents', {
         method: 'POST',
         body: formData,
       })
-        if (response.ok) {
-        const uploadedDocument = await response.json()
-        console.log('File uploaded successfully:', uploadedDocument)
-        
-        const updatedDocuments = [...documents]
+      if (response.ok) {
+        const uploadedDocument = await response.json();
+        const docObj = uploadedDocument.document || uploadedDocument;
+        setUserDocuments(prevDocs => [
+          ...prevDocs,
+          {
+            ...docObj,
+            size: Number(docObj.size) || (file?.size ?? 0),
+            originalName: docObj.originalName || file?.name || 'Unknown',
+          }
+        ]);
+        const updatedDocuments = [...documents];
         updatedDocuments[index] = {
           ...updatedDocuments[index],
           uploaded: true,
           file: file,
-          selectedDocumentId: uploadedDocument._id // Store the uploaded document ID
-        }
-        setDocuments(updatedDocuments)
-        console.log('Updated documents state after upload:', updatedDocuments)
-        toast.success(`${file.name} uploaded successfully`)
+          selectedDocumentId: docObj._id
+        };
+        setDocuments(updatedDocuments);
+        toast.success(`${file.name} uploaded successfully`);
       } else {
-        const error = await response.json()
-        toast.error(error.error || 'Upload failed')
+        const err = await response.json();
+        toast.error(err.error || 'Upload failed');
       }
-    } catch (error) {
-      console.error('Upload error:', error)
+    } catch {
       toast.error('Upload failed. Please try again.')
     } finally {
       setUploadingIndexes(prev => {
@@ -230,7 +261,6 @@ export default function BuyServicePage() {
     setProcessing(true)
     try {
       const finalPrice = service.sellPrice || service.price
-      
       // Create Razorpay order
       const orderData = await createRazorpayOrder({
         amount: finalPrice,
@@ -246,6 +276,78 @@ export default function BuyServicePage() {
         phone: '', // Could be added to user details form
       }
 
+      // Defensive: ensure all uploaded docs have selectedDocumentId (should already be set, but just in case)
+      const fixedDocuments = documents.map(doc => {
+        if (doc.uploaded && !doc.selectedDocumentId && doc.file) {
+          let match = userDocuments.find(
+            d => d.originalName === doc.file?.name && d.category === doc.name
+          );
+          if (!match) {
+            match = userDocuments.find(
+              d => d.filename === doc.file?.name && d.category === doc.name
+            );
+          }
+          if (!match) {
+            match = userDocuments.find(
+              d => d.originalName === doc.file?.name
+            );
+          }
+          if (!match) {
+            match = userDocuments.find(
+              d => d.filename === doc.file?.name
+            );
+          }
+          if (!match && doc.file) {
+            match = userDocuments.find(
+              d => d.size === doc.file?.size && d.category === doc.name
+            );
+          }
+          if (!match && doc.file) {
+            match = userDocuments.find(
+              d => d.size === doc.file?.size
+            );
+          }
+          if (match) {
+            return { ...doc, selectedDocumentId: match._id }
+          }
+        }
+        return doc
+      });
+
+      // Prepare document names and IDs for verification
+      const documentNames = fixedDocuments
+        .filter(doc => doc.uploaded)
+        .map(doc => {
+          if (doc.selectedDocumentId) {
+            const selectedDoc = userDocuments.find(d => d._id === doc.selectedDocumentId)
+            if (selectedDoc) {
+              return `${doc.name} (Upload: ${selectedDoc.originalName})`
+            } else if (doc.file) {
+              return `${doc.name} (Upload: ${doc.file.name})`
+            } else {
+              return `${doc.name} (Unknown source)`
+            }
+          } else if (doc.file) {
+            return `${doc.name} (Upload: ${doc.file.name})`
+          } else {
+            return `${doc.name} (Unknown source)`
+          }
+        })
+
+      // Include ALL documents that have a selectedDocumentId (both uploaded and from library)
+      // Send as array of ObjectId-like strings (backend expects valid ObjectId strings)
+      const documentIds = fixedDocuments
+        .filter(doc => doc.uploaded && doc.selectedDocumentId)
+        .map(doc => {
+          // Defensive: ensure it's a string (ObjectId string)
+          // Most likely always a string, but fallback to String()
+          return typeof doc.selectedDocumentId === 'string'
+            ? doc.selectedDocumentId
+            : String(doc.selectedDocumentId);
+        })
+
+      // ...existing code...
+
       // Initialize Razorpay
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -254,54 +356,25 @@ export default function BuyServicePage() {
         name: 'The Expert India',
         description: `Payment for ${service.name}`,
         order_id: orderData.orderId,
-        handler: async function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {          try {            // Prepare document names and IDs for verification
-            const documentNames = documents
-              .filter(doc => doc.uploaded)
-              .map(doc => {
-                if (doc.file && doc.selectedDocumentId) {
-                  // File was uploaded during buy process
-                  return `${doc.name} (Upload: ${doc.file?.name || doc.name})`
-                } else if (!doc.file && doc.selectedDocumentId) {
-                  // Document was selected from library
-                  const selectedDoc = userDocuments.find(d => d._id === doc.selectedDocumentId)
-                  return `${doc.name} (Library: ${selectedDoc?.originalName || doc.name})`
-                } else {
-                  // Fallback for any edge cases
-                  return `${doc.name} (Unknown source)`
-                }              })
-
-            // Include ALL documents that have a selectedDocumentId (both uploaded and from library)
-            const documentIds = documents
-              .filter(doc => doc.uploaded && doc.selectedDocumentId)
-              .map(doc => doc.selectedDocumentId!)
-
-            console.log('Debug payment verification:')
-            console.log('All documents state:', documents)
-            console.log('Filtered uploaded documents:', documents.filter(doc => doc.uploaded))
-            console.log('Document names to send:', documentNames)
-            console.log('Document IDs to send:', documentIds)
-            console.log('Documents with selectedDocumentId:', documents.filter(doc => doc.selectedDocumentId))
-
-            // Verify payment
+        handler: async function (paymentResponse: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
+          try {
             const verificationResult = await verifyRazorpayPayment({
               razorpay_order_id: orderData.orderId,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
+              razorpay_payment_id: paymentResponse.razorpay_payment_id,
+              razorpay_signature: paymentResponse.razorpay_signature,
               serviceId: service._id,
               amount: finalPrice,
               userDetails,
               documents: documentNames,
               documentIds: documentIds,
             })
-
             if (verificationResult.success) {
               toast.success('Payment successful! Order placed.')
               router.push(`/success?orderId=${verificationResult.orderId}&serviceName=${encodeURIComponent(service.name)}`)
             } else {
               toast.error('Payment verification failed. Please contact support.')
             }
-          } catch (error) {
-            console.error('Payment verification error:', error)
+          } catch {
             toast.error('Payment verification failed. Please contact support.')
           }
         },
@@ -310,27 +383,27 @@ export default function BuyServicePage() {
           email: session.user?.email || '',
         },
         theme: {
-          color: '#059669', // green-600
+          color: '#059669',
         },
         modal: {
           ondismiss: function() {
             setProcessing(false)
           }
         }
-      }
+      };
 
-      const razorpay = new (window as unknown as { Razorpay: new (options: unknown) => { open: () => void; on: (event: string, callback: (response: unknown) => void) => void } }).Razorpay(options)
-      
-      razorpay.on('payment.failed', function (response: unknown) {
-        const errorResponse = response as { error: unknown }
-        console.error('Payment failed:', errorResponse.error)
-        toast.error('Payment failed. Please try again.')
-        setProcessing(false)
-      })
-
-      razorpay.open()
-    } catch (error) {
-      console.error('Error initiating payment:', error)
+      type RazorpayType = {
+        open: () => void;
+        on: (event: string, callback: (response: unknown) => void) => void;
+      };
+      const RazorpayConstructor = (window as typeof window & { Razorpay: new (options: RazorpayOptions) => RazorpayType }).Razorpay;
+      const razorpay = new RazorpayConstructor(options);
+      razorpay.on('payment.failed', function () {
+        toast.error('Payment failed. Please try again.');
+        setProcessing(false);
+      });
+      razorpay.open();
+    } catch {
       toast.error('Failed to initiate payment. Please try again.')
       setProcessing(false)
     }
@@ -489,144 +562,283 @@ export default function BuyServicePage() {
       )}
 
       {currentStep === 2 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Upload className="h-5 w-5" />
-              Upload Documents
-            </CardTitle>
-            <CardDescription>Upload the required documents for your service</CardDescription>
-          </CardHeader>          <CardContent>
-            <div className="space-y-4">
-              {documents.map((doc, index) => (
-                <div key={index} className="border rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <Label className="font-medium">{doc.name}</Label>
-                    {doc.uploaded && (
-                      <div className="flex items-center gap-2">
-                        <Badge variant="default">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          {doc.selectedDocumentId ? 'From Library' : 'Uploaded'}
-                        </Badge>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleRemoveDocument(index)}
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
+  <Card className="overflow-hidden">
+    <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+      <CardTitle className="flex items-center gap-3">
+        <div className="p-2 bg-blue-100 rounded-lg">
+          <Upload className="h-5 w-5 text-blue-600" />
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold">Upload Documents</h2>
+          <p className="text-sm text-muted-foreground font-normal mt-1">
+            Secure document upload with library integration
+          </p>
+        </div>
+      </CardTitle>
+    </CardHeader>
+    
+    <CardContent className="p-6">
+      {/* Progress indicator */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-gray-700">
+            Upload Progress
+          </span>
+          <span className="text-sm text-gray-500">
+            {documents.filter(doc => doc.uploaded).length} of {documents.length} completed
+          </span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div 
+            className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all duration-300 ease-out"
+            style={{ width: `${(documents.filter(doc => doc.uploaded).length / documents.length) * 100}%` }}
+          />
+        </div>
+      </div>
 
-                  {doc.uploaded ? (
-                    <div className="bg-green-50 border border-green-200 rounded p-3">
-                      <div className="flex items-center text-green-800">
-                        <CheckCircle className="h-4 w-4 mr-2" />
-                        <span className="text-sm">
-                          {doc.selectedDocumentId 
-                            ? userDocuments.find(d => d._id === doc.selectedDocumentId)?.originalName
-                            : doc.file?.name
-                          } ready for submission
-                        </span>
-                      </div>
+      {/* Documents grid */}
+      <div className="grid gap-4 md:gap-6">
+        {documents.map((doc, index) => (
+          <div key={index} className="group relative">
+            {/* Document card */}
+            <div className={`
+              relative border-2 rounded-xl p-6 transition-all duration-200 ease-in-out
+              ${doc.uploaded 
+                ? 'border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 shadow-sm' 
+                : 'border-gray-200 bg-white hover:border-blue-300 hover:shadow-md'
+              }
+            `}>
+              {/* Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className={`
+                    p-3 rounded-lg transition-colors duration-200
+                    ${doc.uploaded 
+                      ? 'bg-green-100 text-green-600' 
+                      : 'bg-gray-100 text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600'
+                    }
+                  `}>
+                    <FileText className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{doc.name}</h3>
+                    <p className="text-sm text-gray-500">Required document</p>
+                  </div>
+                </div>
+
+                {doc.uploaded && (
+                  <div className="flex items-center gap-2">
+                    <Badge 
+                      variant="default" 
+                      className="bg-green-100 text-green-700 hover:bg-green-200 border-green-200"
+                    >
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      {doc.selectedDocumentId ? 'From Library' : 'Uploaded'}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleRemoveDocument(index)}
+                      className="h-8 w-8 p-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              {doc.uploaded ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-4 bg-white/70 border border-green-200 rounded-lg">
+                    <div className="p-2 bg-green-100 rounded-full">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
                     </div>
-                  ) : (
-                    <div className="space-y-3">
-                      <div className="flex gap-2">
-                        <Dialog open={isDocumentLibraryOpen && selectedDocumentIndex === index} onOpenChange={(open) => {
-                          setIsDocumentLibraryOpen(open)
-                          if (open) setSelectedDocumentIndex(index)
-                        }}>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" className="flex-1">
-                              <Folder className="h-4 w-4 mr-2" />
-                              Select from Library
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl max-h-[600px] overflow-y-auto">
-                            <DialogHeader>
-                              <DialogTitle>Select Document from Library</DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-3">
-                              {userDocuments.length === 0 ? (
-                                <div className="text-center py-8">
-                                  <FileText className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                                  <p className="text-gray-600">No documents in your library</p>
-                                  <Button 
-                                    variant="outline" 
-                                    className="mt-2"
-                                    onClick={() => window.open('/documents', '_blank')}
-                                  >
-                                    Go to Document Library
-                                  </Button>
-                                </div>
-                              ) : (
-                                userDocuments.map((userDoc) => (
-                                  <Card key={userDoc._id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleDocumentSelect(index, userDoc._id)}>
-                                    <CardContent className="p-4">
-                                      <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-3">
-                                          <FileText className="h-8 w-8 text-blue-500" />
-                                          <div>
-                                            <h4 className="font-medium">{userDoc.originalName}</h4>
-                                            <p className="text-sm text-gray-600">{userDoc.category}</p>
-                                            <p className="text-xs text-gray-500">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-green-800">
+                        Document Ready
+                      </p>
+                      <p className="text-xs text-green-600">
+                        {doc.selectedDocumentId 
+                          ? userDocuments.find(d => d._id === doc.selectedDocumentId)?.originalName
+                          : doc.file?.name
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Upload options */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* Library selection */}
+                    <Dialog open={isDocumentLibraryOpen && selectedDocumentIndex === index} onOpenChange={(open) => {
+                      setIsDocumentLibraryOpen(open)
+                      if (open) setSelectedDocumentIndex(index)
+                    }}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          className="h-auto p-4 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <Folder className="h-5 w-5 text-blue-500" />
+                            <span className="text-sm font-medium">Select from Library</span>
+                            <span className="text-xs text-gray-500">Choose existing document</span>
+                          </div>
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader className="pb-4 border-b">
+                          <DialogTitle className="text-xl">Document Library</DialogTitle>
+                          <p className="text-sm text-gray-600">Select a document for: {doc.name}</p>
+                        </DialogHeader>
+                        <div className="py-4">
+                          {userDocuments.length === 0 ? (
+                            <div className="text-center py-12">
+                              <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                                <FileText className="h-8 w-8 text-gray-400" />
+                              </div>
+                              <h3 className="text-lg font-medium text-gray-900 mb-2">No documents found</h3>
+                              <p className="text-gray-600 mb-4">Your document library is empty</p>
+                              <Button 
+                                variant="outline" 
+                                onClick={() => window.open('/documents', '_blank')}
+                                className="gap-2"
+                              >
+                                <Folder className="h-4 w-4" />
+                                Manage Documents
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="grid gap-3">
+                              {userDocuments.map((userDoc) => (
+                                <Card 
+                                  key={userDoc._id} 
+                                  className="hover:shadow-md transition-all duration-200 cursor-pointer border hover:border-blue-300" 
+                                  onClick={() => handleDocumentSelect(index, userDoc._id)}
+                                >
+                                  <CardContent className="p-4">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center space-x-4">
+                                        <div className="p-3 bg-blue-100 rounded-lg">
+                                          <FileText className="h-6 w-6 text-blue-600" />
+                                        </div>
+                                        <div>
+                                          <h4 className="font-medium text-gray-900">{userDoc.originalName}</h4>
+                                          <div className="flex items-center gap-3 mt-1">
+                                            <Badge variant="secondary" className="text-xs">
+                                              {userDoc.category}
+                                            </Badge>
+                                            <span className="text-xs text-gray-500">
                                               {(userDoc.size / 1024 / 1024).toFixed(2)} MB
-                                            </p>
+                                            </span>
                                           </div>
                                         </div>
-                                        <Button size="sm">Select</Button>
                                       </div>
-                                    </CardContent>
-                                  </Card>
-                                ))
-                              )}
+                                      <Button size="sm" className="gap-1">
+                                        <CheckCircle className="h-3 w-3" />
+                                        Select
+                                      </Button>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
                             </div>
-                          </DialogContent>
-                        </Dialog>
-                        
-                        <span className="text-sm text-gray-500 self-center">or</span>
-                      </div>                      <div>
-                        <Input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (file) {
-                              handleFileUpload(index, file)
-                            }
-                          }}
-                          className="mb-2"
-                          disabled={uploadingIndexes.has(index)}
-                        />
-                        {uploadingIndexes.has(index) && (
-                          <div className="flex items-center text-sm text-blue-600 mb-2">
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-                            Uploading...
-                          </div>
+                          )}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* File upload */}
+                    <div className="relative">
+                      <Input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            handleFileUpload(index, file)
+                          }
+                        }}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        disabled={uploadingIndexes.has(index)}
+                      />
+                      <div className={`
+                        h-full p-4 border-2 border-dashed rounded-lg transition-all duration-200 flex flex-col items-center justify-center gap-2
+                        ${uploadingIndexes.has(index) 
+                          ? 'border-blue-400 bg-blue-50' 
+                          : 'border-gray-300 hover:border-green-400 hover:bg-green-50'
+                        }
+                      `}>
+                        {uploadingIndexes.has(index) ? (
+                          <>
+                            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent" />
+                            <span className="text-sm font-medium text-blue-600">Uploading...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="h-5 w-5 text-green-500" />
+                            <span className="text-sm font-medium">Upload New File</span>
+                            <span className="text-xs text-gray-500">Click or drag file here</span>
+                          </>
                         )}
-                        <p className="text-xs text-muted-foreground">
-                          Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 10MB)
-                        </p>
                       </div>
                     </div>
-                  )}
+                  </div>
+
+                  {/* File format info */}
+                  <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                    <div className="p-1 bg-gray-200 rounded">
+                      <FileText className="h-3 w-3 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">
+                      <strong>Accepted formats:</strong> PDF, JPG, PNG, DOC, DOCX • <strong>Max size:</strong> 10MB
+                    </p>
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
-            
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">Important Notes:</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Ensure all documents are clear and readable</li>
-                <li>• Documents should be recent and valid</li>
-                <li>• You can upload documents now or skip and upload later</li>
-              </ul>
+          </div>
+        ))}
+      </div>
+      
+      {/* Important notes section */}
+      <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+        <div className="flex items-start gap-3">
+          <div className="p-2 bg-blue-100 rounded-lg mt-0.5">
+            <Shield className="h-5 w-5 text-blue-600" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-blue-900 mb-3">Important Guidelines</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm text-blue-800">
+                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  <span>Ensure documents are clear and readable</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-blue-800">
+                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  <span>Upload recent and valid documents</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm text-blue-800">
+                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  <span>Documents are securely encrypted</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-blue-800">
+                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  <span>You can upload documents later if needed</span>
+                </div>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+)}
 
       {currentStep === 3 && (
         <Card>
@@ -774,9 +986,14 @@ export default function BuyServicePage() {
               Next
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
-          ) : (            <Button 
-              onClick={handleBuyNow} 
-              disabled={processing || !razorpayLoaded}
+          ) : (
+            <Button
+              onClick={handleBuyNow}
+              disabled={
+                processing ||
+                !razorpayLoaded ||
+                !documents.every(doc => doc.uploaded)
+              }
               size="lg"
               className="bg-green-600 hover:bg-green-700"
             >
@@ -790,6 +1007,11 @@ export default function BuyServicePage() {
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                   Loading Payment...
                 </>
+              ) : !documents.every(doc => doc.uploaded) ? (
+                <>
+                  <CreditCard className="h-4 w-4 mr-2" />
+                  Upload all required documents to enable payment
+                </>
               ) : (
                 <>
                   <CreditCard className="h-4 w-4 mr-2" />
@@ -797,7 +1019,8 @@ export default function BuyServicePage() {
                 </>
               )}
             </Button>
-          )}        </div>
+          )}
+        </div>
       </div>
 
       {/* Razorpay Script */}
@@ -806,10 +1029,10 @@ export default function BuyServicePage() {
         src="https://checkout.razorpay.com/v1/checkout.js"
         onLoad={() => setRazorpayLoaded(true)}
         onError={() => {
-          console.error('Failed to load Razorpay script')
           toast.error('Payment system failed to load. Please refresh the page.')
         }}
       />
+      {/* CLOSE MAIN CONTAINER */}
     </div>
   )
 }

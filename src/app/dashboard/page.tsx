@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { ShoppingCart, Star, CheckCircle, ArrowRight, Shield, Clock, Eye, FileText, User } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -39,6 +40,9 @@ interface Order {
 }
 
 export default function UserDashboard() {
+  const [showPhoneDialog, setShowPhoneDialog] = useState(false)
+  const [phone, setPhone] = useState('')
+  const [savingPhone, setSavingPhone] = useState(false)
   const { data: session, status } = useSession()
   const router = useRouter()
   const [services, setServices] = useState<Service[]>([])
@@ -46,13 +50,52 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     if (status === 'loading') return
-
     if (!session) {
       router.push('/')
       return
-    }    fetchServices()
+    }
+    fetchServices()
     fetchOrders()
+    // Check phone field
+    fetch('/api/user/phone')
+      .then(res => res.json())
+      .then(data => {
+        // Only show dialog if phone is missing or invalid
+        if (!data.phone || !/^\d{8,15}$/.test(data.phone)) {
+          setShowPhoneDialog(true)
+        } else {
+          setPhone(data.phone)
+        }
+      })
+      .catch(() => {})
   }, [session, status, router])
+  const handleSavePhone = async () => {
+    const cleanPhone = phone.replace(/[^\d]/g, '')
+    if (!/^\d{8,15}$/.test(cleanPhone)) {
+      toast.error('Please enter a valid phone number (8-15 digits)')
+      return
+    }
+    setSavingPhone(true)
+    try {
+      const res = await fetch('/api/user/phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: cleanPhone })
+      })
+      const data = await res.json()
+      if (res.ok) {
+        toast.success('Phone number saved!')
+        setShowPhoneDialog(false)
+        setPhone(cleanPhone)
+      } else {
+        toast.error(data.error || 'Failed to save phone')
+      }
+    } catch {
+      toast.error('Failed to save phone')
+    } finally {
+      setSavingPhone(false)
+    }
+  }
 
   const fetchServices = async () => {
     try {
@@ -63,8 +106,7 @@ export default function UserDashboard() {
       } else {
         toast.error('Failed to fetch services')
       }
-    } catch (error) {
-      console.error('Error fetching services:', error)
+    } catch {
       toast.error('Error fetching services')
     } finally {
       setLoading(false)
@@ -78,10 +120,7 @@ export default function UserDashboard() {
         const data = await response.json()
         setOrders(data.slice(0, 3)) // Only show recent 3 orders
       }
-    } catch (error) {
-      console.error('Error fetching orders:', error)
-      // Don't show error toast for orders as it's not critical
-    }
+    } catch {}
   }
 
   const handleBuyNow = (serviceId: string) => {
@@ -105,7 +144,39 @@ export default function UserDashboard() {
     return null
   }
 
-  return (    <div className="container mx-auto p-6">
+  return (
+    <>
+      <Dialog open={showPhoneDialog} onOpenChange={setShowPhoneDialog}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>Complete Your Profile</DialogTitle>
+            <DialogDescription>
+              Please enter your phone number to continue using your dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="my-4">
+            <input
+              type="tel"
+              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={e => setPhone(e.target.value.replace(/[^\d]/g, ''))}
+              maxLength={15}
+              minLength={8}
+              autoFocus
+              disabled={savingPhone}
+              inputMode="numeric"
+              pattern="[0-9]*"
+            />
+          </div>
+          <DialogFooter>
+            <Button onClick={handleSavePhone} disabled={savingPhone || !/^\d{8,15}$/.test(phone.replace(/[^\d]/g, ''))}>
+              {savingPhone ? 'Saving...' : 'Save'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <div className="container mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Welcome back, {session.user?.name}!</h1>
         <p className="text-muted-foreground">
@@ -274,7 +345,7 @@ export default function UserDashboard() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <CardTitle className="text-base mb-1">
-                        {order.serviceId.name}
+                        {order.serviceId && order.serviceId.name ? order.serviceId.name : <span className="text-muted-foreground italic">Service unavailable</span>}
                       </CardTitle>
                       <CardDescription className="text-xs">
                         Order #{order._id.slice(-8)}
@@ -363,5 +434,6 @@ export default function UserDashboard() {
         </Card>
       </div>
     </div>
+    </>
   )
 }

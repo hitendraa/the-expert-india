@@ -53,16 +53,22 @@ export default function ProfilePage() {
   const router = useRouter()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
+  const [phone, setPhone] = useState<string>("")
 
   useEffect(() => {
     if (status === 'loading') return
-
     if (!session) {
       router.push('/')
       return
     }
-
     fetchOrders()
+    // Fetch phone number
+    fetch('/api/user/phone')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.phone === 'string') setPhone(data.phone)
+      })
+      .catch(() => {})
   }, [session, status, router])
 
   const fetchOrders = async () => {
@@ -70,12 +76,12 @@ export default function ProfilePage() {
       const response = await fetch('/api/orders')
       if (response.ok) {
         const data = await response.json()
+        // Show all orders, even if service is deleted
         setOrders(data)
       } else {
         toast.error('Failed to fetch orders')
       }
-    } catch (error) {
-      console.error('Error fetching orders:', error)
+    } catch {
       toast.error('Error fetching orders')
     } finally {
       setLoading(false)
@@ -217,7 +223,9 @@ export default function ProfilePage() {
                     {orders.slice(0, 3).map((order) => (
                       <div key={order._id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex-1">
-                          <div className="font-medium text-sm">{order.serviceId.name}</div>
+                          <div className="font-medium text-sm">
+                            {order.serviceId && order.serviceId.name ? order.serviceId.name : <span className="italic text-muted-foreground">Service unavailable</span>}
+                          </div>
                           <div className="text-xs text-muted-foreground">
                             ₹{order.amount.toLocaleString()}
                           </div>
@@ -230,7 +238,7 @@ export default function ProfilePage() {
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle>{order.serviceId.name}</DialogTitle>
+                              <DialogTitle>{order.serviceId && order.serviceId.name ? order.serviceId.name : 'Service unavailable'}</DialogTitle>
                               <DialogDescription>Service details and status</DialogDescription>
                             </DialogHeader>
                             <div className="space-y-4">
@@ -329,7 +337,6 @@ export default function ProfilePage() {
                       <span>{session.user?.name}</span>
                     </div>
                   </div>
-                  
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Email Address</label>
                     <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
@@ -337,7 +344,17 @@ export default function ProfilePage() {
                       <span>{session.user?.email}</span>
                     </div>
                   </div>
-                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Phone Number</label>
+                    <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
+                      <span className="inline-block w-4 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-4 w-4">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0-1.243 1.007-2.25 2.25-2.25h2.386c.51 0 .955.343 1.08.835l.524 2.097a1.125 1.125 0 01-.259 1.07l-1.017 1.017a16.501 16.501 0 006.364 6.364l1.017-1.017a1.125 1.125 0 011.07-.259l2.097.524c.492.125.835.57.835 1.08v2.386a2.25 2.25 0 01-2.25 2.25h-.75C6.798 20.25 3.75 13.202 3.75 8.25v-.75z" />
+                        </svg>
+                      </span>
+                      <span>{phone ? phone : <span className="text-muted-foreground">Not Provided</span>}</span>
+                    </div>
+                  </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Account Type</label>
                     <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
@@ -349,7 +366,6 @@ export default function ProfilePage() {
                       <span className="capitalize">{(session.user as { role?: string })?.role || 'user'}</span>
                     </div>
                   </div>
-                  
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Member Since</label>
                     <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
@@ -402,7 +418,7 @@ export default function ProfilePage() {
                       <div key={order._id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-medium">{order.serviceId.name}</h4>
+                            <h4 className="font-medium">{order.serviceId && order.serviceId.name ? order.serviceId.name : <span className="italic text-muted-foreground">Service unavailable</span>}</h4>
                             <Badge variant={getStatusColor(order.status)}>
                               {order.status}
                             </Badge>
@@ -421,7 +437,7 @@ export default function ProfilePage() {
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle>{order.serviceId.name}</DialogTitle>
+                              <DialogTitle>{order.serviceId && order.serviceId.name ? order.serviceId.name : 'Service unavailable'}</DialogTitle>
                               <DialogDescription>Order #{order._id}</DialogDescription>
                             </DialogHeader>
                             <div className="space-y-4">

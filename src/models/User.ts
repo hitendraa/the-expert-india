@@ -5,6 +5,7 @@ export interface IUser extends mongoose.Document {
   email: string
   image?: string
   role: 'user' | 'admin'
+  phone?: string
   googleId?: string
   createdAt: Date
   updatedAt: Date
@@ -32,6 +33,10 @@ const UserSchema = new mongoose.Schema<IUser>({
     type: String,
     unique: true,
     sparse: true,
+  },
+  phone: {
+    type: String,
+    default: '',
   },
 }, {
   timestamps: true,

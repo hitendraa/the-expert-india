@@ -72,11 +72,9 @@ export default function AdminDocumentsPage() {
         const categories = await response.json()
         setDocumentCategories(categories)
       } else {
-        console.error('Failed to fetch document categories')
+        // ...removed debug log...
       }
-    } catch (error) {
-      console.error('Error fetching document categories:', error)
-    }
+    } catch {}
   }
 
   const fetchDocuments = async () => {
@@ -88,8 +86,7 @@ export default function AdminDocumentsPage() {
       } else {
         toast.error('Failed to fetch documents')
       }
-    } catch (error) {
-      console.error('Error fetching documents:', error)
+    } catch {
       toast.error('Failed to fetch documents')
     } finally {
       setLoading(false)
@@ -109,8 +106,7 @@ export default function AdminDocumentsPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to delete document')
       }
-    } catch (error) {
-      console.error('Error deleting document:', error)
+    } catch {
       toast.error('Failed to delete document')
     }
   }
@@ -130,8 +126,7 @@ export default function AdminDocumentsPage() {
       } else {
         toast.error('Failed to download document')
       }
-    } catch (error) {
-      console.error('Error downloading document:', error)
+    } catch {
       toast.error('Failed to download document')
     }
   }

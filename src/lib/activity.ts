@@ -6,7 +6,7 @@ interface LogActivityParams {
   adminId?: string
   userId?: string
   action: string
-  resource: 'user' | 'order' | 'service' | 'system'
+  resource: 'user' | 'order' | 'service' | 'system' | 'document'
   resourceId?: string
   details: string
   metadata?: Record<string, unknown>

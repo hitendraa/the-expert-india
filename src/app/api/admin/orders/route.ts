@@ -18,13 +18,29 @@ export async function GET() {
     const currentUser = await User.findOne({ email: session.user?.email })
     if (!currentUser || currentUser.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }    const orders = await Order.find({})
+    }
+    const orders = await Order.find({})
       .populate('userId', 'name email')
-      .populate('serviceId', 'name price')
+      .populate({
+        path: 'serviceId',
+        select: 'name price',
+        options: { strictPopulate: false }
+      })
       .populate('documentIds', 'filename originalName mimetype size category uploadDate')
       .sort({ createdAt: -1 })
-    
-    return NextResponse.json(orders)
+
+    // If service is deleted, serviceId will be null. Add a fallback for admin consumers.
+    type ServiceFallback = { name: string; price: number };
+    type OrderWithFallback = ReturnType<typeof orders[0]["toObject"]> & { serviceFallback?: ServiceFallback };
+    const ordersWithServiceFallback: OrderWithFallback[] = orders.map(order => {
+      const plainOrder: OrderWithFallback = order.toObject();
+      if (!plainOrder.serviceId) {
+        plainOrder.serviceFallback = { name: 'Service unavailable', price: 0 };
+      }
+      return plainOrder;
+    });
+
+    return NextResponse.json(ordersWithServiceFallback)
   } catch (error) {
     console.error('Error fetching orders:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

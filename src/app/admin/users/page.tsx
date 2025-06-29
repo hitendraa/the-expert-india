@@ -67,8 +67,7 @@ export default function UsersPage() {
       } else {
         toast.error('Failed to fetch users')
       }
-    } catch (error) {
-      console.error('Error fetching users:', error)
+    } catch {
       toast.error('Error fetching users')
     } finally {
       setLoading(false)
@@ -107,8 +106,7 @@ export default function UsersPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to update user')
       }
-    } catch (error) {
-      console.error('Error updating user:', error)
+    } catch {
       toast.error('Error updating user')
     }
   }
@@ -132,8 +130,7 @@ export default function UsersPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to add user')
       }
-    } catch (error) {
-      console.error('Error adding user:', error)
+    } catch {
       toast.error('Error adding user')
     }
   }
@@ -150,8 +147,7 @@ export default function UsersPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to terminate sessions')
       }
-    } catch (error) {
-      console.error('Error terminating sessions:', error)
+    } catch {
       toast.error('Error terminating sessions')
     }
   }
@@ -171,8 +167,7 @@ export default function UsersPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to delete user')
       }
-    } catch (error) {
-      console.error('Error deleting user:', error)
+    } catch {
       toast.error('Error deleting user')
     }
   }

@@ -65,29 +65,25 @@ export default function DocumentsPage() {
         const categories = await response.json()
         setDocumentCategories(categories)
       } else {
-        console.error('Failed to fetch document categories')
+        // ...removed debug log...
       }
-    } catch (error) {
-      console.error('Error fetching document categories:', error)
-    }
+    } catch {}
   }
   const fetchDocuments = async () => {
     try {
-      console.log('Fetching documents...')
+      // ...removed debug log...
       const response = await fetch('/api/documents')
-      console.log('Fetch response status:', response.status)
+      // ...removed debug log...
       
       if (response.ok) {
         const data = await response.json()
-        console.log('Fetched documents:', data)
+        // ...removed debug log...
         setDocuments(data)
       } else {
-        const errorText = await response.text()
-        console.error('Fetch error:', response.status, errorText)
+        // ...removed debug log...
         toast.error('Failed to fetch documents')
       }
-    } catch (error) {
-      console.error('Error fetching documents:', error)
+    } catch {
       toast.error('Failed to fetch documents')
     } finally {
       setLoading(false)
@@ -134,18 +130,17 @@ export default function DocumentsPage() {
       formData.append('file', selectedFile)
       formData.append('category', selectedCategory)
 
-      console.log('Uploading file:', selectedFile.name, 'Category:', selectedCategory)
+      // ...removed debug log...
 
       const response = await fetch('/api/documents', {
         method: 'POST',
         body: formData,
       })
 
-      console.log('Upload response status:', response.status)
+      // ...removed debug log...
 
       if (response.ok) {
-        const data = await response.json()
-        console.log('Upload success:', data)
+        // ...removed debug log...
         toast.success('Document uploaded successfully')
         
         // Refresh the documents list
@@ -157,11 +152,10 @@ export default function DocumentsPage() {
         setIsUploadDialogOpen(false)
       } else {
         const error = await response.json()
-        console.error('Upload error:', error)
+        // ...removed debug log...
         toast.error(error.error || 'Failed to upload document')
       }
-    } catch (error) {
-      console.error('Error uploading document:', error)
+    } catch {
       toast.error('Failed to upload document')
     } finally {
       setUploading(false)
@@ -181,8 +175,7 @@ export default function DocumentsPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to delete document')
       }
-    } catch (error) {
-      console.error('Error deleting document:', error)
+    } catch {
       toast.error('Failed to delete document')
     }
   }
@@ -203,8 +196,7 @@ export default function DocumentsPage() {
       } else {
         toast.error('Failed to download document')
       }
-    } catch (error) {
-      console.error('Error downloading document:', error)
+    } catch {
       toast.error('Failed to download document')
     }
   }

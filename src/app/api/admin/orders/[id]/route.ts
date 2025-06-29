@@ -13,28 +13,22 @@ export async function GET(
   try {
     const { id } = await params
     const session = await getServerSession(authOptions)
-    
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
     await connectDB()
     const currentUser = await User.findOne({ email: session.user?.email })
     if (!currentUser || currentUser.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
-
     const order = await Order.findById(id)
       .populate('userId', 'name email')
       .populate('serviceId', 'name price')
-    
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
-
     return NextResponse.json(order)
-  } catch (error) {
-    console.error('Error fetching order:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -46,23 +40,20 @@ export async function PUT(
   try {
     const { id } = await params
     const session = await getServerSession(authOptions)
-    
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
     await connectDB()
     const currentUser = await User.findOne({ email: session.user?.email })
     if (!currentUser || currentUser.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }    const { status, paymentStatus, notes, completionDate } = await request.json()
-
+    }
+    const { status, paymentStatus, notes, completionDate } = await request.json()
     // Get original order for comparison
     const originalOrder = await Order.findById(id)
     if (!originalOrder) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
-
     const updateData: { 
       status: string; 
       paymentStatus: string; 
@@ -74,23 +65,19 @@ export async function PUT(
     } else if (completionDate) {
       updateData.completionDate = completionDate
     }
-
     const order = await Order.findByIdAndUpdate(
       id,
       updateData,
       { new: true, runValidators: true }
     ).populate('userId', 'name email').populate('serviceId', 'name price')
-
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
-
     // Log activity
     const changes = []
     if (originalOrder.status !== status) changes.push(`status: ${originalOrder.status} → ${status}`)
     if (originalOrder.paymentStatus !== paymentStatus) changes.push(`payment: ${originalOrder.paymentStatus} → ${paymentStatus}`)
     if (originalOrder.notes !== notes) changes.push('notes updated')
-
     await logActivity({
       adminId: currentUser._id.toString(),
       action: 'update',
@@ -100,10 +87,8 @@ export async function PUT(
       metadata: { changes: updateData },
       request
     })
-
     return NextResponse.json(order)
-  } catch (error) {
-    console.error('Error updating order:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -115,22 +100,19 @@ export async function DELETE(
   try {
     const { id } = await params
     const session = await getServerSession(authOptions)
-    
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
     await connectDB()
     const currentUser = await User.findOne({ email: session.user?.email })
     if (!currentUser || currentUser.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }    const order = await Order.findById(id).populate('userId', 'name email').populate('serviceId', 'name price')
+    }
+    const order = await Order.findById(id).populate('userId', 'name email').populate('serviceId', 'name price')
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
-
     await Order.findByIdAndDelete(id)
-
     // Log activity
     await logActivity({
       adminId: currentUser._id.toString(),
@@ -145,10 +127,8 @@ export async function DELETE(
       },
       request
     })
-
     return NextResponse.json({ message: 'Order deleted successfully' })
-  } catch (error) {
-    console.error('Error deleting order:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

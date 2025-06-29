@@ -45,14 +45,6 @@ const Topbar = () => {
               <span className="sm:hidden">WA</span>
             </a>
           </Button>
-          <Button 
-            size="sm" 
-            variant="outline" 
-            className="border-white text-white bg-transparent hover:bg-white hover:text-brand-primary h-6 md:h-7 px-2 md:px-3 text-xs transition-all duration-300 font-medium"
-            asChild
-          >
-            <a href="/login">Login</a>
-          </Button>
         </div>
       </div>
     </div>

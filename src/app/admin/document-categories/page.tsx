@@ -66,8 +66,7 @@ export default function DocumentCategoriesPage() {
       } else {
         toast.error('Failed to fetch document categories')
       }
-    } catch (error) {
-      console.error('Error fetching categories:', error)
+    } catch {
       toast.error('Error fetching document categories')
     } finally {
       setLoading(false)
@@ -100,8 +99,7 @@ export default function DocumentCategoriesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to create category')
       }
-    } catch (error) {
-      console.error('Error creating category:', error)
+    } catch {
       toast.error('Error creating document category')
     } finally {
       setSubmitting(false)
@@ -140,8 +138,7 @@ export default function DocumentCategoriesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to update category')
       }
-    } catch (error) {
-      console.error('Error updating category:', error)
+    } catch {
       toast.error('Error updating document category')
     } finally {
       setSubmitting(false)
@@ -163,8 +160,7 @@ export default function DocumentCategoriesPage() {
         const error = await response.json()
         toast.error(error.error || 'Failed to delete category')
       }
-    } catch (error) {
-      console.error('Error deleting category:', error)
+    } catch {
       toast.error('Error deleting document category')
     }  }
 
