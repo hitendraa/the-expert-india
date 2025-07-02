@@ -28,7 +28,7 @@ import {
 } from "@/lib/constants";
 import Link from "next/link";
 import CTA from "@/components/common/CTA";
-import { submitForm, getFormSource } from "@/lib/form-utils";
+import { getFormSource } from "@/lib/form-utils";
 import { toast } from "sonner";
 
 const Footer = () => {
@@ -65,7 +65,7 @@ const Footer = () => {
     setIsSubmittingNewsletter(true);
 
     try {
-      const source = getFormSource(pathname);
+      getFormSource(pathname);
       
       // Add to newsletter directly
       const newsletterResponse = await fetch('/api/newsletter', {

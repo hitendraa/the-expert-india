@@ -64,7 +64,6 @@ import { Badge } from '@/components/ui/badge'
     useEffect(() => {
       if (!order) return;
       // Fire a single, short confetti burst and clean up on unmount
-      let confettiTimeout: NodeJS.Timeout | number | undefined;
       const runConfetti = () => {
         confetti({
           particleCount: 120,
@@ -91,10 +90,10 @@ import { Badge } from '@/components/ui/badge'
           colors: ['#22c55e', '#16a34a', '#fbbf24', '#f59e0b']
         });
       };
-      confettiTimeout = setTimeout(runConfetti, 400);
+      const confettiTimeout = setTimeout(runConfetti, 400);
       return () => {
-        if (confettiTimeout) clearTimeout(confettiTimeout);
-        confetti.reset && confetti.reset();
+        clearTimeout(confettiTimeout);
+        if (confetti.reset) confetti.reset();
       };
     }, [order]);
   

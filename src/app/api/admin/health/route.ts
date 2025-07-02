@@ -9,10 +9,7 @@ import Document from '@/models/Document'
 import os from 'os'
 import { promises as fs } from 'fs'
 import { exec } from 'child_process'
-import { promisify } from 'util'
 import mongoose from 'mongoose'
-
-const execAsync = promisify(exec)
 
 // Helper function with timeout
 const execWithTimeout = async (command: string, timeout = 5000) => {
@@ -39,7 +36,7 @@ async function getUbuntuSystemMetrics() {
     kernel: 'Unknown',
     architecture: os.arch(),
     hostname: os.hostname(),
-    networkInterfaces: {} as Record<string, any>,
+    networkInterfaces: {} as Record<string, unknown>,
     processes: {
       total: 0,
       running: 0,
@@ -57,7 +54,7 @@ async function getUbuntuSystemMetrics() {
     try {
       const { stdout: lsbRelease } = await execWithTimeout('lsb_release -d 2>/dev/null || cat /etc/os-release | grep PRETTY_NAME | cut -d"=" -f2 | tr -d \'"\'', 3000)
       metrics.distribution = lsbRelease.trim()
-    } catch (error) {
+    } catch {
       // Fallback for systems without lsb_release
       metrics.distribution = `${os.type()} ${os.release()}`
     }
@@ -66,7 +63,7 @@ async function getUbuntuSystemMetrics() {
     try {
       const { stdout: kernelVersion } = await execWithTimeout('uname -r', 2000)
       metrics.kernel = kernelVersion.trim()
-    } catch (error) {
+    } catch {
       metrics.kernel = os.release()
     }
 
@@ -92,7 +89,7 @@ async function getUbuntuSystemMetrics() {
         if (state === 'R') metrics.processes.running += parseInt(count)
         if (state === 'S') metrics.processes.sleeping += parseInt(count)
       })
-    } catch (error) {
+    } catch {
       // Fallback to basic info
       metrics.processes.total = 0
     }
@@ -143,7 +140,7 @@ async function getRealStorageStats() {
     console.error('Error getting storage stats:', error)
     // Fallback to basic file system check
     try {
-      const stats = await fs.stat(process.cwd())
+      await fs.stat(process.cwd())
       storageStats = {
         total: 50 * 1024 * 1024 * 1024, // 50GB fallback
         used: 10 * 1024 * 1024 * 1024, // 10GB fallback
@@ -152,7 +149,7 @@ async function getRealStorageStats() {
         filesystem: 'Unknown',
         mountPoint: process.cwd()
       }
-    } catch (fsError) {
+    } catch {
       // Use minimal fallback
     }
   }
@@ -192,12 +189,12 @@ export async function GET() {
     const systemMetrics = await getUbuntuSystemMetrics()
 
     // Storage metrics - get real disk usage for Ubuntu
-    let storageStats = await getRealStorageStats()
+    const storageStats = await getRealStorageStats()
 
     // Database metrics
     const dbStartTime = Date.now()
     const db = mongoose.connection.db
-    let dbStats = {
+    const dbStats = {
       status: 'connected' as 'connected' | 'error',
       connectionTime: 0,
       collections: 0,
@@ -232,15 +229,14 @@ export async function GET() {
         const stats = await db?.stats()
         dbStats.dataSize = stats?.dataSize || 0
         dbStats.indexSize = stats?.indexSize || 0
-      } catch (error) {
+      } catch {
         // Some MongoDB deployments don't allow stats() command
         dbStats.dataSize = 0
         dbStats.indexSize = 0
       }
       
-    } catch (error) {
+    } catch {
       dbStats.status = 'error'
-      console.error('Database health check error:', error)
     }
 
     // Performance metrics

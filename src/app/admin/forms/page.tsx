@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -36,8 +36,6 @@ import {
   Search,
   Filter,
   Eye,
-  Calendar,
-  Users,
   Phone,
   Mail,
   MapPin,
@@ -46,11 +44,6 @@ import {
   Clock,
   CheckCircle,
   UserCheck,
-  XCircle,
-  MessageSquare,
-  Download,
-  Trash2,
-  Edit,
   Printer,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -128,7 +121,7 @@ const FormsPage = () => {
   }, [session, status, router]);
 
   // Fetch form submissions
-  const fetchSubmissions = async () => {
+  const fetchSubmissions = useCallback(async () => {
     if (!session) return;
     
     setLoading(true);
@@ -154,11 +147,11 @@ const FormsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [session, pagination.page, pagination.limit, filters]);
 
   useEffect(() => {
     fetchSubmissions();
-  }, [session, pagination.page, filters]);
+  }, [session, pagination.page, filters, fetchSubmissions]);
 
   // Update submission status
   const updateSubmissionStatus = async (id: string, status: string, notes?: string) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -38,10 +38,6 @@ import {
   Users,
   UserCheck,
   UserX,
-  AlertCircle,
-  Download,
-  Plus,
-  Calendar,
   TrendingUp,
   Printer,
 } from "lucide-react";
@@ -124,7 +120,7 @@ const NewsletterPage = () => {
   }, [session, status, router]);
 
   // Fetch newsletter subscribers
-  const fetchSubscribers = async () => {
+  const fetchSubscribers = useCallback(async () => {
     if (!session) return;
     
     setLoading(true);
@@ -151,10 +147,10 @@ const NewsletterPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [session, pagination.page, pagination.limit, filters]);
 
   // Fetch newsletter stats
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     if (!session) return;
     
     try {
@@ -166,15 +162,15 @@ const NewsletterPage = () => {
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
-  };
+  }, [session]);
 
   useEffect(() => {
     fetchSubscribers();
-  }, [session, pagination.page, filters]);
+  }, [fetchSubscribers]);
 
   useEffect(() => {
     fetchStats();
-  }, [session]);
+  }, [fetchStats]);
 
   // Get status badge variant
   const getStatusBadge = (status: string) => {

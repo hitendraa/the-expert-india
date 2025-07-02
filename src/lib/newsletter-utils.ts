@@ -1,4 +1,4 @@
-import Newsletter, { INewsletter } from '@/models/Newsletter';
+import Newsletter from '@/models/Newsletter';
 import connectDB from '@/lib/mongodb';
 
 export interface NewsletterSubscription {

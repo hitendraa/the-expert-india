@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import Newsletter from '@/models/Newsletter';
 import connectDB from '@/lib/mongodb';
-import { addToNewsletter, getNewsletterStats } from '@/lib/newsletter-utils';
+import { addToNewsletter } from '@/lib/newsletter-utils';
 import { authOptions } from '@/lib/auth';
 
 // GET - Fetch newsletter subscribers with pagination and filters
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== 'admin') {
+    if (!session || (session.user as { role?: string })?.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -25,7 +25,15 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get('endDate') || '';
 
     // Build filter query
-    const filter: any = {};
+    const filter: {
+      $or?: Array<{ email: { $regex: string; $options: string } } | { name: { $regex: string; $options: string } }>
+      status?: string
+      source?: string
+      subscribedAt?: {
+        $gte?: Date
+        $lte?: Date
+      }
+    } = {};
 
     if (search) {
       filter.$or = [

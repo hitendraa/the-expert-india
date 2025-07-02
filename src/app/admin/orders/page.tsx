@@ -121,11 +121,7 @@ export default function OrdersPage() {
     paymentStatus: "pending" as Order['paymentStatus'],
     adminNotes: ""
   })
-
-  useEffect(() => {
-    fetchOrders()
-  }, [])
-
+  
   const fetchOrders = async (retryCount = 0, isManualRefresh = false) => {
     const maxRetries = 3
     const retryDelay = 1000 * Math.pow(2, retryCount) // Exponential backoff
@@ -200,6 +196,12 @@ export default function OrdersPage() {
       }
     }
   }
+
+  // Add useEffect hook with the proper dependency
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const handleRefresh = () => {
     fetchOrders(0, true)
@@ -406,7 +408,6 @@ export default function OrdersPage() {
     if (!printWindow) return;
     
     const currentDate = new Date().toLocaleDateString();
-    const currentTime = new Date().toLocaleTimeString();
     
     const invoiceContent = `
       <!DOCTYPE html>

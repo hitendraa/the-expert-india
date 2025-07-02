@@ -75,10 +75,6 @@ export default function UsersPage() {
   const [editForm, setEditForm] = useState({ name: "", email: "", phone: "", role: "user" as "user" | "admin" })
   const [addForm, setAddForm] = useState({ name: "", email: "", phone: "", role: "user" as "user" | "admin" })
 
-  useEffect(() => {
-    fetchUsers()
-  }, [pagination.page])
-
   const fetchUsers = async () => {
     try {
       const params = new URLSearchParams({
@@ -100,6 +96,12 @@ export default function UsersPage() {
       setLoading(false)
     }
   }
+
+  // Add useEffect with proper dependency
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    fetchUsers()
+  }, [pagination.page])
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {

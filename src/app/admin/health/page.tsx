@@ -49,7 +49,7 @@ interface SystemHealth {
     kernel: string
     architecture: string
     hostname: string
-    networkInterfaces: Record<string, any>
+    networkInterfaces: Record<string, unknown>
     processes: {
       total: number
       running: number
@@ -505,13 +505,13 @@ export default function HealthPage() {
             <CardContent>
               <div className="space-y-3">
                 {Object.entries(healthData.system.networkInterfaces).map(([name, interfaces]) => {
-                  const validInterfaces = Array.isArray(interfaces) ? interfaces.filter((iface: any) => !iface.internal) : []
+                  const validInterfaces = Array.isArray(interfaces) ? interfaces.filter((iface: { internal: boolean }) => !iface.internal) : []
                   if (validInterfaces.length === 0) return null
                   
                   return (
                     <div key={name} className="border rounded-lg p-3">
                       <div className="font-medium text-sm mb-2">{name}</div>
-                      {validInterfaces.map((iface: any, index: number) => (
+                      {validInterfaces.map((iface: { family: string; address: string }, index: number) => (
                         <div key={index} className="text-xs text-muted-foreground">
                           {iface.family}: {iface.address}
                         </div>

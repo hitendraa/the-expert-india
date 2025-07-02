@@ -101,14 +101,6 @@ interface ServicesResponse {
   const [newDoc, setNewDoc] = useState("")
   const [editNewDoc, setEditNewDoc] = useState("")
 
-  useEffect(() => {
-    fetchServices();
-    fetch('/api/document-categories')
-      .then(res => res.json())
-      .then(data => setDocCategories(data))
-      .catch(() => setDocCategories([]));
-  }, [pagination.page]);
-
   const fetchServices = async () => {
     try {
       const params = new URLSearchParams({
@@ -130,6 +122,16 @@ interface ServicesResponse {
       setLoading(false)
     }
   }
+
+  // Add useEffect with proper dependencies
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    fetchServices();
+    fetch('/api/document-categories')
+      .then(res => res.json())
+      .then(data => setDocCategories(data))
+      .catch(() => setDocCategories([]));
+  }, [pagination.page]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {

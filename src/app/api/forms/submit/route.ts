@@ -157,7 +157,14 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate')
     const endDate = searchParams.get('endDate')
 
-    const query: any = {}
+    const query: {
+      source?: string
+      status?: string 
+      createdAt?: {
+        $gte?: Date
+        $lte?: Date
+      }
+    } = {}
     
     if (source) query.source = source
     if (status) query.status = status

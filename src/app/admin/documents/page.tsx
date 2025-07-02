@@ -18,9 +18,7 @@ import {
   Calendar,
   HardDrive,
   User,
-  Filter,
-  ChevronLeft,
-  ChevronRight
+  Filter
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -36,18 +34,6 @@ interface Document {
   category: string
   uploadDate: string
   isActive: boolean
-}
-
-interface DocumentsResponse {
-  documents: Document[]
-  pagination: {
-    page: number
-    limit: number
-    totalCount: number
-    totalPages: number
-    hasNextPage: boolean
-    hasPreviousPage: boolean
-  }
 }
 
 interface DocumentCategory {
@@ -66,14 +52,6 @@ export default function AdminDocumentsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
   const [filterUser, setFilterUser] = useState('')
-  const [pagination, setPagination] = useState({
-    page: 1,
-    limit: 20,
-    totalCount: 0,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPreviousPage: false
-  })
 
   useEffect(() => {
     if (status === 'authenticated') {

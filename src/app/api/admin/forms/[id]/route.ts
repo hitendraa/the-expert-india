@@ -34,7 +34,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Form submission not found' }, { status: 404 })
     }
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (status) updateData.status = status
     if (notes !== undefined) updateData.notes = notes
     if (assignedTo) updateData.assignedTo = assignedTo
