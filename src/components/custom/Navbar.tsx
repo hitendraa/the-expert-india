@@ -203,10 +203,10 @@ const Navbar = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg md:text-xl font-bold text-gray-900">
-                  Expert Legal
+                  Expert India
                 </span>
                 <span className="text-xs md:text-sm text-brand-primary font-medium">
-                  India
+                  Consultancy
                 </span>
               </div>
             </Link>{" "}            {/* Desktop Navigation - Utilizing more center space */}
@@ -400,10 +400,10 @@ const Navbar = () => {
                         </div>
                         <div className="flex flex-col">
                           <span className="text-lg md:text-xl font-bold text-gray-900">
-                            Expert Legal
+                            Expert India
                           </span>
                           <span className="text-xs md:text-sm text-brand-primary font-medium">
-                            India
+                            Consultancy
                           </span>
                         </div>
                       </div>
@@ -517,10 +517,10 @@ const Navbar = () => {
                           <Phone className="h-4 w-4 mr-2" />
                           Get Instant Help
                         </h3>{" "}
-                        <div className="space-y-2 text-sm">
+                          <div className="space-y-2 text-sm">
                           <div className="flex items-center space-x-2">
                             <div className="w-2 h-2 bg-white rounded-full"></div>
-                            <span>Expert Legal Team</span>
+                            <span>Expert India Team</span>
                           </div>
                           <div className="flex items-center space-x-2">
                             <div className="w-2 h-2 bg-white rounded-full"></div>

@@ -63,47 +63,38 @@ import { Badge } from '@/components/ui/badge'
   
     useEffect(() => {
       if (!order) return;
-      // Confetti only if order is valid
+      // Fire a single, short confetti burst and clean up on unmount
+      let confettiTimeout: NodeJS.Timeout | number | undefined;
       const runConfetti = () => {
         confetti({
-          particleCount: 200,
-          spread: 60,
-          startVelocity: 60,
-          gravity: 0.5,
+          particleCount: 120,
+          spread: 70,
+          startVelocity: 50,
+          gravity: 0.7,
           origin: { x: 0.5, y: 1.1 },
           colors: ['#22c55e', '#16a34a', '#15803d', '#fbbf24', '#f59e0b', '#3b82f6']
         });
         confetti({
-          particleCount: 200,
-          spread: 60,
-          startVelocity: 60,
-          gravity: 0.5,
+          particleCount: 60,
+          spread: 50,
+          startVelocity: 40,
+          gravity: 0.7,
           origin: { x: 0.1, y: 1.1 },
-          colors: ['#22c55e', '#16a34a', '#15803d', '#fbbf24', '#f59e0b']
+          colors: ['#22c55e', '#16a34a', '#fbbf24', '#f59e0b']
         });
         confetti({
-          particleCount: 200,
-          spread: 60,
-          startVelocity: 60,
-          gravity: 0.5,
+          particleCount: 60,
+          spread: 50,
+          startVelocity: 40,
+          gravity: 0.7,
           origin: { x: 0.9, y: 1.1 },
-          colors: ['#22c55e', '#16a34a', '#15803d', '#fbbf24', '#f59e0b']
+          colors: ['#22c55e', '#16a34a', '#fbbf24', '#f59e0b']
         });
       };
-      const initialTimer = setTimeout(() => {
-        runConfetti();
-        const confettiInterval = setInterval(() => {
-          runConfetti();
-        }, 3000);
-        setTimeout(() => {
-          clearInterval(confettiInterval);
-        }, 30000);
-        return () => {
-          clearInterval(confettiInterval);
-        };
-      }, 500);
+      confettiTimeout = setTimeout(runConfetti, 400);
       return () => {
-        clearTimeout(initialTimer);
+        if (confettiTimeout) clearTimeout(confettiTimeout);
+        confetti.reset && confetti.reset();
       };
     }, [order]);
   
@@ -198,7 +189,7 @@ import { Badge } from '@/components/ui/badge'
                   </div>
                   <div>
                     <div className="font-medium">Phone Support</div>
-                    <div className="text-sm text-muted-foreground">+91 12345 67890</div>
+                    <div className="text-sm text-muted-foreground">+91 70233 14773</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

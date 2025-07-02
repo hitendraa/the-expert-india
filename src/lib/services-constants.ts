@@ -1006,7 +1006,7 @@ export const TRADEMARK_RENEWAL_FAQ = [
   },
   {
     question: "Do I need to physically present for the process ?",
-    answer: "No, you don't need to be physically present for the process, OnlineLegalIndia is an online catering platform all you need is an internet connection in your phone/computer and the required documents with you and we can get the job done no matters even if you are present at the remotest location of India"
+    answer: "No, you don't need to be physically present for the process, The Expert India is an online catering platform all you need is an internet connection in your phone/computer and the required documents with you and we can get the job done no matters even if you are present at the remotest location of India"
   }
 ];
 
@@ -1015,7 +1015,7 @@ export const TRADEMARK_OBJECTION_HERO = {
   badge: "Trademark Objection Reply",
   title: "Reply To Your Objected Trademark",
   subtitle: "Professional Trademark Objection Reply Services",
-  description: "OnlineLegalIndia.com can help you file a professional reply to a trademark objection in 5 to 10 working days, subject to government and client processing time.",
+  description: "TheExpertIndia.com can help you file a professional reply to a trademark objection in 5 to 10 working days, subject to government and client processing time.",
   rating: {
     score: "4.9/5",
     reviews: "1,00,000+ reviews"
@@ -1195,7 +1195,7 @@ export const TRADEMARK_OBJECTION_FAQ = [
   },
   {
     question: "Do I need to physically present for the process ?",
-    answer: "No, you don't need to be physically present for the process, OnlineLegalIndia is an online catering platform all you need is an internet connection in your phone/computer and the required documents with you and we can get the job done no matters even if you are present at the remotest location of India"
+    answer: "No, you don't need to be physically present for the process, The Expert India is an online catering platform all you need is an internet connection in your phone/computer and the required documents with you and we can get the job done no matters even if you are present at the remotest location of India"
   },
   {
     question: "Can I use the TM sign for my Trademark or Logo even if the Trademark Objection Examination Report is issued ?",

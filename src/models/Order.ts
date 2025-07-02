@@ -8,7 +8,8 @@ export interface IOrder extends mongoose.Document {
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
   orderDate: Date
   completionDate?: Date  
-  notes?: string
+  notes?: string // User notes (customer's special instructions)
+  adminNotes?: string // Admin notes (internal notes for admin team)
   userDetails?: {
     name?: string
     email?: string
@@ -60,7 +61,10 @@ const OrderSchema = new mongoose.Schema<IOrder>({
     type: Date,
   },
   notes: {
-    type: String,
+    type: String, // User notes
+  },
+  adminNotes: {
+    type: String, // Admin notes
   },
   userDetails: {
     type: mongoose.Schema.Types.Mixed,

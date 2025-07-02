@@ -48,7 +48,7 @@ export async function PUT(
     if (!currentUser || currentUser.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
-    const { status, paymentStatus, notes, completionDate } = await request.json()
+    const { status, paymentStatus, adminNotes, completionDate } = await request.json()
     // Get original order for comparison
     const originalOrder = await Order.findById(id)
     if (!originalOrder) {
@@ -57,9 +57,9 @@ export async function PUT(
     const updateData: { 
       status: string; 
       paymentStatus: string; 
-      notes?: string; 
+      adminNotes?: string; 
       completionDate?: Date;
-    } = { status, paymentStatus, notes }
+    } = { status, paymentStatus, adminNotes }
     if (status === 'completed' && !completionDate) {
       updateData.completionDate = new Date()
     } else if (completionDate) {
@@ -77,7 +77,7 @@ export async function PUT(
     const changes = []
     if (originalOrder.status !== status) changes.push(`status: ${originalOrder.status} → ${status}`)
     if (originalOrder.paymentStatus !== paymentStatus) changes.push(`payment: ${originalOrder.paymentStatus} → ${paymentStatus}`)
-    if (originalOrder.notes !== notes) changes.push('notes updated')
+    if (originalOrder.adminNotes !== adminNotes) changes.push('admin notes updated')
     await logActivity({
       adminId: currentUser._id.toString(),
       action: 'update',

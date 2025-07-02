@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Plus, Search, MoreHorizontal, Eye, ToggleLeft, ToggleRight, Settings } from "lucide-react"
+import { Plus, Search, MoreHorizontal, Eye, ToggleLeft, ToggleRight, Settings, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -55,9 +55,29 @@ interface Service {
   updatedAt: string
 }
 
+interface ServicesResponse {
+  services: Service[]
+  pagination: {
+    page: number
+    limit: number
+    totalCount: number
+    totalPages: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+  }
+}
+
   const [services, setServices] = useState<Service[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 20,
+    totalCount: 0,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPreviousPage: false
+  })
   const [selectedService, setSelectedService] = useState<Service | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
@@ -87,14 +107,20 @@ interface Service {
       .then(res => res.json())
       .then(data => setDocCategories(data))
       .catch(() => setDocCategories([]));
-  }, []);
+  }, [pagination.page]);
 
   const fetchServices = async () => {
     try {
-      const response = await fetch('/api/admin/services')
+      const params = new URLSearchParams({
+        page: pagination.page.toString(),
+        limit: pagination.limit.toString(),
+      })
+      
+      const response = await fetch(`/api/admin/services?${params}`)
       if (response.ok) {
-        const data = await response.json()
-        setServices(data)
+        const data: ServicesResponse = await response.json()
+        setServices(data.services)
+        setPagination(data.pagination)
       } else {
         toast.error('Failed to fetch services')
       }
@@ -102,6 +128,12 @@ interface Service {
       toast.error('Error fetching services')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination(prev => ({ ...prev, page: newPage }))
     }
   }
 
@@ -397,6 +429,45 @@ interface Service {
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between mt-4">
+        <div className="text-sm text-muted-foreground">
+          {pagination.totalCount > 0 && (
+            <>
+              Showing {(pagination.page - 1) * pagination.limit + 1} to{' '}
+              {Math.min(pagination.page * pagination.limit, pagination.totalCount)} of{' '}
+              {pagination.totalCount} services
+            </>
+          )}
+        </div>
+        
+        {pagination.totalPages > 1 && (
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(pagination.page - 1)}
+              disabled={!pagination.hasPreviousPage}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </Button>
+            <span className="text-sm">
+              Page {pagination.page} of {pagination.totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(pagination.page + 1)}
+              disabled={!pagination.hasNextPage}
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* View/Edit Service Dialog */}

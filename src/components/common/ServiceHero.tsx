@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,8 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { INDIAN_STATES } from "@/lib/services-constants";
+import { submitForm, getFormSource, validateFormData } from "@/lib/form-utils";
+import { toast } from "sonner";
 import "@/app/animations.css";
 
 interface ServiceHeroProps {
@@ -74,7 +77,18 @@ interface ServiceHeroProps {
   selectFieldType?: 'companyType' | 'trademarkType' | 'hearAbout' | 'package';
 }
 
-const ServiceHero = ({ heroData, selectOptions, selectFieldType }: ServiceHeroProps) => {  const [formData, setFormData] = useState({
+const ServiceHero = ({ heroData, selectOptions, selectFieldType }: ServiceHeroProps) => {
+  const pathname = usePathname();
+  const [formData, setFormData] = useState<{
+    name: string;
+    mobile: string;
+    email: string;
+    state: string;
+    city: string;
+    agreeTerms: boolean;
+    agreeComms: boolean;
+    [key: string]: string | boolean;
+  }>({
     name: "",
     mobile: "",
     email: "",
@@ -84,14 +98,79 @@ const ServiceHero = ({ heroData, selectOptions, selectFieldType }: ServiceHeroPr
     agreeTerms: false,
     agreeComms: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    
+    if (isSubmitting) return;
+
+    // Validate form data
+    const errors = validateFormData({
+      name: formData.name,
+      email: formData.email,
+      mobile: formData.mobile,
+    });
+
+    if (errors.length > 0) {
+      toast.error(errors.join(', '));
+      return;
+    }
+
+    if (!formData.agreeTerms) {
+      toast.error('Please agree to the Terms & Conditions');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const source = getFormSource(pathname);
+      
+      await submitForm({
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.mobile,
+        page: pathname,
+        source,
+        formType: 'hero',
+        state: formData.state,
+        city: formData.city,
+        companyType: selectFieldType === 'companyType' ? String(formData[selectFieldType]) : undefined,
+        hearAbout: selectFieldType === 'hearAbout' ? String(formData[selectFieldType]) : undefined,
+        package: selectFieldType === 'package' ? String(formData[selectFieldType]) : undefined,
+        additionalData: {
+          agreeComms: formData.agreeComms,
+          ...(selectFieldType && formData[selectFieldType] && {
+            [selectFieldType]: formData[selectFieldType]
+          })
+        }
+      });
+
+      toast.success('Thank you! We will contact you within 30 minutes.');
+      
+      // Reset form
+      setFormData({
+        name: "",
+        mobile: "",
+        email: "",
+        state: "",
+        city: "",
+        ...(selectFieldType && { [selectFieldType]: "" }),
+        agreeTerms: false,
+        agreeComms: false,
+      });
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('Something went wrong. Please try again or call us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <section className="relative min-h-[calc(100vh-120px)] overflow-hidden bg-white">
@@ -356,11 +435,20 @@ const ServiceHero = ({ heroData, selectOptions, selectFieldType }: ServiceHeroPr
                     <Button 
                       type="submit" 
                       className="w-full h-10 bg-brand-gradient text-white font-semibold text-sm hover:opacity-90 transition-all duration-300"
-                      disabled={!formData.agreeTerms}
+                      disabled={!formData.agreeTerms || isSubmitting}
                     >
-                      <Phone className="h-4 w-4 mr-2" />
-                      {heroData.form.button}
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                      {isSubmitting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <Phone className="h-4 w-4 mr-2" />
+                          {heroData.form.button}
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </>
+                      )}
                     </Button>
 
                     {/* Note */}

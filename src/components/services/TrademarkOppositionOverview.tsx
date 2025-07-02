@@ -47,7 +47,7 @@ const TrademarkOppositionOverview = () => {
                   <FileText className="h-6 w-6 md:h-8 md:w-8 text-brand-primary" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                  Expert Legal Assistance Available
+                  Expert India Assistance Available
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   Our trademark experts have successfully handled thousands of opposition cases with a high success rate.

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 import "@/app/animations.css";
 import { Button } from "@/components/ui/button";
 import { 
@@ -26,8 +28,14 @@ import {
 } from "@/lib/constants";
 import Link from "next/link";
 import CTA from "@/components/common/CTA";
+import { submitForm, getFormSource } from "@/lib/form-utils";
+import { toast } from "sonner";
 
 const Footer = () => {
+  const pathname = usePathname();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
+
   const getSocialIcon = (iconName: string) => {
     const icons = {
       facebook: Facebook,
@@ -37,6 +45,55 @@ const Footer = () => {
       youtube: Youtube,
     };
     return icons[iconName as keyof typeof icons] || Facebook;
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (isSubmittingNewsletter) return;
+
+    if (!newsletterEmail.trim()) {
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmittingNewsletter(true);
+
+    try {
+      const source = getFormSource(pathname);
+      
+      // Add to newsletter directly
+      const newsletterResponse = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: newsletterEmail,
+          source: 'newsletter',
+          sourceDetails: {
+            page: pathname,
+          },
+          tags: ['newsletter', 'footer-signup'],
+        }),
+      });
+
+      if (!newsletterResponse.ok) {
+        throw new Error('Failed to subscribe to newsletter');
+      }
+
+      toast.success('Thank you for subscribing to our newsletter!');
+      setNewsletterEmail("");
+
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmittingNewsletter(false);
+    }
   };
 
   return (    <footer className="bg-gray-900 text-white">
@@ -49,8 +106,8 @@ const Footer = () => {
                 <Scale className="h-6 w-6 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg md:text-xl font-bold text-white">Expert Legal</span>
-                <span className="text-sm text-brand-secondary font-medium">India</span>
+                <span className="text-lg md:text-xl font-bold text-white">Expert India</span>
+                <span className="text-sm text-brand-secondary font-medium">Consultancy</span>
               </div>
             </div>
             
@@ -137,17 +194,33 @@ const Footer = () => {
               </p>
             </div>
             <div className="space-y-3 md:space-y-4">
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <input
                   type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Enter your email address"
                   className="flex-1 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary transition-colors"
+                  disabled={isSubmittingNewsletter}
                 />
-                <Button className="bg-brand-gradient hover:opacity-90 px-4 md:px-6 py-2 md:py-3 text-sm md:text-base whitespace-nowrap">
-                  Subscribe
-                  <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-2" />
+                <Button 
+                  type="submit"
+                  className="bg-brand-gradient hover:opacity-90 px-4 md:px-6 py-2 md:py-3 text-sm md:text-base whitespace-nowrap"
+                  disabled={isSubmittingNewsletter}
+                >
+                  {isSubmittingNewsletter ? (
+                    <>
+                      <div className="animate-spin rounded-full h-3 w-3 md:h-4 md:w-4 border-b-2 border-white mr-2"></div>
+                      Subscribing...
+                    </>
+                  ) : (
+                    <>
+                      Subscribe
+                      <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-2" />
+                    </>
+                  )}
                 </Button>
-              </div>
+              </form>
               <p className="text-xs text-gray-400">
                 We respect your privacy. Unsubscribe at any time.
               </p>

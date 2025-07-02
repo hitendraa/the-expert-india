@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Plus, Search, MoreHorizontal, UserX, Users } from "lucide-react"
+import { Plus, Search, MoreHorizontal, UserX, Users, Phone, Printer, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -36,6 +36,7 @@ interface User {
   _id: string
   name: string
   email: string
+  phone?: string
   image?: string
   role: 'user' | 'admin'
   googleId?: string
@@ -43,27 +44,53 @@ interface User {
   updatedAt: string
 }
 
+interface UsersResponse {
+  users: User[]
+  pagination: {
+    page: number
+    limit: number
+    totalCount: number
+    totalPages: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+  }
+}
+
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 25,
+    totalCount: 0,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPreviousPage: false
+  })
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [editForm, setEditForm] = useState({ name: "", email: "", role: "user" as "user" | "admin" })
-  const [addForm, setAddForm] = useState({ name: "", email: "", role: "user" as "user" | "admin" })
+  const [editForm, setEditForm] = useState({ name: "", email: "", phone: "", role: "user" as "user" | "admin" })
+  const [addForm, setAddForm] = useState({ name: "", email: "", phone: "", role: "user" as "user" | "admin" })
 
   useEffect(() => {
     fetchUsers()
-  }, [])
+  }, [pagination.page])
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/admin/users')
+      const params = new URLSearchParams({
+        page: pagination.page.toString(),
+        limit: pagination.limit.toString(),
+      })
+      
+      const response = await fetch(`/api/admin/users?${params}`)
       if (response.ok) {
-        const data = await response.json()
-        setUsers(data)
+        const data: UsersResponse = await response.json()
+        setUsers(data.users)
+        setPagination(data.pagination)
       } else {
         toast.error('Failed to fetch users')
       }
@@ -74,9 +101,15 @@ export default function UsersPage() {
     }
   }
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination(prev => ({ ...prev, page: newPage }))
+    }
+  }
+
   const handleViewUser = (user: User) => {
     setSelectedUser(user)
-    setEditForm({ name: user.name, email: user.email, role: user.role })
+    setEditForm({ name: user.name, email: user.email, phone: user.phone || "", role: user.role })
     setIsEditing(false)
     setIsDialogOpen(true)
   }
@@ -125,7 +158,7 @@ export default function UsersPage() {
         toast.success('User added successfully')
         fetchUsers()
         setIsAddDialogOpen(false)
-        setAddForm({ name: "", email: "", role: "user" })
+        setAddForm({ name: "", email: "", phone: "", role: "user" })
       } else {
         const error = await response.json()
         toast.error(error.error || 'Failed to add user')
@@ -172,6 +205,183 @@ export default function UsersPage() {
     }
   }
 
+  // Print functionality
+  const handlePrint = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    
+    const currentDate = new Date().toLocaleDateString();
+    const currentTime = new Date().toLocaleTimeString();
+    
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Users Report - ${currentDate}</title>
+        <style>
+          @page { 
+            margin: 20mm; 
+            size: A4;
+          }
+          * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+          }
+          body { 
+            font-family: Arial, sans-serif; 
+            font-size: 12px; 
+            line-height: 1.4;
+            color: #333;
+          }
+          .header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+          }
+          .header h1 { 
+            font-size: 18px; 
+            margin-bottom: 5px;
+            color: #1a365d;
+          }
+          .header p { 
+            font-size: 10px; 
+            color: #666;
+          }
+          .stats { 
+            display: flex; 
+            justify-content: space-around; 
+            margin: 15px 0; 
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+          }
+          .stat-item { 
+            text-align: center; 
+          }
+          .stat-number { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #1a365d;
+          }
+          .stat-label { 
+            font-size: 10px; 
+            color: #666;
+          }
+          .filters { 
+            margin: 15px 0; 
+            padding: 10px;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            font-size: 10px;
+          }
+          table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 15px;
+          }
+          th, td { 
+            border: 1px solid #ddd; 
+            padding: 6px; 
+            text-align: left; 
+            vertical-align: top;
+          }
+          th { 
+            background-color: #f8f9fa; 
+            font-weight: bold;
+            font-size: 10px;
+          }
+          td { 
+            font-size: 9px;
+          }
+          .role-admin { color: #059669; font-weight: bold; }
+          .role-user { color: #6b7280; }
+          .footer { 
+            margin-top: 20px; 
+            text-align: center; 
+            font-size: 10px; 
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+          }
+          @media print {
+            .no-print { display: none !important; }
+            body { print-color-adjust: exact; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>The Expert India - Users Report</h1>
+          <p>Generated on ${currentDate} at ${currentTime}</p>
+        </div>
+        
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-number">${filteredUsers.length}</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">${filteredUsers.filter(u => u.role === 'admin').length}</div>
+            <div class="stat-label">Admins</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">${filteredUsers.filter(u => u.role === 'user').length}</div>
+            <div class="stat-label">Regular Users</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">${filteredUsers.filter(u => u.googleId).length}</div>
+            <div class="stat-label">Google Auth</div>
+          </div>
+        </div>
+        
+        ${searchTerm ? `
+        <div class="filters">
+          <strong>Applied Filters:</strong>
+          Search: "${searchTerm}"
+        </div>
+        ` : ''}
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <th>Auth Method</th>
+              <th>Created Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredUsers.map(user => `
+              <tr>
+                <td><strong>${user.name}</strong></td>
+                <td>${user.email}</td>
+                <td>${user.phone || 'N/A'}</td>
+                <td class="role-${user.role}">${user.role.toUpperCase()}</td>
+                <td>${user.googleId ? 'Google Auth' : 'Standard'}</td>
+                <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <div class="footer">
+          <p>The Expert India - Professional Business Services | Generated from Admin Panel</p>
+          <p>Total Records: ${filteredUsers.length} | Generated by: Admin User</p>
+        </div>
+      </body>
+      </html>
+    `;
+    
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  };
+
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -196,10 +406,16 @@ export default function UsersPage() {
           <h1 className="text-3xl font-bold">Users</h1>
           <p className="text-muted-foreground">Manage user accounts and permissions</p>
         </div>
-        <Button onClick={() => setIsAddDialogOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add User
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={handlePrint} variant="outline">
+            <Printer className="mr-2 h-4 w-4" />
+            Print Report
+          </Button>
+          <Button onClick={() => setIsAddDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add User
+          </Button>
+        </div>
       </div>
 
       <div className="flex items-center space-x-2 mb-4">
@@ -218,6 +434,7 @@ export default function UsersPage() {
             <TableRow>
               <TableHead>User</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Phone</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Created</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -226,7 +443,7 @@ export default function UsersPage() {
           <TableBody>
             {filteredUsers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24">
+                <TableCell colSpan={6} className="h-24">
                   <div className="flex flex-col items-center justify-center text-center">
                     <Users className="h-12 w-12 text-muted-foreground mb-2" />
                     <h3 className="font-semibold text-lg mb-1">No users found</h3>
@@ -262,6 +479,16 @@ export default function UsersPage() {
                     </div>
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    {user.phone ? (
+                      <div className="flex items-center">
+                        <Phone className="h-3 w-3 mr-1 text-muted-foreground" />
+                        {user.phone}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">-</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
                       {user.role}
@@ -301,6 +528,45 @@ export default function UsersPage() {
         </Table>
       </div>
 
+      {/* Pagination */}
+      <div className="flex items-center justify-between mt-4">
+        <div className="text-sm text-muted-foreground">
+          {pagination.totalCount > 0 && (
+            <>
+              Showing {(pagination.page - 1) * pagination.limit + 1} to{' '}
+              {Math.min(pagination.page * pagination.limit, pagination.totalCount)} of{' '}
+              {pagination.totalCount} users
+            </>
+          )}
+        </div>
+        
+        {pagination.totalPages > 1 && (
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(pagination.page - 1)}
+              disabled={!pagination.hasPreviousPage}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </Button>
+            <span className="text-sm">
+              Page {pagination.page} of {pagination.totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(pagination.page + 1)}
+              disabled={!pagination.hasNextPage}
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+      </div>
+
       {/* View/Edit User Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
@@ -336,6 +602,19 @@ export default function UsersPage() {
                   onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
                   className="col-span-3"
                   disabled={!isEditing}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="phone" className="text-right">
+                  Phone
+                </Label>
+                <Input
+                  id="phone"
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                  className="col-span-3"
+                  disabled={!isEditing}
+                  placeholder="Enter phone number"
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -414,6 +693,19 @@ export default function UsersPage() {
                 onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
                 className="col-span-3"
                 placeholder="Enter email address"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="add-phone" className="text-right">
+                Phone
+              </Label>
+              <Input
+                id="add-phone"
+                type="tel"
+                value={addForm.phone}
+                onChange={(e) => setAddForm({ ...addForm, phone: e.target.value })}
+                className="col-span-3"
+                placeholder="Enter phone number"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

@@ -70,7 +70,7 @@ export default function Error({
                   </Button>
                 </Link>
 
-                <Link href="tel:+919876543210">
+                <Link href="tel:+917023314773">
                   <Button variant="outline" className="w-full">
                     <Phone className="h-4 w-4 mr-2" />
                     Call Support
@@ -83,7 +83,7 @@ export default function Error({
             <div className="mt-6 pt-6 border-t border-gray-100">
               <p className="text-xs text-gray-500">
                 If this problem persists, please contact our support team at{" "}
-                <span className="text-brand-primary font-medium">support@expertlegalindia.com</span>
+                <span className="text-brand-primary font-medium">support@theexpertindia.com</span>
               </p>
             </div>
           </CardContent>

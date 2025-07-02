@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -20,9 +21,13 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { COMPANY_REGISTRATION_HERO, INDIAN_STATES, COMPANY_TYPES } from "@/lib/services-constants";
+import { submitForm, getFormSource, validateFormData } from "@/lib/form-utils";
+import { toast } from "sonner";
 import "@/app/animations.css";
 
-const CompanyRegistrationHero = () => {  const [formData, setFormData] = useState({
+const CompanyRegistrationHero = () => {
+  const pathname = usePathname();
+  const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
@@ -31,14 +36,72 @@ const CompanyRegistrationHero = () => {  const [formData, setFormData] = useStat
     agreeTerms: false,
     agreeComms: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
+    
+    if (isSubmitting) return;
+
+    // Validate form data
+    const errors = validateFormData({
+      name: formData.name,
+      email: formData.email,
+      mobile: formData.mobile,
+    });
+
+    if (errors.length > 0) {
+      toast.error(errors.join(', '));
+      return;
+    }
+
+    if (!formData.agreeTerms) {
+      toast.error('Please agree to the Terms & Conditions');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const source = getFormSource(pathname);
+      
+      await submitForm({
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.mobile,
+        page: pathname,
+        source,
+        formType: 'hero',
+        state: formData.state,
+        companyType: formData.companyType,
+        additionalData: {
+          agreeComms: formData.agreeComms,
+        }
+      });
+
+      toast.success('Thank you! We will contact you within 30 minutes.');
+      
+      // Reset form
+      setFormData({
+        name: "",
+        mobile: "",
+        email: "",
+        state: "",
+        companyType: "",
+        agreeTerms: false,
+        agreeComms: false,
+      });
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('Something went wrong. Please try again or call us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (    <section className="relative min-h-[calc(100vh-120px)] overflow-hidden bg-white">
@@ -260,10 +323,20 @@ const CompanyRegistrationHero = () => {  const [formData, setFormData] = useStat
                   <Button
                     type="submit"
                     className="w-full bg-brand-gradient hover:opacity-90 text-white font-semibold py-2.5 md:py-3 text-sm md:text-base shadow-xl transition-all duration-300 animated-hover animated-hover-primary"
+                    disabled={!formData.agreeTerms || isSubmitting}
                   >
-                    <PhoneCall className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-                    {COMPANY_REGISTRATION_HERO.form.button}
-                    <ArrowRight className="h-4 w-4 md:h-5 md:w-5 ml-2" />
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <PhoneCall className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                        {COMPANY_REGISTRATION_HERO.form.button}
+                        <ArrowRight className="h-4 w-4 md:h-5 md:w-5 ml-2" />
+                      </>
+                    )}
                   </Button>
                 </form>
 

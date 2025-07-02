@@ -6,7 +6,7 @@ import Order from '@/models/Order'
 import { authOptions } from '@/lib/auth'
 import { logActivity } from '@/lib/activity'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
@@ -19,15 +19,37 @@ export async function GET() {
     if (!currentUser || currentUser.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
-    const orders = await Order.find({})
-      .populate('userId', 'name email')
+
+    // Parse query parameters for pagination
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '50')
+    const skip = (page - 1) * limit
+
+    console.log(`Fetching orders: page ${page}, limit ${limit}`)
+    const startTime = Date.now()
+
+    // Optimize query by only selecting necessary fields initially
+    const ordersQuery = Order.find({})
+      .populate('userId', 'name email image')
       .populate({
         path: 'serviceId',
         select: 'name price',
         options: { strictPopulate: false }
       })
-      .populate('documentIds', 'filename originalName mimetype size category uploadDate')
+      .select('-documents') // Exclude large document arrays initially
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+
+    // Get total count for pagination
+    const [orders, totalCount] = await Promise.all([
+      ordersQuery.exec(),
+      Order.countDocuments({})
+    ])
+
+    const queryTime = Date.now() - startTime
+    console.log(`Orders query completed in ${queryTime}ms. Found ${orders.length} orders of ${totalCount} total.`)
 
     // If service is deleted, serviceId will be null. Add a fallback for admin consumers.
     type ServiceFallback = { name: string; price: number };
@@ -40,10 +62,27 @@ export async function GET() {
       return plainOrder;
     });
 
-    return NextResponse.json(ordersWithServiceFallback)
+    return NextResponse.json({
+      orders: ordersWithServiceFallback,
+      pagination: {
+        page,
+        limit,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+        hasNextPage: page < Math.ceil(totalCount / limit),
+        hasPreviousPage: page > 1
+      },
+      performance: {
+        queryTime,
+        recordsReturned: orders.length
+      }
+    })
   } catch (error) {
     console.error('Error fetching orders:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }
 

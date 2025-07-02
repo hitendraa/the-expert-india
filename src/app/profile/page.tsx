@@ -43,7 +43,8 @@ interface Order {
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
   orderDate: string
   completionDate?: string
-  notes?: string
+  notes?: string // User notes
+  adminNotes?: string // Admin notes
   createdAt: string
   updatedAt: string
 }
@@ -271,8 +272,14 @@ export default function ProfilePage() {
                               </div>
                               {order.notes && (
                                 <div>
-                                  <label className="text-sm font-medium">Notes</label>
+                                  <label className="text-sm font-medium">Your Notes</label>
                                   <div className="mt-1 text-sm text-muted-foreground">{order.notes}</div>
+                                </div>
+                              )}
+                              {order.adminNotes && (
+                                <div>
+                                  <label className="text-sm font-medium">Admin Updates</label>
+                                  <div className="mt-1 text-sm text-blue-600 bg-blue-50 p-2 rounded">{order.adminNotes}</div>
                                 </div>
                               )}
                             </div>
@@ -476,8 +483,14 @@ export default function ProfilePage() {
                               )}
                               {order.notes && (
                                 <div>
-                                  <label className="text-sm font-medium">Notes</label>
+                                  <label className="text-sm font-medium">Your Notes</label>
                                   <div className="mt-1 text-sm text-muted-foreground">{order.notes}</div>
+                                </div>
+                              )}
+                              {order.adminNotes && (
+                                <div>
+                                  <label className="text-sm font-medium">Admin Updates</label>
+                                  <div className="mt-1 text-sm text-blue-600 bg-blue-50 p-2 rounded">{order.adminNotes}</div>
                                 </div>
                               )}
                             </div>

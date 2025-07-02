@@ -52,6 +52,7 @@ export interface VerifyPaymentParams {
   }
   documents?: string[]
   documentIds?: string[]
+  notes?: string
 }
 
 export async function verifyRazorpayPayment(params: VerifyPaymentParams) {

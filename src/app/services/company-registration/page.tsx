@@ -10,7 +10,7 @@ import { COMPANY_REGISTRATION_FAQ } from "@/lib/services-constants";
 
 export const metadata: Metadata = {
   title: 'Company Registration in India | Online Business Registration Services',
-  description: 'Register your company online in India with Expert Legal. Choose from Private Limited, OPC, LLP, Section 8 & more. 100% online process, expert guidance, 15-day completion.',
+  description: 'Register your company online in India with The Expert India. Choose from Private Limited, OPC, LLP, Section 8 & more. 100% online process, expert guidance, 15-day completion.',
   keywords: [
     'company registration India',
     'online company registration',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     'legal company registration'
   ].join(', '),
   openGraph: {
-    title: 'Company Registration in India | Expert Legal Services',
+    title: 'Company Registration in India | The Expert India Services',
     description: 'Professional company registration services in India. Fast, secure, and affordable. Get your business registered in 15 working days.',
     type: 'website',
   },

@@ -346,14 +346,12 @@ export default function BuyServicePage() {
             : String(doc.selectedDocumentId);
         })
 
-      // ...existing code...
-
       // Initialize Razorpay
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: 'The Expert India',
+        name: 'The Expert India Consultancy',
         description: `Payment for ${service.name}`,
         order_id: orderData.orderId,
         handler: async function (paymentResponse: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
@@ -367,6 +365,7 @@ export default function BuyServicePage() {
               userDetails,
               documents: documentNames,
               documentIds: documentIds,
+              notes: notes || undefined,
             })
             if (verificationResult.success) {
               toast.success('Payment successful! Order placed.')

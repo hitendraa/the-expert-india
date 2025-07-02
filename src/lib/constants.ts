@@ -1,7 +1,7 @@
 // Site-wide constants
-export const SITE_NAME = "Expert Legal";
-export const SITE_TAGLINE = "India";
-export const SITE_FULL_NAME = `${SITE_NAME} ${SITE_TAGLINE}`;
+export const SITE_NAME = "Expert India";
+export const SITE_TAGLINE = "Consultancy";
+export const SITE_FULL_NAME = `The ${SITE_NAME} ${SITE_TAGLINE}`;
 export const SITE_SINCE = 2009;
 export const SITE_RATING = "4.9/5";
 export const SITE_REVIEWS = "Trusted Reviews";
@@ -9,11 +9,11 @@ export const SITE_MISSION = "To democratize legal services by making them simple
 export const SITE_COMMITMENT = "Committed to Excellence";
 export const SITE_ADDRESS = "123 Business District, Delhi, India";
 export const SITE_CITY = "Delhi";
-export const SITE_PHONE = "08069029400";
-export const SITE_EMAIL = "info@expertlegalindia.com";
-export const SITE_WHATSAPP = "+91 8069029400";
+export const SITE_PHONE = "7023314773";
+export const SITE_EMAIL = "info@theexpertindia.com";
+export const SITE_WHATSAPP = "+91 7023314773";
 
-// Constants for Expert Legal India
+// Constants for The Expert India Consultancy
 
 export const CONTACT_INFO = {
   phone: SITE_PHONE,
@@ -357,7 +357,7 @@ export const HERO_SECTION = {
     icon: "Award"
   },
   title: "Your Trusted Partner for All Legal Services",
-  subtitle: "Expert Legal Solutions Made Simple",
+  subtitle: "The Expert India - Leading Solutions Made Simple",
   description: "From company registration to trademark protection, we provide comprehensive legal services with expert guidance and affordable pricing. Get your business legally compliant in just a few steps.",
   rating: {
     score: SITE_RATING,

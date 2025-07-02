@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Users, ShoppingCart, Settings, LayoutDashboard, LogOut, Activity, FileText, FolderOpen } from "lucide-react"
+import { Users, ShoppingCart, Settings, LayoutDashboard, LogOut, Activity, FileText, FolderOpen, Mail, Heart } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -34,7 +34,18 @@ const adminMenuItems = [
     title: "Orders",
     url: "/admin/orders",
     icon: ShoppingCart,
-  },  {
+  },
+  {
+    title: "Forms",
+    url: "/admin/forms",
+    icon: FileText,
+  },
+  {
+    title: "Newsletter",
+    url: "/admin/newsletter",
+    icon: Mail,
+  },
+  {
     title: "Services",
     url: "/admin/services",
     icon: Settings,
@@ -53,6 +64,11 @@ const adminMenuItems = [
     title: "Activities",
     url: "/admin/activities",
     icon: Activity,
+  },
+  {
+    title: "System Health",
+    url: "/admin/health",
+    icon: Heart,
   },
 ]
 

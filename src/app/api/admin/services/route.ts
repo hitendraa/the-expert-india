@@ -6,7 +6,7 @@ import Service from '@/models/Service'
 import { authOptions } from '@/lib/auth'
 import { logActivity } from '@/lib/activity'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
@@ -20,8 +20,34 @@ export async function GET() {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const services = await Service.find({}).sort({ createdAt: -1 })
-    return NextResponse.json(services)
+    // Get pagination parameters
+    const url = new URL(request.url)
+    const page = parseInt(url.searchParams.get('page') || '1')
+    const limit = parseInt(url.searchParams.get('limit') || '20')
+    const skip = (page - 1) * limit
+
+    // Get total count
+    const totalCount = await Service.countDocuments({})
+    
+    // Get paginated services
+    const services = await Service.find({})
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+
+    const totalPages = Math.ceil(totalCount / limit)
+    
+    return NextResponse.json({
+      services,
+      pagination: {
+        page,
+        limit,
+        totalCount,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1
+      }
+    })
   } catch (error) {
     console.error('Error fetching services:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

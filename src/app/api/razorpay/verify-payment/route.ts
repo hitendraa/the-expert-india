@@ -20,6 +20,7 @@ export interface VerifyBody {
   }
   documents?: string[]
   documentIds?: string[]
+  notes?: string
 }
 
 export async function POST(request: NextRequest) {
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
       userDetails,
       documents,
       documentIds,
+      notes,
     }: VerifyBody = await request.json()
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -95,7 +97,7 @@ export async function POST(request: NextRequest) {
         razorpay_signature,
         method: 'razorpay',
       },
-      notes: `Order placed successfully via Razorpay payment`,
+      notes: notes || undefined, // Use user's notes if provided
     })
 
     const savedOrder = await newOrder.save()    // Log activity

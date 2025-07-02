@@ -16,7 +16,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Trademark Registration in India | Online Brand Protection Services',
-  description: 'Register your trademark online in India with Expert Legal. Protect your brand identity with exclusive rights. 50% discount for MSME certificate holders.',
+  description: 'Register your trademark online in India with The Expert India. Protect your brand identity with exclusive rights. 50% discount for MSME certificate holders.',
   keywords: [
     'trademark registration India',
     'online trademark registration',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     'brand name registration'
   ].join(', '),
   openGraph: {
-    title: 'Trademark Registration in India | Expert Legal Services',
+    title: 'Trademark Registration in India | The Expert India Services',
     description: 'Professional trademark registration services in India. Protect your brand with exclusive rights. Fast, secure, and affordable.',
     type: 'website',
   },

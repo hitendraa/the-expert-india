@@ -34,7 +34,8 @@ interface Order {
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
   orderDate: string
   completionDate?: string
-  notes?: string
+  notes?: string // User notes
+  adminNotes?: string // Admin notes
   createdAt: string
   updatedAt: string
 }
@@ -398,6 +399,12 @@ export default function UserDashboard() {
                         <span className="font-medium text-green-600">
                           {new Date(order.completionDate).toLocaleDateString()}
                         </span>
+                      </div>
+                    )}
+                    
+                    {order.adminNotes && (
+                      <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded mt-2">
+                        <strong>Admin Update:</strong> {order.adminNotes.length > 50 ? `${order.adminNotes.substring(0, 50)}...` : order.adminNotes}
                       </div>
                     )}
                   </div>
