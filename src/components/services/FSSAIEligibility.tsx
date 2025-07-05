@@ -127,32 +127,6 @@ const FSSAIEligibility = () => {
               </Card>
             ))}
           </div>
-
-          {/* Sample Certificate */}
-          <div className="mt-8 md:mt-12">
-            <div className="bg-gray-50 rounded-2xl p-6 md:p-8">
-              <div className="text-center mb-6">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                  Food Business License Certificate Sample
-                </h3>
-                <p className="text-base text-gray-600">
-                  This is how your FSSAI license certificate will look once approved
-                </p>
-              </div>
-              
-              <div className="max-w-md mx-auto">
-                <div className="bg-white rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
-                  <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 text-sm">
-                    FSSAI License Certificate Sample
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    * Your actual certificate will contain all business and license details
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

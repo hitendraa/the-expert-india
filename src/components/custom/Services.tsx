@@ -187,15 +187,17 @@ const Services = () => {  // Service category mapping with icons and description
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {popularServices.map((service, index) => (              <Link
+            {popularServices.map((service, index) => (
+              <Link
                 key={index}
-                href="#"
+                href={service.href}
                 className="group bg-white rounded-xl p-4 text-center hover:shadow-brand transition-all duration-300 hover:-translate-y-1 border border-gray-100 hover:border-brand-primary/30 hover:bg-brand-primary/5"
-              ><div className="bg-brand-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
+              >
+                <div className="bg-brand-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
                   <Zap className="h-6 w-6 text-brand-primary group-hover:text-white transition-colors" />
                 </div>
                 <h4 className="font-semibold text-sm text-gray-900 group-hover:text-brand-primary transition-colors leading-tight">
-                  {service}
+                  {service.name}
                 </h4>
               </Link>
             ))}

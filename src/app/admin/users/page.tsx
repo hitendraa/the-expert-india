@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Plus, Search, MoreHorizontal, UserX, Users, Phone, Printer, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -75,7 +75,7 @@ export default function UsersPage() {
   const [editForm, setEditForm] = useState({ name: "", email: "", phone: "", role: "user" as "user" | "admin" })
   const [addForm, setAddForm] = useState({ name: "", email: "", phone: "", role: "user" as "user" | "admin" })
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const params = new URLSearchParams({
         page: pagination.page.toString(),
@@ -95,13 +95,12 @@ export default function UsersPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [pagination.page, pagination.limit])
 
   // Add useEffect with proper dependency
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchUsers()
-  }, [pagination.page])
+  }, [pagination.page, fetchUsers])
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
