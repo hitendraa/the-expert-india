@@ -3,7 +3,10 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
+import { ExternalLink } from "lucide-react"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
 
 export function AdminNavbar() {
   const pathname = usePathname()
@@ -48,6 +51,17 @@ export function AdminNavbar() {
           ))}
         </BreadcrumbList>
       </Breadcrumb>
+      
+      {/* Spacer to push button to the right */}
+      <div className="flex-1" />
+      
+      {/* Go to Dashboard button */}
+      <Button asChild variant="outline" size="sm">
+        <Link href="/dashboard" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+          <ExternalLink className="h-4 w-4" />
+          Go to Dashboard
+        </Link>
+      </Button>
     </header>
   )
 }

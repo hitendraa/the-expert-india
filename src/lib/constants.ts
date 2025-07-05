@@ -2,13 +2,13 @@
 export const SITE_NAME = "Expert India";
 export const SITE_TAGLINE = "Consultancy";
 export const SITE_FULL_NAME = `The ${SITE_NAME} ${SITE_TAGLINE}`;
-export const SITE_SINCE = 2009;
+export const SITE_SINCE = 2022;
 export const SITE_RATING = "4.9/5";
 export const SITE_REVIEWS = "Trusted Reviews";
 export const SITE_MISSION = "To democratize legal services by making them simple, affordable, and accessible to every business and individual across India, while maintaining the highest standards of quality and compliance.";
 export const SITE_COMMITMENT = "Committed to Excellence";
-export const SITE_ADDRESS = "123 Business District, Delhi, India";
-export const SITE_CITY = "Delhi";
+export const SITE_ADDRESS = "NYAMAT BANO, RANGNIYA MOHALLA, Pali City, Rajasthan 306401, India";
+export const SITE_CITY = "Jodhpur";
 export const SITE_PHONE = "7023314773";
 export const SITE_EMAIL = "info@theexpertindia.com";
 export const SITE_WHATSAPP = "+91 7023314773";
@@ -70,7 +70,7 @@ export const GST_SERVICES = [
 
 // Food License Services
 export const FOOD_LICENSE = [
-  { name: "FSSAI Basic Registration", href: "/services/fssai-basic-registration" },
+  { name: "FSSAI Registration", href: "/services/fssai-registration" },
   { name: "FSSAI State License", href: "/services/fssai-state-license" },
   { name: "FSSAI Central License", href: "/services/fssai-central-license" },
   { name: "FSSAI License Renewal", href: "/services/fssai-renewal" },
@@ -84,14 +84,14 @@ export const BUSINESS_REGISTRATION = [
   { name: "Sole Proprietorship", href: "/services/sole-proprietorship" },
   { name: "Partnership Firm", href: "/services/partnership-firm" },
   { name: "MSME Udyam Registration", href: "/services/msme-udyam-registration" },
-  { name: "Import Export Code (IEC)", href: "/services/import-export-code" },
+  { name: "Import Export Code (IEC)", href: "/services/iec-code-import-export-license" },
   { name: "Trade License", href: "/services/trade-license" },
   { name: "Shop & Establishment License", href: "/services/shop-establishment-license" },
   { name: "PF & ESI Registration", href: "/services/pf-esi-registration" },
   { name: "Labour License", href: "/services/labour-license" },
   { name: "Professional Tax Registration", href: "/services/professional-tax" },
   { name: "Digital Signature Certificate", href: "/services/digital-signature" },
-  { name: "ISO Certification", href: "/services/iso-certification" },
+  { name: "ISO Certification", href: "/services/iso-registration" },
   { name: "BIS Registration", href: "/services/bis-registration" }
 ]
 
@@ -154,9 +154,7 @@ export const MAIN_NAVIGATION = [
 
 export const QUICK_LINKS = [
   { name: "About Us", href: "/about" },
-  { name: "Blogs", href: "/blogs" },
-  { name: "Contact", href: "/contact" },
-  { name: "Careers", href: "/careers" }
+  { name: "Contact", href: "/contact" }
 ]
 
 export const SOCIAL_LINKS = [
@@ -170,32 +168,32 @@ export const SOCIAL_LINKS = [
 // Footer Links
 export const FOOTER_SERVICES = {
   "Popular Services": [
-    "Private Limited Company Registration",
-    "Trademark Registration", 
-    "GST Registration",
-    "FSSAI License",
-    "Import Export Code (IEC)"
+    { name: "Private Limited Company Registration", href: "/services/private-company-registration" },
+    { name: "Trademark Registration", href: "/services/trademark-registration" }, 
+    { name: "GST Registration", href: "/services/gst-registration" },
+    { name: "FSSAI License", href: "/services/fssai-registration" },
+    { name: "Import Export Code (IEC)", href: "/services/iec-code-import-export-license" }
   ],
   "Business Services": [
-    "LLP Registration",
-    "One Person Company",
-    "MSME Udyam Registration",
-    "Partnership Firm",
-    "ISO Certification"
+    { name: "LLP Registration", href: "/services/llp-partnership" },
+    { name: "One Person Company", href: "/services/one-person-company-registration" },
+    { name: "MSME Udyam Registration", href: "/services/msme-udyam-registration" },
+    { name: "Partnership Firm", href: "/services/partnership-firm" },
+    { name: "ISO Certification", href: "/services/iso-registration" }
   ],
   "Tax & Compliance": [
-    "Income Tax Return Filing",
-    "Annual Return Filing",
-    "PAN Card Application",
-    "GST Return Filing",
-    "Statutory Audit"
+    { name: "Income Tax Return Filing", href: "/services/income-tax-return-filing" },
+    { name: "Annual Return Filing", href: "/services/annual-return-filing" },
+    { name: "PAN Card Application", href: "/services/pan-application" },
+    { name: "GST Return Filing", href: "/services/gst-return-filing" },
+    { name: "Statutory Audit", href: "/services/statutory-audit" }
   ],
   "Financial Services": [
-    "Business Loan",
-    "Working Capital Loan",
-    "Health Insurance",
-    "Professional Indemnity",
-    "CMA Data Preparation"
+    { name: "Business Loan", href: "/services/business-loan" },
+    { name: "Working Capital Loan", href: "/services/working-capital-loan" },
+    { name: "Health Insurance", href: "/services/health-insurance" },
+    { name: "Professional Indemnity", href: "/services/professional-indemnity" },
+    { name: "CMA Data Preparation", href: "/services/cma-report" }
   ]
 }
 

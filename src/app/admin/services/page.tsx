@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Plus, Search, MoreHorizontal, Eye, ToggleLeft, ToggleRight, Settings, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -101,7 +101,7 @@ interface ServicesResponse {
   const [newDoc, setNewDoc] = useState("")
   const [editNewDoc, setEditNewDoc] = useState("")
 
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     try {
       const params = new URLSearchParams({
         page: pagination.page.toString(),
@@ -121,17 +121,16 @@ interface ServicesResponse {
     } finally {
       setLoading(false)
     }
-  }
+  }, [pagination.page, pagination.limit])
 
   // Add useEffect with proper dependencies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchServices();
     fetch('/api/document-categories')
       .then(res => res.json())
       .then(data => setDocCategories(data))
       .catch(() => setDocCategories([]));
-  }, [pagination.page]);
+  }, [pagination.page, fetchServices]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {

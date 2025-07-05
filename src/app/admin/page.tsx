@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Users, ShoppingCart, Settings, DollarSign, Eye } from 'lucide-react'
+import { Users, ShoppingCart, Settings, DollarSign, Eye, RefreshCw } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -16,6 +16,39 @@ interface DashboardStats {
   activeServices: number
   totalRevenue: number
   pendingOrders: number
+}
+
+interface HealthData {
+  status: 'healthy' | 'warning' | 'critical'
+  timestamp: string
+  memory: {
+    total: number
+    used: number
+    free: number
+    percentage: number
+  }
+  cpu: {
+    usage: number
+    loadAverage: number[]
+    cores: number
+  }
+  database: {
+    status: 'connected' | 'error'
+    connectionTime: number
+    collections: number
+    documents: number
+  }
+  services: {
+    mongodb: boolean
+    nextjs: boolean
+    fileSystem: boolean
+    network: boolean
+  }
+  performance: {
+    responseTime: number
+    dbResponseTime: number
+    memoryLeaks: boolean
+  }
 }
 
 interface ActivityLog {
@@ -44,8 +77,31 @@ export default function AdminDashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [healthData, setHealthData] = useState<HealthData | null>(null)
   const [recentActivities, setRecentActivities] = useState<ActivityLog[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const getStatusBadge = (isHealthy: boolean) => {
+    return (
+      <Badge variant={isHealthy ? "default" : "destructive"}>
+        {isHealthy ? "Operational" : "Error"}
+      </Badge>
+    )
+  }
+
+  const getSystemStatusBadge = (status: string) => {
+    switch (status) {
+      case 'healthy':
+        return <Badge variant="default">Healthy</Badge>
+      case 'warning':
+        return <Badge variant="secondary">Warning</Badge>
+      case 'critical':
+        return <Badge variant="destructive">Critical</Badge>
+      default:
+        return <Badge variant="outline">Unknown</Badge>
+    }
+  }
 
   useEffect(() => {
     if (status === 'loading') return
@@ -65,20 +121,29 @@ export default function AdminDashboard() {
   }, [session, status, router])
   const fetchDashboardStats = async () => {
     try {
-      const [usersRes, ordersRes, servicesRes, activitiesRes] = await Promise.all([
+      setError(null)
+      
+      const [usersRes, ordersRes, servicesRes, activitiesRes, healthRes] = await Promise.all([
         fetch('/api/admin/users'),
         fetch('/api/admin/orders'),
         fetch('/api/admin/services'),
-        fetch('/api/admin/activities?limit=5')
+        fetch('/api/admin/activities?limit=5'),
+        fetch('/api/admin/health')
       ])
 
       if (usersRes.ok && ordersRes.ok && servicesRes.ok) {
-        const [users, orders, services, activitiesData] = await Promise.all([
+        const [usersData, ordersData, servicesData, activitiesData, healthDataRes] = await Promise.all([
           usersRes.json(),
           ordersRes.json(),
           servicesRes.json(),
-          activitiesRes.ok ? activitiesRes.json() : { activities: [] }
+          activitiesRes.ok ? activitiesRes.json() : { activities: [] },
+          healthRes.ok ? healthRes.json() : null
         ])
+
+        // Extract arrays from API responses
+        const users = usersData.users || []
+        const orders = ordersData.orders || []
+        const services = servicesData.services || []
 
         const totalRevenue = orders.reduce((sum: number, order: { amount: number; paymentStatus: string }) => 
           order.paymentStatus === 'paid' ? sum + order.amount : sum, 0
@@ -97,9 +162,13 @@ export default function AdminDashboard() {
         })
 
         setRecentActivities(activitiesData.activities || [])
+        setHealthData(healthDataRes)
+      } else {
+        setError('Failed to fetch dashboard data. Please try again.')
       }
     } catch (error) {
       console.error('Error fetching dashboard stats:', error)
+      setError('An unexpected error occurred while loading the dashboard.')
     } finally {
       setLoading(false)
     }
@@ -121,13 +190,39 @@ export default function AdminDashboard() {
     return null
   }
 
+  if (error) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="text-red-500 text-lg mb-4">{error}</div>
+            <Button onClick={fetchDashboardStats}>
+              Retry
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back, {session.user?.name}! Here&apos;s what&apos;s happening with your business.
-        </p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">
+            Welcome back, {session.user?.name}! Here&apos;s what&apos;s happening with your business.
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={fetchDashboardStats}
+          disabled={loading}
+        >
+          <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -190,8 +285,8 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <Card className="md:col-span-2 lg:col-span-1 xl:col-span-2">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
             <CardDescription>Common administrative tasks</CardDescription>
@@ -225,7 +320,7 @@ export default function AdminDashboard() {
               <div className="text-sm text-muted-foreground">Manage document categories</div>
             </button>
           </CardContent>
-        </Card>        <Card>
+        </Card>        <Card className="md:col-span-2 lg:col-span-2 xl:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <div>
               <CardTitle>Recent Activity</CardTitle>
@@ -284,26 +379,163 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle>System Status</CardTitle>
-            <CardDescription>Current system health</CardDescription>
+            <CardDescription>Current system health and performance</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Database</span>
-                <Badge variant="default">Connected</Badge>
+            {healthData ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Overall Status</span>
+                  {getSystemStatusBadge(healthData.status)}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Database</span>
+                  {getStatusBadge(healthData.services.mongodb)}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">API Services</span>
+                  {getStatusBadge(healthData.services.nextjs)}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">File System</span>
+                  {getStatusBadge(healthData.services.fileSystem)}
+                </div>
+                <div className="border-t pt-2 mt-2">
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex justify-between">
+                      <span>Memory Usage:</span>
+                      <span>{healthData.memory.percentage.toFixed(1)}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>CPU Usage:</span>
+                      <span>{healthData.cpu.usage.toFixed(1)}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>DB Response:</span>
+                      <span>{healthData.performance.dbResponseTime}ms</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Collections:</span>
+                      <span>{healthData.database.collections}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Authentication</span>
-                <Badge variant="default">Active</Badge>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">System Status</span>
+                  <Badge variant="outline">Loading...</Badge>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Health data is being fetched...
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">API Services</span>
-                <Badge variant="default">Operational</Badge>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-1">
+          <CardHeader>
+            <CardTitle>Performance Metrics</CardTitle>
+            <CardDescription>System performance overview</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {healthData ? (
+              <div className="space-y-3">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Memory Usage</span>
+                    <span className={healthData.memory.percentage > 80 ? 'text-red-500' : healthData.memory.percentage > 60 ? 'text-yellow-500' : 'text-green-500'}>
+                      {healthData.memory.percentage.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full ${healthData.memory.percentage > 80 ? 'bg-red-500' : healthData.memory.percentage > 60 ? 'bg-yellow-500' : 'bg-green-500'}`}
+                      style={{ width: `${healthData.memory.percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>CPU Usage</span>
+                    <span className={healthData.cpu.usage > 80 ? 'text-red-500' : healthData.cpu.usage > 60 ? 'text-yellow-500' : 'text-green-500'}>
+                      {healthData.cpu.usage.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full ${healthData.cpu.usage > 80 ? 'bg-red-500' : healthData.cpu.usage > 60 ? 'bg-yellow-500' : 'bg-green-500'}`}
+                      style={{ width: `${healthData.cpu.usage}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="border-t pt-2 text-xs text-muted-foreground">
+                  <div className="flex justify-between">
+                    <span>API Response Time:</span>
+                    <span>{healthData.performance.responseTime}ms</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>CPU Cores:</span>
+                    <span>{healthData.cpu.cores}</span>
+                  </div>
+                  {healthData.performance.memoryLeaks && (
+                    <div className="flex justify-between text-red-500 mt-1">
+                      <span>Memory Leak Detected</span>
+                      <Badge variant="destructive" className="text-xs">Warning</Badge>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>          </CardContent>
+            ) : (
+              <div className="text-xs text-muted-foreground">
+                Performance data is being fetched...
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-1">
+          <CardHeader>
+            <CardTitle>Database Status</CardTitle>
+            <CardDescription>MongoDB connection and statistics</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {healthData ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Connection</span>
+                  {getStatusBadge(healthData.database.status === 'connected')}
+                </div>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex justify-between">
+                    <span>Connection Time:</span>
+                    <span className={healthData.database.connectionTime > 1000 ? 'text-yellow-500' : 'text-green-500'}>
+                      {healthData.database.connectionTime}ms
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Collections:</span>
+                    <span>{healthData.database.collections}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Total Documents:</span>
+                    <span>{healthData.database.documents.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-xs text-muted-foreground">
+                Database information is being fetched...
+              </div>
+            )}
+          </CardContent>
         </Card>
       </div>
     </div>

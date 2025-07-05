@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import "@/app/animations.css";
 import { Button } from "@/components/ui/button";
 import { 
-  Scale,
   Phone,
   Mail,
   MapPin,
@@ -27,6 +26,7 @@ import {
   SITE_SINCE
 } from "@/lib/constants";
 import Link from "next/link";
+import Image from "next/image";
 import CTA from "@/components/common/CTA";
 import { getFormSource } from "@/lib/form-utils";
 import { toast } from "sonner";
@@ -101,14 +101,15 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-8 md:py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">          {/* Company Info */}
           <div className="sm:col-span-2 lg:col-span-2 space-y-4 md:space-y-6">
-            <div className="flex items-center space-x-3">
-              <div className="bg-brand-gradient p-2 rounded-lg">
-                <Scale className="h-6 w-6 text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg md:text-xl font-bold text-white">Expert India</span>
-                <span className="text-sm text-brand-secondary font-medium">Consultancy</span>
-              </div>
+            <div className="flex items-center">
+              <Image
+                src="/logo-light.png"
+                alt="Expert India Consultancy"
+                width={140}
+                height={40}
+                className="h-8 md:h-10 w-auto"
+                priority
+              />
             </div>
             
             <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-md">
@@ -164,20 +165,26 @@ const Footer = () => {
               })}
             </div>
           </div>          {/* Services Columns */}
-          {Object.entries(FOOTER_SERVICES).map(([title, services], index) => (
-            <div key={index} className="mt-8 sm:mt-0">
+          {Object.entries(FOOTER_SERVICES).map(([title, services]) => (
+            <div key={title} className="mt-8 sm:mt-0">
               <h4 className="text-base md:text-lg font-semibold text-white mb-4 md:mb-6">{title}</h4>
               <ul className="space-y-2 md:space-y-3">
-                {services.map((service, serviceIndex) => (
-                  <li key={serviceIndex}>
-                    <Link 
-                      href="#"
-                      className="text-sm md:text-sm text-gray-300 hover:text-brand-secondary transition-colors duration-300 block"
-                    >
-                      {service}
-                    </Link>
-                  </li>
-                ))}
+                {Array.isArray(services) && services.map((service, serviceIndex) => {
+                  // Type guard to ensure service has the expected structure
+                  if (typeof service === 'object' && service !== null && 'name' in service && 'href' in service) {
+                    return (
+                      <li key={`${title}-${serviceIndex}`}>
+                        <Link 
+                          href={service.href}
+                          className="text-sm md:text-sm text-gray-300 hover:text-brand-secondary transition-colors duration-300 block"
+                        >
+                          {service.name}
+                        </Link>
+                      </li>
+                    );
+                  }
+                  return null;
+                })}
               </ul>
             </div>
           ))}
@@ -242,21 +249,27 @@ const Footer = () => {
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-4 md:py-6">          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">
             <div className="text-xs md:text-sm text-gray-400">
-              © 2024 {SITE_FULL_NAME}. All rights reserved. 
+              © 2025 {SITE_FULL_NAME}. All rights reserved. 
               <span className="mx-2 hidden sm:inline">|</span>
               <br className="sm:hidden" />
               Empowering businesses with legal excellence since {SITE_SINCE}.
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-end space-x-4 md:space-x-6 text-xs md:text-sm">
-              {QUICK_LINKS.map((link, index) => (
-                <Link 
-                  key={index}
-                  href={link.href}
-                  className="text-gray-400 hover:text-white transition-colors duration-300"
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {QUICK_LINKS.map((link, index) => {
+                // Type guard to ensure link has the expected structure
+                if (typeof link === 'object' && link !== null && 'name' in link && 'href' in link) {
+                  return (
+                    <Link 
+                      key={`quick-link-${index}`}
+                      href={link.href}
+                      className="text-gray-400 hover:text-white transition-colors duration-300"
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                }
+                return null;
+              })}
               <Link 
                 href="/privacy"
                 className="text-gray-400 hover:text-white transition-colors duration-300"

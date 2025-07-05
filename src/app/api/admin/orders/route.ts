@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     console.log(`Fetching orders: page ${page}, limit ${limit}`)
     const startTime = Date.now()
 
-    // Optimize query by only selecting necessary fields initially
+    // Optimize query by selecting necessary fields and populate documentIds
     const ordersQuery = Order.find({})
       .populate('userId', 'name email image')
       .populate({
@@ -37,7 +37,11 @@ export async function GET(request: NextRequest) {
         select: 'name price',
         options: { strictPopulate: false }
       })
-      .select('-documents') // Exclude large document arrays initially
+      .populate({
+        path: 'documentIds',
+        select: 'filename originalName mimetype size category uploadDate isActive',
+        options: { strictPopulate: false }
+      })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)

@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Users, ShoppingCart, Settings, LayoutDashboard, LogOut, Activity, FileText, FolderOpen, Mail, Heart } from "lucide-react"
 import {
@@ -79,13 +80,15 @@ export function AdminSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-3 px-3 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground">
-            <span className="text-sm font-bold">A</span>
-          </div>
-          <div>
-            <h2 className="text-sm font-semibold">Admin Panel</h2>
-            <p className="text-xs text-muted-foreground">The Expert India</p>
+        <div className="flex items-center pt-2">
+          <div className="flex h-10 w-full items-center justify-center">
+            <Image
+              src="/logo-dark.png"
+              alt="The Expert India"
+              width={140}
+              height={40}
+              className="object-contain"
+            />
           </div>
         </div>
       </SidebarHeader>
