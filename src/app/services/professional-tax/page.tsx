@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Users, IndianRupee, Clock, Building2, Calculator, Award, CheckCircle } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const ProfessionalTaxPage = () => {
+export const metadata: Metadata = {
+  title: 'Professional Tax Registration Services | PT Compliance | The Expert India',
+  description: 'Complete Professional Tax registration and compliance services for businesses and employers. Expert assistance for state-level PT regulations, filing, and ongoing compliance.',
+  keywords: [
+    'professional tax registration',
+    'professional tax compliance',
+    'PT registration',
+    'employer professional tax',
+    'state professional tax',
+    'professional tax filing',
+    'professional tax certificate',
+    'PT enrollment'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function ProfessionalTaxPage() {
   const heroData = {
     badge: "Professional Tax Registration",
     title: "Professional Tax Registration & Compliance",

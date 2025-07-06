@@ -141,7 +141,7 @@ const RegistrationProcess = () => {
           description={`Our expert team is ready to guide you through every step of the process. Get started today and have your company registered within 15 working days.`}
           primaryButton="Start Registration Now"
           secondaryButton="Talk to Expert"
-          secondaryButtonHref="/consultation"
+          secondaryButtonHref="https://wa.me/917023314773?text=Hi, I need to talk to an expert about company registration"
           badge="Quick Start"
           variant="gradient"
           size="compact"

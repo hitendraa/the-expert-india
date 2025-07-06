@@ -1,11 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Shield, Award, CheckCircle, AlertTriangle, Factory, Globe } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'BIS Registration & ISI Mark Certification | Product Quality Certification | The Expert India',
+  description: 'Obtain BIS Registration and ISI Mark for your products. Complete assistance for mandatory and voluntary certification across all product categories with expert guidance.',
+  keywords: [
+    'BIS registration',
+    'ISI mark certification',
+    'product certification',
+    'Bureau of Indian Standards',
+    'quality certification',
+    'mandatory certification',
+    'product compliance',
+    'ISI mark'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 const BISRegistrationPage = () => {
   const heroData = {

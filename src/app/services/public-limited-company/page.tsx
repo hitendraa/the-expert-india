@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -8,6 +9,29 @@ import PublicCompanyAdvantages from "@/components/services/PublicCompanyAdvantag
 import PublicCompanyComparison from "@/components/services/PublicCompanyComparison";
 import CTA from "@/components/common/CTA";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Public Limited Company Registration | Incorporate PLC | The Expert India',
+  description: 'Register your Public Limited Company in India with expert CA/CS assistance. Complete documentation, filing, and ROC follow-up support for public company incorporation.',
+  keywords: [
+    'public limited company registration',
+    'public limited company incorporation',
+    'PLC registration',
+    'public company formation',
+    'public company incorporation',
+    'unlisted public company',
+    'listed company registration',
+    'company incorporation services'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function PublicLimitedCompanyPage() {
   const heroData = {

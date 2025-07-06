@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -9,6 +10,29 @@ import ComplianceSection from "@/components/services/PrivateCompanyCompliance";
 import PrivateCompanyRegistrationProcess from "@/components/services/PrivateCompanyRegistrationProcess";
 import PopularServices from "@/components/services/PopularServices";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Private Limited Company Registration in India | Pvt Ltd Registration | The Expert India',
+  description: 'Register your Private Limited Company in India with expert CA/CS assistance. Quick registration process, complete documentation, and ongoing compliance support.',
+  keywords: [
+    'private limited company registration',
+    'Pvt Ltd company formation',
+    'company incorporation',
+    'business registration',
+    'MCA registration',
+    'startup company registration',
+    'private company registration',
+    'business incorporation'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function PrivateCompanyRegistrationPage() {
   const heroData = {

@@ -3,6 +3,7 @@ export const SITE_NAME = "Expert India";
 export const SITE_TAGLINE = "Consultancy";
 export const SITE_FULL_NAME = `The ${SITE_NAME} ${SITE_TAGLINE}`;
 export const SITE_SINCE = 2022;
+export const SITE_YEARS_EXPERIENCE = new Date().getFullYear() - SITE_SINCE;
 export const SITE_RATING = "4.9/5";
 export const SITE_REVIEWS = "Trusted Reviews";
 export const SITE_MISSION = "To democratize legal services by making them simple, affordable, and accessible to every business and individual across India, while maintaining the highest standards of quality and compliance.";
@@ -215,7 +216,7 @@ export const ABOUT_STATS = [
   {
     icon: "Award",
     label: "Years Experience",
-    value: "15+",
+    value: `${SITE_YEARS_EXPERIENCE}+`,
     description: "Proven track record in legal services",
   },
   {
@@ -258,7 +259,7 @@ export const ABOUT_VALUES = [
 export const ABOUT_CONTENT = {
   badge: `About ${SITE_FULL_NAME}`,
   headline: "India's Most Trusted Legal Services Platform",
-  description: `For over 15 years, we've been empowering businesses and individuals with expert legal solutions, making complex legal processes simple, transparent, and accessible to everyone.`,  story: {
+  description: `For over ${SITE_YEARS_EXPERIENCE} years, we've been empowering businesses and individuals with expert legal solutions, making complex legal processes simple, transparent, and accessible to everyone.`,  story: {
     title: "Our Story",
     paragraphs: [
       `Founded in ${SITE_SINCE} with a simple yet powerful vision: to make legal services accessible, transparent, and efficient for everyone. What started as a small team of legal experts has grown into India's leading legal services platform.`,
@@ -344,7 +345,7 @@ export const SERVICES_CONTENT = {
     title: "Need Help Choosing the Right Service?",
     description: "Our legal experts are here to guide you through the best services for your specific business needs.",
     primaryButton: "Get Free Consultation",
-    secondaryButton: "View All Services"
+    secondaryButton: "WhatsApp Chat"
   }
 }
 
@@ -378,7 +379,7 @@ export const HERO_SECTION = {
     {
       icon: "Award", 
       label: "Years Experience",
-      value: "15+",
+      value: `${SITE_YEARS_EXPERIENCE}+`,
       color: "text-green-600"
     },
     {
@@ -485,16 +486,16 @@ export const HOMEPAGE_SERVICES = {
   cta: {
     title: "Looking for Other Services?",
     description: "We offer 50+ legal and compliance services",
-    button: "View All Services"
+    button: "WhatsApp Chat"
   }
 };
 
 // Homepage About Section Constants
 export const HOMEPAGE_ABOUT = {
   badge: `About ${SITE_FULL_NAME}`,
-  title: "Leading Legal Service Provider Since 2009",
+  title: "Leading Legal Service Provider Since 2022",
   subtitle: "Your trusted partner for all legal and compliance needs",
-  description: "With over 15 years of experience, we have helped thousands of businesses and individuals with their legal requirements. Our team of expert lawyers and chartered accountants ensure that your legal matters are handled with utmost care and professionalism.",
+  description: `With over ${SITE_YEARS_EXPERIENCE} years of experience, we have helped thousands of businesses and individuals with their legal requirements. Our team of expert lawyers and chartered accountants ensure that your legal matters are handled with utmost care and professionalism.`,
   features: [
     {
       icon: "Users",
@@ -526,7 +527,7 @@ export const HOMEPAGE_ABOUT = {
       label: "Legal Services"
     },
     {
-      number: "15+",
+      number: `${SITE_YEARS_EXPERIENCE}+`,
       label: "Years Experience"
     },
     {

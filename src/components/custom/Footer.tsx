@@ -271,16 +271,28 @@ const Footer = () => {
                 return null;
               })}
               <Link 
-                href="/privacy"
+                href="/privacy-policy"
                 className="text-gray-400 hover:text-white transition-colors duration-300"
               >
                 Privacy Policy
               </Link>
               <Link 
-                href="/terms"
+                href="/terms-and-conditions"
                 className="text-gray-400 hover:text-white transition-colors duration-300"
               >
                 Terms of Service
+              </Link>
+              <Link 
+                href="/disclaimer"
+                className="text-gray-400 hover:text-white transition-colors duration-300"
+              >
+                Disclaimer
+              </Link>
+              <Link 
+                href="/refund-policy"
+                className="text-gray-400 hover:text-white transition-colors duration-300"
+              >
+                Refund Policy
               </Link>
             </div>
           </div>

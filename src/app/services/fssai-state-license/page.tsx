@@ -1,10 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Shield, FileText, Clock, Building, Users } from "lucide-react";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'FSSAI State License | Food Business License | The Expert India',
+  description: 'Get FSSAI State License for food businesses with annual turnover between Rs. 12 Lakhs to Rs. 20 Crores. Expert assistance with complete documentation support.',
+  keywords: [
+    'FSSAI state license',
+    'food license',
+    'food business license',
+    'state food license',
+    'food safety license',
+    'FSSAI registration',
+    'food business operator',
+    'food safety compliance'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function FSSAIStateLicensePage() {
   const heroData = {

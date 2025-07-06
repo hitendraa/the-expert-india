@@ -1,9 +1,34 @@
+import { Metadata } from 'next';
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Clock, FileText, Shield, AlertTriangle, Building2, Calculator, Calendar } from 'lucide-react';
 import ServiceHero from '@/components/common/ServiceHero';
 import ServiceFAQ from '@/components/common/ServiceFAQ';
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'FSSAI Annual Return Filing | Food Safety Compliance | The Expert India',
+  description: 'Expert assistance for timely and accurate FSSAI annual return submission. Complete preparation and filing support to meet deadlines and avoid penalties for food businesses.',
+  keywords: [
+    'FSSAI annual return',
+    'food safety compliance',
+    'annual return filing',
+    'FSSAI compliance',
+    'food business return',
+    'regulatory compliance',
+    'FSSAI documentation',
+    'food safety reporting'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 const FSSAIAnnualReturnPage = () => {
   const heroData = {

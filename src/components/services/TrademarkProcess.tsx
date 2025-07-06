@@ -176,7 +176,7 @@ const TrademarkProcess = () => {
           description={`Our expert team is ready to guide you through every step of the trademark registration process. Get started today and protect your brand within 6-18 months.`}
           primaryButton="Start Trademark Registration"
           secondaryButton="Talk to Expert"
-          secondaryButtonHref="/consultation"
+          secondaryButtonHref="https://wa.me/917023314773?text=Hi, I need to talk to an expert about trademark registration"
           badge="Quick Start"
           variant="gradient"
           size="compact"

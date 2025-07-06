@@ -1,11 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building, Heart, Users, FileText, Shield, CheckCircle, TrendingUp, AlertTriangle, Calculator } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'CSR Compliance Services | Corporate Social Responsibility | Section 135 | The Expert India',
+  description: 'Ensure complete CSR compliance under Section 135 of the Companies Act, 2013. Expert assistance for policy formulation, project implementation, and regulatory reporting.',
+  keywords: [
+    'CSR compliance',
+    'corporate social responsibility',
+    'section 135 compliance',
+    'CSR policy',
+    'CSR spending',
+    'CSR reporting',
+    'CSR project implementation',
+    'CSR committee'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 const CSRCompliancePage = () => {
   const heroData = {

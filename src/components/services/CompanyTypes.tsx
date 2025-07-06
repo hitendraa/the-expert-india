@@ -98,7 +98,7 @@ const CompanyTypes = () => {
           description="Our legal experts will help you choose the perfect business structure based on your specific needs and industry requirements."
           primaryButton="Get Expert Consultation"
           secondaryButton="Compare All Types"
-          secondaryButtonHref="/services/company-comparison"
+          secondaryButtonHref="#company-comparison"
           badge="Expert Guidance"
           variant="gradient"
           size="compact"

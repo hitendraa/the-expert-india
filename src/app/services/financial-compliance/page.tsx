@@ -1,11 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, FileText, TrendingUp, Users, Building, CheckCircle, AlertTriangle, Globe, Zap } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Financial Compliance Services | Regulatory Compliance Solutions | The Expert India',
+  description: 'Ensure adherence to financial regulations with our comprehensive compliance services. Navigate complex regulatory frameworks while maintaining operational integrity and stakeholder trust.',
+  keywords: [
+    'financial compliance',
+    'regulatory compliance',
+    'SEBI compliance',
+    'RBI compliance',
+    'corporate governance',
+    'financial reporting',
+    'compliance audit',
+    'compliance management'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 const FinancialCompliancePage = () => {
   const heroData = {

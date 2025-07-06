@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Edit, CheckCircle, Clock, Shield, Users, Building, AlertTriangle } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const GSTAmendmentPage = () => {
+export const metadata: Metadata = {
+  title: 'GST Amendment Services | Update GST Registration Details | The Expert India',
+  description: 'Professional GST amendment services to update your business details. Expert assistance for core and non-core GST registration amendments with complete compliance.',
+  keywords: [
+    'GST amendment',
+    'GST registration amendment',
+    'update GST details',
+    'GST modification',
+    'GST business details update',
+    'change GST registration',
+    'core field amendment',
+    'non-core field amendment'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+}
+
+function GSTAmendmentPage() {
   const heroData = {
     badge: "GST Registration Amendment",
     title: "GST Registration Amendment",

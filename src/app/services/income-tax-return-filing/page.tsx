@@ -1,13 +1,36 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Calendar, FileText, TrendingUp, Users, Clock } from "lucide-react";
+import { SITE_FULL_NAME } from "@/lib/constants";
 
-const ITRFilingPage = () => {
+export const metadata: Metadata = {
+  title: 'Income Tax Return Filing | ITR Filing Services | The Expert India',
+  description: 'Professional Income Tax Return filing services for individuals, businesses, and professionals. Quick, accurate, and hassle-free ITR filing with expert guidance.',
+  keywords: [
+    'income tax return',
+    'ITR filing',
+    'tax return services',
+    'professional tax filing',
+    'income tax filing',
+    'online ITR',
+    'tax compliance',
+    'ITR preparation'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function ITRFilingPage() {
   const heroData = {
     badge: "Income Tax Return Filing",
     title: "Make Your ITR Filing Quick and Easy",

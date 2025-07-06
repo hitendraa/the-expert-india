@@ -19,7 +19,6 @@ import {
 import { MAIN_NAVIGATION, FOOTER_SERVICES, SERVICES_CONTENT } from "@/lib/constants";
 import Link from "next/link";
 import CTA from "@/components/common/CTA";
-import Image from "next/image";
 
 const Services = () => {  // Service category mapping with icons and descriptions
   const serviceCategories = [
@@ -75,48 +74,41 @@ const Services = () => {  // Service category mapping with icons and description
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
             {SERVICES_CONTENT.header.description}
           </p>
-        </div>{/* Featured Service (Company Registration) */}
+        </div>        {/* Featured Service (Company Registration) */}
         <div className="mb-16">
           <div className="bg-brand-gradient rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
-            <div className="grid lg:grid-cols-2 gap-8 items-center relative z-10">
-              <div>
-                <div className="flex items-center mb-4">
-                  <div className="bg-white/20 p-3 rounded-full mr-4">
-                    <Building2 className="h-6 w-6 text-white" />
-                  </div>                  <Badge className="bg-white/20 text-white border-white/30">
+            <div className="text-center relative z-10 max-w-4xl mx-auto">
+              <div className="flex items-center justify-center mb-6">
+                <div className="bg-white/20 p-4 rounded-full mr-4">
+                  <Building2 className="h-8 w-8 text-white" />
+                </div>                  <Badge className="bg-white/20 text-white border-white/30 text-sm px-4 py-2">
                     {SERVICES_CONTENT.featured.badge}
                   </Badge>
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                  {SERVICES_CONTENT.featured.title}
-                </h3>
-                <p className="text-lg opacity-90 mb-6 leading-relaxed">
-                  {SERVICES_CONTENT.featured.description}
-                </p><div className="grid grid-cols-2 gap-4 mb-6">
-                  {serviceCategories[0].items.slice(0, 4).map((service, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <CheckCircle className="h-4 w-4 text-yellow-300 flex-shrink-0" />
-                      <span className="text-sm font-medium">{service.name}</span>
-                    </div>
-                  ))}
-                </div>                <Button 
+              </div>
+              
+              <h3 className="text-3xl md:text-4xl font-bold mb-6">
+                {SERVICES_CONTENT.featured.title}
+              </h3>
+              <p className="text-xl opacity-90 mb-8 leading-relaxed max-w-2xl mx-auto">
+                {SERVICES_CONTENT.featured.description}
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
+                {serviceCategories[0].items.slice(0, 4).map((service, index) => (
+                  <div key={index} className="flex items-center justify-center space-x-3 bg-white/10 rounded-xl p-3">
+                    <CheckCircle className="h-5 w-5 text-yellow-300 flex-shrink-0" />
+                    <span className="text-sm font-medium">{service.name}</span>
+                  </div>
+                ))}
+              </div>                <Link href="/services/company-registration">
+                <Button 
                   size="lg" 
-                  className="bg-white text-brand-primary hover:bg-white/95 font-semibold transition-all duration-300 shadow-brand animated-hover animated-hover-primary"
+                  className="bg-white text-brand-primary hover:bg-white/95 font-semibold transition-all duration-300 shadow-brand animated-hover animated-hover-primary px-8 py-3 text-lg"
                 >
                   {SERVICES_CONTENT.featured.button}
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
-              </div>
-              <div className="relative lg:block hidden">
-                <div className="relative w-full h-64 rounded-2xl overflow-hidden">
-                  <Image
-                    src="/images/services/company-registration.png"
-                    alt="Company Registration"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
+              </Link>
             </div>
             {/* Background decoration */}
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
@@ -136,14 +128,6 @@ const Services = () => {  // Service category mapping with icons and description
                 <div className="flex items-center justify-between mb-4">
                   <div className="bg-brand-gradient p-3 rounded-xl">
                     <category.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="w-12 h-12 relative">
-                    <Image
-                      src={category.image}
-                      alt={category.title}
-                      fill
-                      className="object-contain opacity-20 group-hover:opacity-40 transition-opacity"
-                    />
                   </div>
                 </div>
                 
@@ -210,7 +194,7 @@ const Services = () => {  // Service category mapping with icons and description
             description={SERVICES_CONTENT.cta.description}
             primaryButton={SERVICES_CONTENT.cta.primaryButton}
             secondaryButton={SERVICES_CONTENT.cta.secondaryButton}
-            secondaryButtonHref="/services"
+            secondaryButtonHref="https://wa.me/917023314773?text=Hi, I need help choosing the right service"
             badge={SERVICES_CONTENT.cta.badge}
           />
         </div>

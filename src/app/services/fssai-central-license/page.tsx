@@ -1,10 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Shield, FileText, Clock, Building, Users, Globe } from "lucide-react";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'FSSAI Central License | Multi-State Food Business License | The Expert India',
+  description: 'Get FSSAI Central License for food businesses with annual turnover above Rs. 20 Crores or involved in import/export. Expert assistance for multi-state compliance.',
+  keywords: [
+    'FSSAI central license',
+    'multi-state food license',
+    'food export license',
+    'food import license',
+    'large food business license',
+    'central FSSAI registration',
+    'food safety compliance',
+    'interstate food business'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function FSSAICentralLicensePage() {
   const heroData = {

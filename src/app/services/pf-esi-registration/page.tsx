@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Users, Shield, Clock, Heart, IndianRupee, Award, CheckCircle } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const PFESIRegistrationPage = () => {
+export const metadata: Metadata = {
+  title: 'PF & ESI Registration Services | Employee Benefits Compliance | The Expert India',
+  description: 'Complete PF and ESI registration services for employers. Expert assistance for Provident Fund and Employee State Insurance compliance and benefits administration.',
+  keywords: [
+    'PF registration',
+    'ESI registration',
+    'provident fund registration',
+    'employee state insurance',
+    'PF ESI compliance',
+    'employer registration',
+    'statutory compliance',
+    'employee benefits registration'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function PFESIRegistrationPage() {
   const heroData = {
     badge: "PF & ESI Registration",
     title: "Complete PF & ESI Registration Services",

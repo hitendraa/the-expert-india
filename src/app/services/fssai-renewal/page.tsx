@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -8,6 +9,29 @@ import RequiredDocuments from "@/components/services/RequiredDocuments";
 import FSSAIEligibility from "@/components/services/FSSAIEligibility";
 import CTA from "@/components/common/CTA";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'FSSAI License Renewal Services | Food License Renewal | The Expert India',
+  description: 'Renew your FSSAI Food License with expert assistance. Timely renewal service to avoid penalties and maintain regulatory compliance for your food business.',
+  keywords: [
+    'FSSAI license renewal',
+    'food license renewal',
+    'FSSAI renewal',
+    'food safety license',
+    'food business compliance',
+    'license renewal service',
+    'food safety certification',
+    'renewal documentation'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function FSSAIRenewalPage() {
   const heroData = {

@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -7,6 +8,29 @@ import RequiredDocuments from "@/components/services/RequiredDocuments";
 import Section8Advantages from "@/components/services/Section8Advantages";
 import CTA from "@/components/common/CTA";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Section 8 Company Registration | Non-Profit Company Formation | The Expert India',
+  description: 'Register a Section 8 non-profit company in India with expert guidance. Complete documentation and approval process support for charitable and social organizations.',
+  keywords: [
+    'section 8 company registration',
+    'non-profit company formation',
+    'section 8 company incorporation',
+    'charitable company registration',
+    'NGO registration',
+    'section 8 license',
+    'not-for-profit company',
+    'foundation registration'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function Section8CompanyPage() {
   const heroData = {

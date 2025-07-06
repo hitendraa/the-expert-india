@@ -1,10 +1,34 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle, AlertTriangle, TrendingUp, Shield, Clock, Users, FileText, Calculator, Eye, Target, Search, RefreshCw, DollarSign, Building, Scale, Zap } from 'lucide-react'
-const ITCPage = () => {
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Input Tax Credit Services | ITC Reconciliation & Compliance | The Expert India',
+  description: 'Expert Input Tax Credit (ITC) management services for businesses. Maximize tax credits with professional claiming, reconciliation, and compliance assistance.',
+  keywords: [
+    'input tax credit',
+    'ITC services',
+    'GST credit',
+    'ITC reconciliation',
+    'GSTR-2A GSTR-2B matching',
+    'credit optimization',
+    'ITC compliance',
+    'tax credit management'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function ITCPage() {
   const heroData = {
     badge: "GST Compliance Services",
     title: "Input Tax Credit (ITC) Services",

@@ -181,8 +181,6 @@ Email: ${CONTACT_INFO.email}
           title="Need Expert Help with Documentation?"
           description="Our experts will guide you through the entire documentation process to ensure quick approval and hassle-free registration."
           primaryButton="Get Documentation Help"
-          secondaryButton="View Sample Documents"
-          secondaryButtonHref="/resources/samples"
           badge="Document Support"
           variant="gradient"
           size="compact"

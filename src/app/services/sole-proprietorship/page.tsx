@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, User, Building2, CheckCircle, Shield, Clock, IndianRupee, Award } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const SoleProprietorshipPage = () => {
+export const metadata: Metadata = {
+  title: 'Sole Proprietorship Registration | Start Your Business | The Expert India',
+  description: 'Register your sole proprietorship business with expert assistance. Complete documentation, licenses, and compliance support for the simplest business structure.',
+  keywords: [
+    'sole proprietorship registration',
+    'sole proprietorship business',
+    'proprietorship firm registration',
+    'start sole proprietorship',
+    'proprietorship business setup',
+    'proprietorship license',
+    'MSME registration',
+    'shop establishment license'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function SoleProprietorshipPage() {
   const heroData = {
     badge: "Sole Proprietorship Registration",
     title: "Start Your Business as Sole Proprietorship",

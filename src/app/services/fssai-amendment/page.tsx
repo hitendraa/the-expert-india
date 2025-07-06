@@ -1,10 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Shield, FileText, Clock, Building, Users, Edit, AlertTriangle } from "lucide-react";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'FSSAI License Amendment Services | FSSAI Modification | The Expert India',
+  description: 'Modify your existing FSSAI license details with expert assistance. Quick processing for changes in business address, food categories, ownership, and other business information.',
+  keywords: [
+    'FSSAI amendment',
+    'FSSAI license modification',
+    'FSSAI license update',
+    'food license amendment',
+    'FSSAI address change',
+    'FSSAI category modification',
+    'food safety license',
+    'FSSAI modification service'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function FSSAIAmendmentPage() {
   const heroData = {

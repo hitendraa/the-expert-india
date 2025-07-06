@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Building2, CheckCircle, Shield, Clock, Users, Award, AlertTriangle, Utensils, Factory, Store } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const TradeLicensePage = () => {
+export const metadata: Metadata = {
+  title: 'Trade License Registration | Municipal Business License | The Expert India',
+  description: 'Obtain your trade license with expert assistance. Complete documentation and support for municipal authorization to legally operate your business in your local area.',
+  keywords: [
+    'trade license',
+    'trade license registration',
+    'municipal trade license',
+    'business trade license',
+    'shop license',
+    'commercial license',
+    'local business authorization',
+    'municipal business permit'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function TradeLicensePage() {
   const heroData = {
     badge: "Trade License Registration",
     title: "Get Your Trade License",

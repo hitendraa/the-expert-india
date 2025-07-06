@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -9,6 +10,30 @@ import {
   TRADEMARK_OBJECTION_FAQ,
   HEAR_ABOUT_OPTIONS
 } from "@/lib/services-constants";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Trademark Objection Reply Services | Overcome TM Objections | The Expert India',
+  description: 'Expert assistance to respond to trademark examination objections. Professional reply drafting and filing services to overcome objections and proceed with registration.',
+  keywords: [
+    'trademark objection reply',
+    'trademark examination report',
+    'overcome trademark objection',
+    'trademark objection response',
+    'TM objection services',
+    'trademark office action',
+    'trademark registration objection',
+    'trademark examiner objection'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function TrademarkObjectionReplyPage() {
   return (

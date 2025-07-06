@@ -1,13 +1,36 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, CreditCard, MapPin, Calendar, CheckCircle, AlertTriangle } from "lucide-react";
+import { SITE_FULL_NAME } from "@/lib/constants";
 
-const PANApplicationPage = () => {
+export const metadata: Metadata = {
+  title: 'PAN Card Application Services | Online PAN Registration | The Expert India',
+  description: 'Apply for PAN card online with expert assistance. Quick processing, complete documentation support, and hassle-free application for individuals and businesses.',
+  keywords: [
+    'PAN card application',
+    'apply for PAN online',
+    'PAN card registration',
+    'new PAN card',
+    'PAN card services',
+    'online PAN application',
+    'individual PAN card',
+    'business PAN card'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function PANApplicationPage() {
   const heroData = {
     badge: "PAN Card Application",
     title: "Apply for PAN Card Online",

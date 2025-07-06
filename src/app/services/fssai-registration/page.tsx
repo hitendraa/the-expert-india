@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -7,6 +8,30 @@ import FSSAIPenalties from "@/components/services/FSSAIPenalties";
 import RequiredDocuments from "@/components/services/RequiredDocuments";
 import FSSAIEligibility from "@/components/services/FSSAIEligibility";
 import CTA from "@/components/common/CTA";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'FSSAI Registration | Food License Registration | The Expert India',
+  description: 'Get expert assistance for FSSAI Food License Registration. Complete consultation and documentation support for small food businesses to obtain government food license.',
+  keywords: [
+    'FSSAI registration',
+    'food license registration',
+    'basic FSSAI license',
+    'food business operator',
+    'food safety license',
+    'small food business',
+    'FSSAI certification',
+    'food safety compliance'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function FSSAIRegistrationPage() {
   const heroData = {

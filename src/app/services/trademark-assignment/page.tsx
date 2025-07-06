@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -7,6 +8,30 @@ import {
   TRADEMARK_ASSIGNMENT_HERO,
   TRADEMARK_ASSIGNMENT_PRICING
 } from "@/lib/services-constants";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Trademark Assignment Services | Transfer Trademark Ownership | The Expert India',
+  description: 'Professional assistance for transferring trademark ownership through proper assignment. Complete legal documentation and registration support for trademark transfers.',
+  keywords: [
+    'trademark assignment',
+    'transfer trademark ownership',
+    'trademark transfer',
+    'trademark assignment registration',
+    'trademark assignment deed',
+    'IP assignment',
+    'brand transfer',
+    'trademark ownership change'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 // Simple FAQ array for trademark assignment
 const TRADEMARK_ASSIGNMENT_FAQ = [

@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Shield, CheckCircle, TrendingUp, Building, FileText, AlertTriangle } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const InternalAuditPage = () => {
+export const metadata: Metadata = {
+  title: 'Internal Audit Services | Corporate Governance | Risk Management | The Expert India',
+  description: 'Comprehensive internal audit services to strengthen operations, enhance governance, and improve performance. Expert auditors providing independent reviews for businesses.',
+  keywords: [
+    'internal audit',
+    'operational efficiency',
+    'risk management',
+    'compliance verification',
+    'financial process audit',
+    'corporate governance',
+    'performance evaluation',
+    'business audit'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function InternalAuditPage() {
   const heroData = {
     badge: "Internal Audit Services",
     title: "Internal Audit Services",

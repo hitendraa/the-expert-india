@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+// SITE_YEARS_EXPERIENCE removed as it was unused
+import { } from "@/lib/constants";
 import {
   Menu,
   Shield,
@@ -253,27 +255,6 @@ const Navbar = () => {
                         </div>
                       </div>
 
-                      {/* Contact Info */}
-                      <div className="bg-gradient-to-br from-primary to-secondary rounded-2xl p-4 text-primary-foreground">
-                        <h3 className="font-semibold mb-3 flex items-center">
-                          <Phone className="h-4 w-4 mr-2" />
-                          Get Instant Help
-                        </h3>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
-                            <span>Expert India Team</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
-                            <span>15+ Years Experience</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
-                            <span>99.8% Success Rate</span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 

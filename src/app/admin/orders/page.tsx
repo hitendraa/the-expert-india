@@ -32,6 +32,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { SendInvoiceEmailButton } from "@/components/admin/SendInvoiceEmailButton"
 
 interface Order {
   _id: string
@@ -987,6 +988,15 @@ export default function OrdersPage() {
                         <FileText className="mr-2 h-4 w-4" />
                         View Documents ({(order.documentIds?.length || 0) + (order.documents?.length || 0)})
                       </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <div className="w-full">
+                          <SendInvoiceEmailButton 
+                            orderId={order._id}
+                            customerEmail={order.userId.email}
+                            disabled={order.paymentStatus !== 'paid'}
+                          />
+                        </div>
+                      </DropdownMenuItem>
                       <DropdownMenuItem 
                         onClick={() => handleDeleteOrder(order._id)}
                         className="text-destructive"
@@ -1231,6 +1241,13 @@ export default function OrdersPage() {
               </>
             ) : (
               <Button onClick={handleEditOrder}>Edit Order</Button>
+            )}
+            {selectedOrder && (
+              <SendInvoiceEmailButton 
+                orderId={selectedOrder._id}
+                customerEmail={selectedOrder.userId.email}
+                disabled={selectedOrder.paymentStatus !== 'paid'}
+              />
             )}
             <Button 
               onClick={() => selectedOrder && handleDownloadInvoice(selectedOrder)}

@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -10,7 +11,30 @@ import {
   TRADEMARK_OPPOSITION_PRICING,
   HEAR_ABOUT_OPTIONS
 } from "@/lib/services-constants";
-import { FOOTER_CTA } from "@/lib/constants";
+import { FOOTER_CTA, SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Trademark Opposition Services | Defend Your Brand | The Expert India',
+  description: 'Professional assistance to file or defend trademark opposition proceedings. Protect your brand rights through effective trademark opposition strategies.',
+  keywords: [
+    'trademark opposition',
+    'TM opposition filing',
+    'trademark opposition proceedings',
+    'defend trademark opposition',
+    'file trademark opposition',
+    'trademark opposition notice',
+    'trademark infringement protection',
+    'brand protection services'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 // For now, using a simple FAQ array - this can be expanded later
 const TRADEMARK_OPPOSITION_FAQ = [

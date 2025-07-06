@@ -1,11 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Truck, Clock, CheckCircle, Shield, AlertTriangle, MapPin, Users } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'E-Way Bill Generation Services | GST E-Way Bill | The Expert India',
+  description: 'Get expert assistance for GST E-Way Bill generation and compliance. Our professionals help track goods movement, ensure tax compliance, and avoid penalties.',
+  keywords: [
+    'e-way bill',
+    'GST e-way bill',
+    'e-way bill generation',
+    'consolidated e-way bill',
+    'e-way bill compliance',
+    'goods transportation',
+    'e-way bill validity',
+    'GST compliance'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 const EWayBillPage = () => {
   const heroData = {

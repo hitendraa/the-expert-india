@@ -1,6 +1,7 @@
 "use client";
 
 import "@/app/animations.css";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,16 +13,18 @@ import {
   Award,
   Building2,
   Scale,
-  Phone,
   MessageCircle,
   TrendingUp,
   Zap,
 } from "lucide-react";
 import { CONTACT_INFO, HERO_SECTION } from "@/lib/constants";
 import Image from "next/image";
+import RegistrationDialog from "./RegistrationDialog";
 
 
 const Hero = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-brand-gradient">
       {/* Simple background elements */}
@@ -76,8 +79,9 @@ const Hero = () => {
               <Button
                 size="lg"
                 className="bg-white text-brand-primary hover:bg-white/95 font-semibold px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-brand-lg hover:shadow-2xl transition-all duration-300 group border-0 animated-hover animated-hover-primary"
+                onClick={() => setIsDialogOpen(true)}
               >
-                <Phone className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                <ArrowRight className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                 {HERO_SECTION.cta.primary.text}
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -157,6 +161,9 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Registration Dialog */}
+      <RegistrationDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
     </section>
   );
 };

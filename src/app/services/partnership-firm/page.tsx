@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Users, Building2, CheckCircle, Shield, Clock, Award, HandHeart } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const PartnershipFirmPage = () => {
+export const metadata: Metadata = {
+  title: 'Partnership Firm Registration | Register Partnership Business | The Expert India',
+  description: 'Register your partnership firm with expert legal assistance. Complete partnership deed drafting, registration, and tax compliance support for your business partnership.',
+  keywords: [
+    'partnership firm registration',
+    'register partnership firm',
+    'partnership deed',
+    'partnership business formation',
+    'start partnership business',
+    'partnership registration',
+    'business partnership legal',
+    'partnership tax registration'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function PartnershipFirmPage() {
   const heroData = {
     badge: "Partnership Firm Registration",
     title: "Register Your Partnership Firm",

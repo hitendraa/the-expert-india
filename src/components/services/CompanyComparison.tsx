@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BarChart3, Download, Eye } from "lucide-react";
+import { BarChart3, Download } from "lucide-react";
 import { COMPANY_COMPARISON_TABLE } from "@/lib/services-constants";
 import CTA from "@/components/common/CTA";
 import "@/app/animations.css";
@@ -31,7 +31,7 @@ const CompanyComparison = () => {
   };
 
   return (
-    <section className="py-8 md:py-12 lg:py-16 bg-white">
+    <section id="company-comparison" className="py-8 md:py-12 lg:py-16 bg-white">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-6 md:mb-8 lg:mb-12">
@@ -132,7 +132,7 @@ const CompanyComparison = () => {
         </Card>
 
         {/* Action Buttons */}
-        <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mb-8 flex justify-center">
           <Button 
             onClick={handleDownloadComparison}
             className="bg-brand-gradient hover:opacity-90 text-white px-6 py-2 animated-hover animated-hover-primary"
@@ -140,17 +140,13 @@ const CompanyComparison = () => {
             <Download className="h-4 w-4 mr-2" />
             Download Comparison Chart
           </Button>
-          <Button variant="outline" className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white px-6 py-2 animated-hover">
-            <Eye className="h-4 w-4 mr-2" />
-            View Detailed Analysis
-          </Button>
         </div>        {/* CTA */}
         <CTA
           title="Need Expert Guidance on Business Structure?"
           description="Our legal experts will analyze your business requirements and recommend the most suitable company structure for your specific needs and goals."
           primaryButton="Get Expert Advice"
           secondaryButton="Schedule Consultation"
-          secondaryButtonHref="/consultation"
+          secondaryButtonHref="https://wa.me/917023314773?text=Hi, I would like to schedule a consultation"
           badge="Expert Analysis"
           variant="gradient"
           size="compact"

@@ -4,11 +4,29 @@ import { Badge } from '@/components/ui/badge'
 import { CheckCircle, Shield, Clock, FileText, Lock, Award, Key, Download } from 'lucide-react'
 import ServiceHero from '@/components/common/ServiceHero'
 import ServiceFAQ from '@/components/common/ServiceFAQ'
+import { SITE_FULL_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: 'Digital Signature Certificate (DSC) | Class 2 & Class 3 | The Expert India',
   description: 'Get your Digital Signature Certificate (DSC) - Class 2 & Class 3 for secure online transactions. Expert assistance for individuals and organizations. Apply now!',
-  keywords: 'digital signature certificate, DSC, class 2 DSC, class 3 DSC, digital signature online, e-filing, secure transactions',
+  keywords: [
+    'digital signature certificate',
+    'DSC',
+    'class 2 DSC',
+    'class 3 DSC',
+    'digital signature online',
+    'e-filing',
+    'secure transactions',
+    'electronic signature'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 }
 
 export default function DigitalSignaturePage() {

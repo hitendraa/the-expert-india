@@ -1,10 +1,33 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Shield, FileText, Clock, Building, Users, AlertTriangle, Target, Eye, Star } from "lucide-react";
+import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'Food Safety Compliance Services | FSSAI Compliance | The Expert India',
+  description: 'Ensure your food business meets all safety standards and regulations. Comprehensive compliance solutions including HACCP implementation, food safety audits, and training programs.',
+  keywords: [
+    'food safety compliance',
+    'HACCP implementation',
+    'food safety audit',
+    'food business compliance',
+    'food safety training',
+    'food safety standards',
+    'food regulations',
+    'food safety management'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 export default function FoodSafetyCompliancePage() {
   const heroData = {

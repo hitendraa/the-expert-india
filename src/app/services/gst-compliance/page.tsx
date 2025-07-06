@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Shield, CheckCircle, TrendingUp, Building, Users, Clock } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const GSTCompliancePage = () => {
+export const metadata: Metadata = {
+  title: 'GST Compliance Services | Complete GST Compliance Solutions | The Expert India',
+  description: 'Comprehensive GST compliance services for businesses of all sizes. End-to-end solutions for registration, return filing, e-way bills, and ongoing compliance management.',
+  keywords: [
+    'GST compliance',
+    'GST compliance services',
+    'GST compliance management',
+    'GST regulatory compliance',
+    'GST return filing',
+    'GST invoicing',
+    'e-way bill compliance',
+    'input tax credit reconciliation'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+}
+
+function GSTCompliancePage() {
   const heroData = {
     badge: "GST Compliance Services",
     title: "GST Compliance Services",

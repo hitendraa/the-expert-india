@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Calendar, Shield, CheckCircle, AlertTriangle, TrendingUp, Users } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const GSTReturnFilingPage = () => {
+export const metadata: Metadata = {
+  title: 'GST Return Filing Services | GSTR-1, GSTR-3B & Annual Returns | The Expert India',
+  description: 'Professional GST return filing services for all business types. Timely filing of GSTR-1, GSTR-3B, quarterly and annual returns with complete compliance support.',
+  keywords: [
+    'GST return filing',
+    'GST returns',
+    'GSTR-1 filing',
+    'GSTR-3B filing',
+    'GST annual return',
+    'GST quarterly return',
+    'GST compliance',
+    'GST return services'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+}
+
+function GSTReturnFilingPage() {
   const heroData = {
     badge: "GST Return Filing Services",
     title: "GST Return Filing Services",

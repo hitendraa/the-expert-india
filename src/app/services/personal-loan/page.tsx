@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Shield, Clock, DollarSign, CheckCircle, AlertTriangle, Calculator, CreditCard, Users, Award } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const PersonalLoanPage = () => {
+export const metadata: Metadata = {
+  title: 'Personal Loan Services | Low Interest Personal Loans | The Expert India',
+  description: 'Get personal loans at competitive interest rates with quick approval. Expert assistance for loan documentation, application processing, and flexible repayment options.',
+  keywords: [
+    'personal loan',
+    'low interest personal loan',
+    'quick personal loan',
+    'instant personal loan',
+    'best personal loan rates',
+    'personal loan services',
+    'loan application assistance',
+    'flexible repayment personal loan'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function PersonalLoanPage() {
   const heroData = {
     badge: "Personal Loan Services",
     title: "Get Personal Loan with Best Interest Rates",

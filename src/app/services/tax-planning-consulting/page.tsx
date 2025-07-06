@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -8,7 +7,30 @@ import { Badge } from "@/components/ui/badge";
 import { Calculator, TrendingUp, Shield, Bell, FileText, Users, CheckCircle, X } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const TaxPlanningConsultingPage = () => {
+export const metadata: Metadata = {
+  title: 'Tax Planning & Consulting | Tax Advisory Services | The Expert India',
+  description: 'Expert tax planning and consulting services for individuals and businesses. Optimize tax strategies, reduce liabilities, and achieve financial goals with professional guidance.',
+  keywords: [
+    'tax planning',
+    'tax consulting',
+    'tax advisory services',
+    'tax optimization',
+    'income tax planning',
+    'tax strategy consulting',
+    'personal tax advisor',
+    'business tax planning'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function TaxPlanningConsultingPage() {
   const heroData = {
     badge: "Tax Consultancy & Advisory Services",
     title: "Get a Personal eCA",

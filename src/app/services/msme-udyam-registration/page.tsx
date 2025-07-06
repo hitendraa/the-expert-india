@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,31 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Building2, CheckCircle, Shield, IndianRupee, Award, Users, CreditCard, Zap } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const MSMEUdyamRegistrationPage = () => {
+export const metadata: Metadata = {
+  title: 'MSME Udyam Registration | Free Government Registration | The Expert India',
+  description: 'Get your MSME Udyam Registration certificate with expert assistance. Free government registration with access to subsidies, loans, and other benefits for micro, small, and medium enterprises.',
+  keywords: [
+    'msme udyam registration',
+    'udyam registration',
+    'msme registration',
+    'small business registration',
+    'government msme benefits',
+    'msme certificate',
+    'udyam certificate',
+    'msme subsidies',
+    'business registration'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function MSMEUdyamRegistrationPage() {
   const heroData = {
     badge: "MSME Udyam Registration",
     title: "Get Your MSME Udyam Registration",

@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Building2, CheckCircle, Shield, Clock, Users, MapPin, Award } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const ShopEstablishmentLicensePage = () => {
+export const metadata: Metadata = {
+  title: 'Shop & Establishment License | Business Compliance | The Expert India',
+  description: 'Obtain Shop & Establishment License for your business with expert assistance. Complete documentation and registration support for mandatory commercial operation compliance.',
+  keywords: [
+    'shop and establishment license',
+    'shop act registration',
+    'business establishment license',
+    'commercial establishment registration',
+    'shop license',
+    'shop act compliance',
+    'business premises registration',
+    'mandatory business license'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function ShopEstablishmentLicensePage() {
   const heroData = {
     badge: "Shop & Establishment License",
     title: "Get Your Shop & Establishment License",

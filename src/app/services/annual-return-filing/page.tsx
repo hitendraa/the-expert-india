@@ -1,11 +1,36 @@
-"use client";
+import { Metadata } from 'next';
+import { SITE_FULL_NAME } from "@/lib/constants";
 
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
+import ServiceSchema from "@/components/common/ServiceSchema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Calendar, AlertTriangle, Building, DollarSign } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: 'Annual Return Filing | MGT-7 & MGT-7A Filing Services | The Expert India',
+  description: 'Professional assistance for company annual return filing with Form MGT-7/MGT-7A. Ensure compliance and avoid penalties with expert guidance.',
+  keywords: [
+    'annual return filing',
+    'MGT-7 filing',
+    'MGT-7A filing',
+    'company compliance',
+    'ROC filing',
+    'annual return services',
+    'corporate filing',
+    'company annual return'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
 
 const AnnualReturnFilingPage = () => {
   const heroData = {
@@ -303,6 +328,20 @@ const AnnualReturnFilingPage = () => {
         columns={2}
         ctaTitle="Ready to File Your Annual Return?"
         ctaDescription="Ensure compliance and avoid penalties with our professional annual return filing services. Our experts handle all documentation and submission processes."
+      />
+      
+      <ServiceSchema 
+        name="Annual Return Filing Services"
+        description="Professional assistance for company annual return filing using Form MGT-7/MGT-7A. Ensure compliance and avoid penalties with our expert guidance."
+        price="₹499"
+        serviceType="Corporate Compliance"
+        areaServed="India"
+        features={[
+          "Form MGT-7/MGT-7A Filing",
+          "Complete Documentation Support",
+          "Expert Review & Verification",
+          "Timely Submission"
+        ]}
       />
     </div>
   );

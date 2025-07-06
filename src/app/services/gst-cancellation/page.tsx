@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, AlertTriangle, CheckCircle, Clock, XCircle, Shield, Users, Calculator } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const GSTCancellationPage = () => {
+export const metadata: Metadata = {
+  title: 'GST Cancellation Services | GST Registration Cancellation | The Expert India',
+  description: 'Professional GST Registration Cancellation services with complete legal compliance. Expert assistance for proper surrender of GST registration without penalties.',
+  keywords: [
+    'GST cancellation',
+    'GST registration cancellation',
+    'cancel GST registration',
+    'surrender GST registration',
+    'GST deregistration',
+    'GST number cancellation',
+    'GSTIN cancellation process',
+    'GST cancellation procedure'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+}
+
+function GSTCancellationPage() {
   const heroData = {
     badge: "GST Registration Cancellation",
     title: "GST Registration Cancellation",

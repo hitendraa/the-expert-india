@@ -3,8 +3,11 @@ import crypto from "crypto"
 import { getServerSession } from "next-auth/next"
 import connectDB from "@/lib/mongodb"
 import Order from "@/models/Order"
+import Service from "@/models/Service"
+import User from "@/models/User"  
 import { logActivity } from "@/lib/activity"
 import { authOptions } from "@/lib/auth"
+import { sendInvoiceEmail } from "@/lib/email-service"
 
 export interface VerifyBody {
   razorpay_order_id: string
@@ -100,7 +103,101 @@ export async function POST(request: NextRequest) {
       notes: notes || undefined, // Use user's notes if provided
     })
 
-    const savedOrder = await newOrder.save()    // Log activity
+    const savedOrder = await newOrder.save()
+
+    // Get service details for email
+    const service = await Service.findById(serviceId)
+    if (!service) {
+      console.error("Service not found for email:", serviceId)
+    }
+
+    // Get user details for email
+    const user = await User.findById((session.user as { id?: string }).id)
+    if (!user) {
+      console.error("User not found for email:", (session.user as { id?: string }).id)
+    }
+
+    // Send invoice email if we have the necessary details (non-blocking)
+    if (service && user) {
+      // Send email in parallel without blocking the response
+      sendInvoiceEmail({
+        customerName: user.name,
+        customerEmail: user.email,
+        serviceName: service.name,
+        amount: amount,
+        orderId: String(savedOrder._id),
+        orderDate: new Date().toLocaleDateString('en-IN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+        paymentMethod: 'Online Payment (Razorpay)',
+      })
+        .then(() => {
+          console.log("Invoice email sent successfully for order:", savedOrder._id)
+          
+          // Log successful email sending activity
+          logActivity({
+            userId: (session.user as { id?: string }).id,
+            action: "email_sent",
+            resource: "order",
+            resourceId: String(savedOrder._id),
+            details: `Invoice email sent to ${user.email} for order ${String(savedOrder._id)}`,
+            metadata: {
+              orderId: String(savedOrder._id),
+              emailRecipient: user.email,
+              emailType: "invoice",
+            },
+          }).catch((logError) => {
+            console.error("Failed to log email success activity:", logError)
+          })
+        })
+        .catch((emailError) => {
+          console.error("Failed to send invoice email:", emailError)
+          
+          // Log email failure activity (but don't fail the payment)
+          logActivity({
+            userId: (session.user as { id?: string }).id,
+            action: "email_failed",
+            resource: "order",
+            resourceId: String(savedOrder._id),
+            details: `Failed to send invoice email to ${user.email} for order ${String(savedOrder._id)}: ${emailError instanceof Error ? emailError.message : 'Unknown error'}`,
+            metadata: {
+              orderId: String(savedOrder._id),
+              emailRecipient: user.email,
+              emailType: "invoice",
+              error: emailError instanceof Error ? emailError.message : 'Unknown error',
+            },
+          }).catch((logError) => {
+            console.error("Failed to log email failure activity:", logError)
+          })
+        })
+    } else {
+      console.warn("Cannot send invoice email - missing service or user data:", {
+        serviceFound: !!service,
+        userFound: !!user,
+        serviceId,
+        userId: (session.user as { id?: string }).id,
+      })
+      
+      // Log missing data warning (non-blocking)
+      logActivity({
+        userId: (session.user as { id?: string }).id,
+        action: "email_skipped",
+        resource: "order",
+        resourceId: String(savedOrder._id),
+        details: `Invoice email skipped for order ${String(savedOrder._id)} - missing ${!service ? 'service' : ''} ${!user ? 'user' : ''} data`,
+        metadata: {
+          orderId: String(savedOrder._id),
+          serviceFound: !!service,
+          userFound: !!user,
+        },
+      }).catch((logError) => {
+        console.error("Failed to log email skip activity:", logError)
+      })
+    }
+
+    // Log activity
     await logActivity({
       userId: (session.user as { id?: string }).id,
       action: "order_created",

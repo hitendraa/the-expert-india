@@ -4,11 +4,29 @@ import { Badge } from '@/components/ui/badge'
 import { CheckCircle, Clock, Users, FileText, AlertTriangle, Award, Building, TrendingUp, DollarSign, BarChart, Factory, RefreshCw, Banknote, Wallet } from 'lucide-react'
 import ServiceHero from '@/components/common/ServiceHero'
 import ServiceFAQ from '@/components/common/ServiceFAQ'
+import { SITE_FULL_NAME } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: 'Working Capital Loan | Cash Flow Finance | Quick Approval | The Expert India',
   description: 'Get working capital loans for business operations, inventory management, and cash flow requirements. Quick approval with competitive interest rates and flexible repayment.',
-  keywords: 'working capital loan, cash flow finance, business operations loan, inventory financing, overdraft facility, short term loan',
+  keywords: [
+    'working capital loan',
+    'cash flow finance',
+    'business operations loan',
+    'inventory financing',
+    'overdraft facility',
+    'short term loan',
+    'business funding',
+    'working capital finance'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 }
 
 export default function WorkingCapitalLoanPage() {

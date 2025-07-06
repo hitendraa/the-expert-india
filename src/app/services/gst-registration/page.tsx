@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServicePricing from "@/components/common/ServicePricing";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
@@ -8,6 +9,29 @@ import GSTTypes from "@/components/services/GSTTypes";
 import GSTRequirements from "@/components/services/GSTRequirements";
 import CTA from "@/components/common/CTA";
 import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: 'GST Registration | Online GST Registration Services | The Expert India',
+  description: 'Get fast & reliable GST Registration services in India. One-day process with expert assistance for all business types. Complete online GST registration at affordable rates.',
+  keywords: [
+    'GST registration',
+    'online GST registration',
+    'GST registration services',
+    'GST registration online',
+    'GST registration for business',
+    'GSTIN registration',
+    'GST application',
+    'GST registration process'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+}
 
 export default function GSTRegistrationPage() {
   const heroData = {

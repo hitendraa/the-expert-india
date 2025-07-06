@@ -1,11 +1,35 @@
-"use client";
+import { Metadata } from 'next';
+import { SITE_FULL_NAME } from "@/lib/constants";
 
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
+import ServiceSchema from "@/components/common/ServiceSchema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Shield, CheckCircle, Gift, Users, Building, TrendingUp, Clock } from "lucide-react";
-import { SITE_FULL_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: '80G & 12A Registration | Tax Exemption for NGOs | Charitable Trust Registration | The Expert India',
+  description: 'Get tax exemption certificates for your NGO under Section 12A and 80G. Enable your organization to receive tax-exempt income and provide donors with tax deduction benefits.',
+  keywords: [
+    'NGO registration',
+    '80G registration',
+    '12A registration',
+    'tax exemption',
+    'charitable trust',
+    'section 8 company',
+    'donor tax deduction',
+    'FCRA registration'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+}
 
 const EightyG12ARegistrationPage = () => {
   const heroData = {
@@ -601,6 +625,19 @@ const EightyG12ARegistrationPage = () => {
         columns={2}
         ctaTitle="Get 80G & 12A Registration Quote"
         ctaDescription="Get tax exemption certificates for your NGO and enable donors to claim tax deductions. Connect with our experts for comprehensive registration services and government compliance."
+      />
+      
+      <ServiceSchema 
+        name="80G & 12A Registration Services"
+        description="Get tax exemption certificates for your NGO under Section 12A and 80G of the Income Tax Act. Enable your organization to receive tax-exempt income and provide donors with tax deduction benefits."
+        serviceType="NGO Tax Registration"
+        areaServed="India"
+        features={[
+          "Section 12A Registration",
+          "Section 80G Registration", 
+          "Tax Exemption Benefits",
+          "Donor Tax Deductions"
+        ]}
       />
     </div>
   );

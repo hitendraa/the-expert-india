@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next';
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,31 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Users, Shield, Clock, Building2, AlertTriangle, Award, CheckCircle } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const LabourLicensePage = () => {
+export const metadata: Metadata = {
+  title: 'Labour License Registration | Contract Labour License | The Expert India',
+  description: 'Get labour license and ensure compliance with labour laws. Our experts help you obtain contract labour licenses, principal employer licenses, and migrant worker licenses.',
+  keywords: [
+    'labour license',
+    'contract labour act',
+    'principal employer license',
+    'migrant worker license',
+    'labour compliance',
+    'labour law registration',
+    'employment registration',
+    'workforce compliance',
+    'labour license consultant'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function LabourLicensePage() {
   const heroData = {
     badge: "Labour License Registration",
     title: "Get Your Labour License & Compliance",

@@ -1,5 +1,4 @@
-"use client";
-
+import { Metadata } from 'next'
 import ServiceHero from "@/components/common/ServiceHero";
 import ServiceFAQ from "@/components/common/ServiceFAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,30 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Shield, CheckCircle, X, Scale, ClipboardCheck } from "lucide-react";
 import { SITE_FULL_NAME } from "@/lib/constants";
 
-const StatutoryAuditPage = () => {
+export const metadata: Metadata = {
+  title: 'Statutory Audit Services | Compliance Auditing | The Expert India',
+  description: 'Professional statutory audit services by certified CAs to ensure legal compliance. Comprehensive financial audits for companies, LLPs, and other business entities.',
+  keywords: [
+    'statutory audit',
+    'statutory audit services',
+    'company audit',
+    'financial compliance audit',
+    'legal audit',
+    'financial statement audit',
+    'CA audit services',
+    'annual audit compliance'
+  ],
+  authors: [{ name: SITE_FULL_NAME }],
+  creator: SITE_FULL_NAME,
+  publisher: SITE_FULL_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+function StatutoryAuditPage() {
   const heroData = {
     badge: "Statutory Audit Services",
     title: "Statutory Audit Services",
